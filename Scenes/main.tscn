@@ -1,14 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://chpqcweaiakc5"]
+[gd_scene load_steps=5 format=3 uid="uid://chpqcweaiakc5"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_cx8ll"]
-[ext_resource type="PackedScene" uid="uid://budf1fj3uv3ye" path="res://Scenes/Player.tscn" id="2_d6f1p"]
+[ext_resource type="PackedScene" path="res://Scenes/Player.tscn" id="2_d6f1p"]
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="3_2wria"]
+[ext_resource type="PackedScene" uid="uid://ekyt2ivgmsmy" path="res://Assets/monkey.glb" id="4_y0b6v"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_cx8ll")
 
 [node name="Player" parent="." instance=ExtResource("2_d6f1p")]
+script = ExtResource("3_2wria")
 
 [node name="Camera3D" type="Camera3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+
+[node name="monkey" parent="." instance=ExtResource("4_y0b6v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.85626, 2.10367, -7.17089)
