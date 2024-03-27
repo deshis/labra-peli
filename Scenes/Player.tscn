@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://budf1fj3uv3ye"]
+
+[ext_resource type="PackedScene" uid="uid://28lx42e07qjf" path="res://Assets/capsule.glb" id="1_2cfi2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_43n53"]
+radius = 1.1
+height = 4.2
+
+[node name="Player" type="CharacterBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_43n53")
+
+[node name="capsule" parent="." instance=ExtResource("1_2cfi2")]
