@@ -3,9 +3,10 @@ extends CharacterBody3D
 
 const SPEED = 5.0
 
-
+@onready var camera_controller = $CameraController
 
 func _physics_process(delta):
+	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")
@@ -16,5 +17,8 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
-
+	
 	move_and_slide()
+	
+	#Make camera follow player
+	camera_controller.position = lerp(camera_controller.position, position, 0.15)
