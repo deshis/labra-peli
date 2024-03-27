@@ -4,8 +4,8 @@
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_wddm7"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_43n53"]
-radius = 1.1
-height = 4.2
+radius = 1.13865
+height = 4.24122
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_wddm7")
@@ -15,7 +15,7 @@ camera_sensitivity = 0.005
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_43n53")
 
-[node name="capsule" parent="." instance=ExtResource("1_2cfi2")]
+[node name="Capsule" parent="." instance=ExtResource("1_2cfi2")]
 
 [node name="CameraController" type="Node3D" parent="."]
 top_level = true
