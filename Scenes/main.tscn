@@ -1,15 +1,32 @@
-[gd_scene load_steps=4 format=3 uid="uid://chpqcweaiakc5"]
+[gd_scene load_steps=5 format=3 uid="uid://chpqcweaiakc5"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_cx8ll"]
 [ext_resource type="PackedScene" uid="uid://tr2nbcbcmnu2" path="res://Scenes/Player.tscn" id="2_d6f1p"]
+[ext_resource type="PackedScene" uid="uid://cg4jdxkd2je7r" path="res://Assets/mental-asylum.glb" id="4_f5mti"]
 [ext_resource type="PackedScene" uid="uid://ekyt2ivgmsmy" path="res://Assets/monkey.glb" id="4_y0b6v"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_cx8ll")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.914741, 0.211663, -0.344162, 0, 0.8518, 0.523867, 0.40404, -0.479203, 0.779177, 0, 7.71435, 8.94147)
+
+[node name="DirectionalLight3D4" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.897305, -0.231241, 0.375995, 0, 0.8518, 0.523867, -0.441412, -0.470068, 0.764324, 11.9125, 7.71435, 0.0916204)
+
+[node name="DirectionalLight3D5" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.356559, -0.489435, 0.795814, 1.31551e-08, 0.8518, 0.523867, -0.934273, -0.186789, 0.303717, -9.80857, 7.71435, 0.0916204)
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.916167, 0.209964, -0.341399, 2.95426e-08, 0.8518, 0.523867, 0.400797, 0.47995, -0.780391, 0, 7.71435, -8.82474)
+
+[node name="DirectionalLight3D3" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 14.618, 0)
 
 [node name="monkey" parent="." instance=ExtResource("4_y0b6v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.85626, 2.10367, -7.17089)
 
 [node name="Player" parent="." instance=ExtResource("2_d6f1p")]
+
+[node name="mental-asylum" parent="." instance=ExtResource("4_f5mti")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.638594, -2.33896, 0.1494)
