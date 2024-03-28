@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+class_name Player
+
 @export var SPEED = 5.0
 
 @onready var camera_controller = $CameraController
@@ -8,6 +10,9 @@ extends CharacterBody3D
 var twist_input = 0.0
 var pitch_input = 0.0
 
+@export var maxHealth = 10
+@onready var currentHealth = maxHealth
+signal healthChanged
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -27,6 +32,9 @@ func _physics_process(delta):
 	
 	move_and_slide()
 	
+	if Input.is_action_just_pressed("testi"):
+		updateHealth(-1)
+	
 	#press esc to get mouse back
 	if Input.is_action_just_pressed("ui_cancel"):
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -44,6 +52,11 @@ func _physics_process(delta):
 	twist_input = 0.0
 	pitch_input = 0.0
 
+
+func updateHealth(amount):
+	if(currentHealth >= 0):
+		currentHealth = clamp(currentHealth+amount, 0, maxHealth)
+		healthChanged.emit()
 
 func _unhandled_input(event):
 	#moving camera with mouse

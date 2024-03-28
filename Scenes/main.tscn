@@ -1,9 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://chpqcweaiakc5"]
+[gd_scene load_steps=9 format=3 uid="uid://chpqcweaiakc5"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_cx8ll"]
 [ext_resource type="PackedScene" uid="uid://tr2nbcbcmnu2" path="res://Scenes/Player.tscn" id="2_d6f1p"]
 [ext_resource type="PackedScene" uid="uid://b267c0jqhpirv" path="res://Scenes/mental_asylum.tscn" id="4_b3svt"]
 [ext_resource type="PackedScene" uid="uid://ekyt2ivgmsmy" path="res://Assets/monkey.glb" id="4_y0b6v"]
+[ext_resource type="Script" path="res://Scripts/healthbar.gd" id="5_fvphu"]
+[ext_resource type="Texture2D" uid="uid://b8ppk454bulgt" path="res://Sprites/UI/Bar/empty.png" id="5_lrdkv"]
+[ext_resource type="Texture2D" uid="uid://doceu5pqyb70l" path="res://Sprites/UI/Bar/full.png" id="6_dnqkv"]
 
 [sub_resource type="Environment" id="Environment_p801p"]
 ambient_light_source = 1
@@ -59,3 +62,16 @@ omni_attenuation = 0.0563282
 
 [node name="mental-asylum" parent="." instance=ExtResource("4_b3svt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.39563, 0)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="UI" node_paths=PackedStringArray("player")]
+offset_left = 37.0
+offset_top = 31.0
+offset_right = 1037.0
+offset_bottom = 331.0
+scale = Vector2(0.21, 0.21)
+texture_under = ExtResource("5_lrdkv")
+texture_progress = ExtResource("6_dnqkv")
+script = ExtResource("5_fvphu")
+player = NodePath("../../Player")
