@@ -1,32 +1,61 @@
-[gd_scene load_steps=5 format=3 uid="uid://chpqcweaiakc5"]
+[gd_scene load_steps=6 format=3 uid="uid://chpqcweaiakc5"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_cx8ll"]
 [ext_resource type="PackedScene" uid="uid://tr2nbcbcmnu2" path="res://Scenes/Player.tscn" id="2_d6f1p"]
-[ext_resource type="PackedScene" uid="uid://cg4jdxkd2je7r" path="res://Assets/mental-asylum.glb" id="4_f5mti"]
+[ext_resource type="PackedScene" uid="uid://b267c0jqhpirv" path="res://Scenes/mental_asylum.tscn" id="4_b3svt"]
 [ext_resource type="PackedScene" uid="uid://ekyt2ivgmsmy" path="res://Assets/monkey.glb" id="4_y0b6v"]
+
+[sub_resource type="Environment" id="Environment_p801p"]
+ambient_light_source = 1
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.05
+reflected_light_source = 1
+ssr_fade_in = 1.42705
+ssr_depth_tolerance = 71.71
+ssao_radius = 4.2
+ssao_detail = 4.55
+ssao_horizon = 1.0
+ssil_radius = 6.58
+ssil_intensity = 17.3
+ssil_sharpness = 0.0
+ssil_normal_rejection = 0.0
+sdfgi_enabled = true
+sdfgi_read_sky_light = false
+sdfgi_bounce_feedback = 0.0
+fog_light_color = Color(0.662745, 0.47451, 0.666667, 1)
+fog_light_energy = 0.0
+fog_sun_scatter = 1.95
+fog_density = 0.1153
+volumetric_fog_density = 1.0
+adjustment_brightness = 0.45
+adjustment_contrast = 3.5
+adjustment_saturation = 8.0
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_cx8ll")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.914741, 0.211663, -0.344162, 0, 0.8518, 0.523867, 0.40404, -0.479203, 0.779177, 0, 7.71435, 8.94147)
-
-[node name="DirectionalLight3D4" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.897305, -0.231241, 0.375995, 0, 0.8518, 0.523867, -0.441412, -0.470068, 0.764324, 11.9125, 7.71435, 0.0916204)
-
-[node name="DirectionalLight3D5" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.356559, -0.489435, 0.795814, 1.31551e-08, 0.8518, 0.523867, -0.934273, -0.186789, 0.303717, -9.80857, 7.71435, 0.0916204)
-
-[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.916167, 0.209964, -0.341399, 2.95426e-08, 0.8518, 0.523867, 0.400797, 0.47995, -0.780391, 0, 7.71435, -8.82474)
-
-[node name="DirectionalLight3D3" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 14.618, 0)
 
 [node name="monkey" parent="." instance=ExtResource("4_y0b6v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.85626, 2.10367, -7.17089)
 
 [node name="Player" parent="." instance=ExtResource("2_d6f1p")]
 
-[node name="mental-asylum" parent="." instance=ExtResource("4_f5mti")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.638594, -2.33896, 0.1494)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.999999, 2.54672e-06, -0.00165809, 0.00165809, -0.00153593, 0.999997, 0, -0.999999, -0.00153594, 0, 17.3782, 0)
+light_color = Color(1, 0.180392, 0.556863, 1)
+light_energy = 3.0
+light_indirect_energy = 5.0
+light_volumetric_fog_energy = 5.0
+light_angular_distance = 0.5
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_p801p")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.39535, 0)
+light_color = Color(0.415686, 0.0823529, 1, 1)
+light_energy = 0.2
+omni_range = 40.0
+omni_attenuation = 0.0563282
+
+[node name="mental-asylum" parent="." instance=ExtResource("4_b3svt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.39563, 0)
