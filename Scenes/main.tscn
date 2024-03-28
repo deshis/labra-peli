@@ -1,20 +1,12 @@
-<<<<<<< Updated upstream
 [gd_scene load_steps=9 format=3 uid="uid://chpqcweaiakc5"]
-=======
-[gd_scene load_steps=8 format=3 uid="uid://chpqcweaiakc5"]
->>>>>>> Stashed changes
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_cx8ll"]
 [ext_resource type="PackedScene" uid="uid://tr2nbcbcmnu2" path="res://Scenes/Player.tscn" id="2_d6f1p"]
 [ext_resource type="PackedScene" uid="uid://b267c0jqhpirv" path="res://Scenes/mental_asylum.tscn" id="4_b3svt"]
 [ext_resource type="PackedScene" uid="uid://ekyt2ivgmsmy" path="res://Assets/monkey.glb" id="4_y0b6v"]
-<<<<<<< Updated upstream
 [ext_resource type="Script" path="res://Scripts/healthbar.gd" id="5_fvphu"]
 [ext_resource type="Texture2D" uid="uid://b8ppk454bulgt" path="res://Sprites/UI/Bar/empty.png" id="5_lrdkv"]
 [ext_resource type="Texture2D" uid="uid://doceu5pqyb70l" path="res://Sprites/UI/Bar/full.png" id="6_dnqkv"]
-=======
-[ext_resource type="PackedScene" uid="uid://c0p0ab8ytjvv2" path="res://Scenes/enemy.tscn" id="5_rk86j"]
->>>>>>> Stashed changes
 
 [sub_resource type="Environment" id="Environment_p801p"]
 ambient_light_source = 1
@@ -42,20 +34,13 @@ adjustment_brightness = 0.45
 adjustment_contrast = 3.5
 adjustment_saturation = 8.0
 
-[sub_resource type="NavigationMesh" id="NavigationMesh_7y7p8"]
-vertices = PackedVector3Array(-6.3943, 36.3372, 14.762, -6.3943, 36.3372, 27.512, 6.3557, 36.3372, 27.512, 6.3557, 36.3372, 14.762, -6.1443, 26.0872, 15.012, -6.1443, 26.0872, 27.262, 6.1057, 26.0872, 27.262, 6.1057, 26.0872, 15.012)
-polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(7, 6, 4), PackedInt32Array(4, 6, 5)]
-agent_height = 4.4
-agent_radius = 1.2
-
 [node name="Main" type="Node3D"]
 script = ExtResource("1_cx8ll")
 
 [node name="monkey" parent="." instance=ExtResource("4_y0b6v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.85626, -30.9978, -7.17089)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.85626, 2.10367, -7.17089)
 
 [node name="Player" parent="." instance=ExtResource("2_d6f1p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -28.8339, 20.0543)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.999999, 2.54672e-06, -0.00165809, 0.00165809, -0.00153593, 0.999997, 0, -0.999999, -0.00153594, 0, 17.3782, 0)
@@ -75,7 +60,6 @@ light_energy = 0.2
 omni_range = 40.0
 omni_attenuation = 0.0563282
 
-<<<<<<< Updated upstream
 [node name="mental-asylum" parent="." instance=ExtResource("4_b3svt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.39563, 0)
 
@@ -91,14 +75,3 @@ texture_under = ExtResource("5_lrdkv")
 texture_progress = ExtResource("6_dnqkv")
 script = ExtResource("5_fvphu")
 player = NodePath("../../Player")
-=======
-[node name="Enemy" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -31.0331, 9.91872)
-
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, -164.091, -112.141)
-navigation_mesh = SubResource("NavigationMesh_7y7p8")
-
-[node name="mental-asylum" parent="NavigationRegion3D" instance=ExtResource("4_b3svt")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 25.5872, 21.1563)
->>>>>>> Stashed changes

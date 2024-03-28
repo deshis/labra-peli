@@ -1,10 +1,11 @@
 extends Node3D
 
-@onready var player = $Player
 
+# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	pass # Replace with function body.
 
-func _physics_process(_delta):
-	#enemy pathfinding
-	get_tree().call_group("enemies", "update_target_location", player.position)
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
