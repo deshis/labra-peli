@@ -3,6 +3,7 @@ extends CharacterBody3D
 class_name Player
 
 @export var SPEED = 5.0
+@export var JUMP_VELOCITY = 10
 
 @onready var camera_controller = $CameraController
 @onready var camera_target = $CameraController/CameraTarget
@@ -14,11 +15,23 @@ var pitch_input = 0.0
 @onready var currentHealth = maxHealth
 signal healthChanged
 
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func _physics_process(delta):
+	
+	#Gravity
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+	
+	#Jumping
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")
