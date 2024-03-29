@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://b63r5t7emjdsm"]
+
+[ext_resource type="Script" path="res://Scripts/MainMenu.gd" id="1_fa0ui"]
+[ext_resource type="Script" path="res://Scripts/Button.gd" id="2_0qfx1"]
+
+[node name="MainMenu" type="CanvasLayer"]
+script = ExtResource("1_fa0ui")
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -265.5
+offset_top = -231.5
+offset_right = 265.5
+offset_bottom = 231.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme_override_constants/separation = 50
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ButtonsContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 64
+bbcode_enabled = true
+text = "[center]The Game..."
+fit_content = true
+
+[node name="StartGameButton" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Start Game"
+script = ExtResource("2_0qfx1")
+
+[node name="SettingsButton" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Settings"
+script = ExtResource("2_0qfx1")
+
+[node name="QuitGameButton" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Quit To Desktop"
+script = ExtResource("2_0qfx1")
+
+[connection signal="mouse_entered" from="ButtonsContainer/StartGameButton" to="ButtonsContainer/StartGameButton" method="_on_mouse_entered"]
+[connection signal="pressed" from="ButtonsContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]
+[connection signal="mouse_entered" from="ButtonsContainer/SettingsButton" to="ButtonsContainer/SettingsButton" method="_on_mouse_entered"]
+[connection signal="pressed" from="ButtonsContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="mouse_entered" from="ButtonsContainer/QuitGameButton" to="ButtonsContainer/QuitGameButton" method="_on_mouse_entered"]
+[connection signal="pressed" from="ButtonsContainer/QuitGameButton" to="." method="_on_quit_game_button_pressed"]
