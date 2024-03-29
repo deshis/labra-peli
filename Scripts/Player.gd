@@ -7,7 +7,8 @@ class_name Player
 
 @onready var camera_controller = $CameraController
 @onready var camera_target = $CameraController/CameraTarget
-@export var camera_sensitivity = 0.01
+@export var camera_mouse_sensitivity = 0.01
+@export var camera_controller_sensitivity = 0.1
 var twist_input = 0.0
 var pitch_input = 0.0
 
@@ -29,12 +30,10 @@ func _physics_process(delta):
 		velocity.y -= gravity * delta
 	
 	#Jumping
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 	
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir = Input.get_vector("left", "right", "forward", "backward")
+	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var direction = (camera_controller.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		velocity.x = direction.x * SPEED
@@ -54,6 +53,15 @@ func _physics_process(delta):
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+	
+	
+	
+	#moving camera with controller. mouse input is handled in _unhandled_input
+	var look_dir = Input.get_vector("look_left", "look_right", "look_up", "look_down")
+	if(look_dir):
+		twist_input = - look_dir.x * camera_controller_sensitivity
+		pitch_input = - look_dir.y * camera_controller_sensitivity
 	
 	#camera follows player with lerp smoothing
 	camera_controller.position = lerp(camera_controller.position, position, 0.15)
@@ -75,5 +83,5 @@ func _unhandled_input(event):
 	#moving camera with mouse
 	if event is InputEventMouseMotion:
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-			twist_input = - event.relative.x * camera_sensitivity
-			pitch_input = - event.relative.y * camera_sensitivity
+			twist_input = - event.relative.x * camera_mouse_sensitivity
+			pitch_input = - event.relative.y * camera_mouse_sensitivity
