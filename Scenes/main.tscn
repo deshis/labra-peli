@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://chpqcweaiakc5"]
+[gd_scene load_steps=13 format=3 uid="uid://chpqcweaiakc5"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_cx8ll"]
 [ext_resource type="PackedScene" uid="uid://tr2nbcbcmnu2" path="res://Scenes/Player.tscn" id="2_d6f1p"]
@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://b8ppk454bulgt" path="res://Sprites/UI/Bar/empty.png" id="5_lrdkv"]
 [ext_resource type="PackedScene" uid="uid://dfbfxm4ytxuls" path="res://Scenes/enemy.tscn" id="5_rk86j"]
 [ext_resource type="Texture2D" uid="uid://doceu5pqyb70l" path="res://Sprites/UI/Bar/full.png" id="6_dnqkv"]
+[ext_resource type="Script" path="res://Scripts/PauseMenu.gd" id="9_5iedf"]
+[ext_resource type="Script" path="res://Scripts/PauseMenuButton.gd" id="10_uq3l4"]
 
 [sub_resource type="Environment" id="Environment_p801p"]
 ambient_light_source = 1
@@ -36,10 +38,10 @@ adjustment_contrast = 3.5
 adjustment_saturation = 8.0
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_7y7p8"]
-vertices = PackedVector3Array(-6.3943, 36.3372, 14.762, -6.3943, 36.3372, 27.512, 6.3557, 36.3372, 27.512, 6.3557, 36.3372, 14.762, -6.1443, 26.0872, 15.012, -6.1443, 26.0872, 27.262, 6.1057, 26.0872, 27.262, 6.1057, 26.0872, 15.012)
+vertices = PackedVector3Array(-6.8943, 36.3372, 14.262, -6.8943, 36.3372, 28.012, 6.8557, 36.3372, 28.012, 6.8557, 36.3372, 14.262, -6.6443, 26.0872, 14.512, -6.6443, 26.0872, 27.762, 6.6057, 26.0872, 27.762, 6.6057, 26.0872, 14.512)
 polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(7, 6, 4), PackedInt32Array(4, 6, 5)]
-agent_height = 4.4
-agent_radius = 1.2
+agent_height = 2.2
+agent_radius = 0.6
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_cx8ll")
@@ -65,9 +67,6 @@ omni_attenuation = 0.0563282
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_p801p")
-
-[node name="mental-asylum" parent="." instance=ExtResource("4_b3svt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.39563, 0)
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, -164.091, -112.141)
@@ -98,4 +97,47 @@ texture_progress = ExtResource("6_dnqkv")
 script = ExtResource("5_fvphu")
 player = NodePath("../../Player")
 
+[node name="PauseMenu" type="CanvasLayer" parent="." node_paths=PackedStringArray("ui_layer")]
+process_mode = 3
+script = ExtResource("9_5iedf")
+ui_layer = NodePath("../UI")
+
+[node name="PauseButtonsContainer" type="VBoxContainer" parent="PauseMenu"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -33.0
+offset_right = 46.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 50
+
+[node name="ContinueButton" type="Button" parent="PauseMenu/PauseButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "Continue"
+script = ExtResource("10_uq3l4")
+
+[node name="QuitGameButton" type="Button" parent="PauseMenu/PauseButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 48
+text = "Quit Game
+"
+script = ExtResource("10_uq3l4")
+
 [connection signal="timeout" from="EnemyPathfindingTimer" to="." method="_on_enemy_pathfinding_timer_timeout"]
+[connection signal="mouse_entered" from="PauseMenu/PauseButtonsContainer/ContinueButton" to="PauseMenu/PauseButtonsContainer/ContinueButton" method="_on_mouse_entered"]
+[connection signal="pressed" from="PauseMenu/PauseButtonsContainer/ContinueButton" to="PauseMenu" method="_on_continue_button_pressed"]
+[connection signal="mouse_entered" from="PauseMenu/PauseButtonsContainer/QuitGameButton" to="PauseMenu/PauseButtonsContainer/QuitGameButton" method="_on_mouse_entered"]
+[connection signal="pressed" from="PauseMenu/PauseButtonsContainer/QuitGameButton" to="PauseMenu" method="_on_quit_game_button_pressed"]

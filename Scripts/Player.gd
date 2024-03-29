@@ -47,16 +47,6 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("testi"):
 		updateHealth(-1)
 	
-	#press esc to get mouse back
-	if Input.is_action_just_pressed("ui_cancel"):
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		else:
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
-	
-	
-	
 	#moving camera with controller. mouse input is handled in _unhandled_input
 	var look_dir = Input.get_vector("look_left", "look_right", "look_up", "look_down")
 	if(look_dir):
