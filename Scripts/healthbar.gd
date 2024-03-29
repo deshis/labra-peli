@@ -1,6 +1,6 @@
 extends TextureProgressBar
 
-@export var player : Player
+@export var player : CharacterBody3D
 
 
 func _ready():
