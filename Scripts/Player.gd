@@ -6,7 +6,7 @@ class_name Player
 @export var JUMP_VELOCITY = 10
 
 @onready var camera_controller = $CameraController
-@onready var camera_target = $CameraController/CameraTarget
+@onready var spring_arm = $CameraController/SpringArm3D
 @export var camera_mouse_sensitivity = 0.01
 @export var camera_controller_sensitivity = 0.1
 var twist_input = 0.0
@@ -57,9 +57,10 @@ func _physics_process(delta):
 	camera_controller.position = lerp(camera_controller.position, position, 0.15)
 	
 	#camera rotation
-	camera_controller.rotate_y(twist_input)
-	camera_target.rotate_x(pitch_input)
-	camera_target.rotation.x = clamp(camera_target.rotation.x, deg_to_rad(-30), deg_to_rad(30))
+	camera_controller.rotate_y(twist_input)	
+	spring_arm.rotate_x(pitch_input)
+	
+	spring_arm.rotation.x = clamp(spring_arm.rotation.x, deg_to_rad(-80), deg_to_rad(50))
 	twist_input = 0.0
 	pitch_input = 0.0
 

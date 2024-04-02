@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://tr2nbcbcmnu2"]
+[gd_scene load_steps=5 format=3 uid="uid://tr2nbcbcmnu2"]
 
 [ext_resource type="PackedScene" uid="uid://28lx42e07qjf" path="res://Assets/capsule.glb" id="1_2cfi2"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_wddm7"]
@@ -6,6 +6,8 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_43n53"]
 radius = 0.56416
 height = 2.11726
+
+[sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_qwqt7"]
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_wddm7")
@@ -20,9 +22,11 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 [node name="CameraController" type="Node3D" parent="."]
 top_level = true
 
-[node name="CameraTarget" type="Node3D" parent="CameraController"]
-transform = Transform3D(1, 0, 0, 0, 0.997831, 0.0658381, 0, -0.0658381, 0.997831, 0, 3.60799, 4.88926)
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("SeparationRayShape3D_qwqt7")
+spring_length = 4.0
 
-[node name="Camera3D" type="Camera3D" parent="CameraController/CameraTarget"]
-transform = Transform3D(1, 0, 0, 0, 0.97317, 0.230084, 0, -0.230084, 0.97317, 0, -1.79282, -1.47226)
+[node name="Camera3D" type="Camera3D" parent="CameraController/SpringArm3D"]
 current = true
+fov = 90.0

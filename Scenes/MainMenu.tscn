@@ -31,6 +31,7 @@ fit_content = true
 
 [node name="StartGameButton" type="Button" parent="ButtonsContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../QuitGameButton")
 theme_override_font_sizes/font_size = 48
 text = "Start Game"
 script = ExtResource("2_0qfx1")
@@ -43,6 +44,7 @@ script = ExtResource("2_0qfx1")
 
 [node name="QuitGameButton" type="Button" parent="ButtonsContainer"]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../StartGameButton")
 theme_override_font_sizes/font_size = 48
 text = "Quit To Desktop"
 script = ExtResource("2_0qfx1")
