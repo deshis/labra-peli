@@ -1,7 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://chpqcweaiakc5"]
+[gd_scene load_steps=15 format=3 uid="uid://chpqcweaiakc5"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_cx8ll"]
+[ext_resource type="Script" path="res://Scripts/WorldEnvironment.gd" id="2_7q2bx"]
 [ext_resource type="PackedScene" uid="uid://tr2nbcbcmnu2" path="res://Scenes/Player.tscn" id="2_d6f1p"]
+[ext_resource type="Script" path="res://Scripts/DirectionalLight3D.gd" id="2_xe4gy"]
 [ext_resource type="PackedScene" uid="uid://b267c0jqhpirv" path="res://Scenes/mental_asylum.tscn" id="4_b3svt"]
 [ext_resource type="PackedScene" uid="uid://ekyt2ivgmsmy" path="res://Assets/monkey.glb" id="4_y0b6v"]
 [ext_resource type="Script" path="res://Scripts/healthbar.gd" id="5_fvphu"]
@@ -51,22 +53,21 @@ wait_time = 0.2
 autostart = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.999999, 2.54672e-06, -0.00165809, 0.00165809, -0.00153593, 0.999997, 0, -0.999999, -0.00153594, 0, 17.3782, 0)
+transform = Transform3D(0.671615, 0.599208, 0.435756, -0.740899, 0.542107, 0.396469, 0.0013413, -0.589126, 0.80804, 0, 12.4759, 0)
 light_color = Color(1, 0.180392, 0.556863, 1)
-light_energy = 3.0
-light_indirect_energy = 5.0
+light_energy = 5.0
+light_indirect_energy = 10.0
 light_volumetric_fog_energy = 5.0
 light_angular_distance = 0.5
-
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.39535, 0)
-light_color = Color(0.415686, 0.0823529, 1, 1)
-light_energy = 0.2
-omni_range = 40.0
-omni_attenuation = 0.0563282
+shadow_enabled = true
+shadow_bias = 0.5
+shadow_normal_bias = 5.0
+shadow_opacity = 0.9
+script = ExtResource("2_xe4gy")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_p801p")
+script = ExtResource("2_7q2bx")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, -164.091, -112.141)

@@ -15,10 +15,13 @@ run/main_scene="res://Scenes/MainMenu.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://Assets/icon.svg"
 
+[autoload]
+
+Global="*res://Scripts/Global.gd"
+
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/stretch/mode="canvas_items"
 
 [filesystem]
 

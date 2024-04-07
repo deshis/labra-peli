@@ -1,0 +1,290 @@
+[gd_scene load_steps=13 format=3 uid="uid://cuyljjssidrap"]
+
+[ext_resource type="Script" path="res://Scripts/VolumeSlider.gd" id="1_6j3xx"]
+[ext_resource type="Script" path="res://Scripts/settings.gd" id="1_11n80"]
+[ext_resource type="Script" path="res://Scripts/Controls.gd" id="3_ei8g8"]
+[ext_resource type="Script" path="res://Scripts/Graphics.gd" id="3_icc2x"]
+[ext_resource type="Script" path="res://Scripts/MouseSlider.gd" id="4_1ont5"]
+[ext_resource type="Script" path="res://Scripts/ControllerSlider.gd" id="5_hbbqy"]
+[ext_resource type="Script" path="res://Scripts/SDFGIButton.gd" id="7_cqf8g"]
+[ext_resource type="Script" path="res://Scripts/SSAOButton.gd" id="8_jepd7"]
+[ext_resource type="Script" path="res://Scripts/GlowButton.gd" id="9_gw5an"]
+[ext_resource type="Script" path="res://Scripts/ShadowQualityDropDown.gd" id="10_161b8"]
+[ext_resource type="Script" path="res://Scenes/WindowModeDropDown.gd" id="11_jpde3"]
+[ext_resource type="Script" path="res://Scripts/ResolutionDropDown.gd" id="12_xqml4"]
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_11n80")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+tab_alignment = 1
+current_tab = 2
+all_tabs_in_front = true
+
+[node name="Audio" type="MarginContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/margin_left = 250
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 250
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Audio"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 25
+
+[node name="MasterText" type="RichTextLabel" parent="TabContainer/Audio/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Master Volume
+"
+fit_content = true
+
+[node name="MasterSlider" type="HSlider" parent="TabContainer/Audio/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("1_6j3xx")
+bus_name = "Master"
+
+[node name="SFXText" type="RichTextLabel" parent="TabContainer/Audio/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]SFX Volume
+"
+fit_content = true
+
+[node name="SFXSlider" type="HSlider" parent="TabContainer/Audio/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("1_6j3xx")
+bus_name = "SFX"
+
+[node name="MusicText" type="RichTextLabel" parent="TabContainer/Audio/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Music Volume"
+fit_content = true
+
+[node name="MusicSlider" type="HSlider" parent="TabContainer/Audio/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("1_6j3xx")
+bus_name = "Music"
+
+[node name="Controls" type="MarginContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 200
+script = ExtResource("3_ei8g8")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Controls"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 25
+
+[node name="MouseText" type="RichTextLabel" parent="TabContainer/Controls/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Mouse sensitivity
+
+"
+fit_content = true
+
+[node name="MouseSlider" type="HSlider" parent="TabContainer/Controls/VBoxContainer"]
+layout_mode = 2
+min_value = 0.001
+max_value = 0.1
+step = 0.001
+value = 0.001
+script = ExtResource("4_1ont5")
+
+[node name="ControllerText" type="RichTextLabel" parent="TabContainer/Controls/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Controller sensitivity
+
+"
+fit_content = true
+
+[node name="ControllerSlider" type="HSlider" parent="TabContainer/Controls/VBoxContainer"]
+layout_mode = 2
+min_value = 0.001
+max_value = 0.5
+step = 0.001
+value = 0.001
+script = ExtResource("5_hbbqy")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Controls/VBoxContainer"]
+layout_mode = 2
+text = "rebinding keys ?? ... idk ...."
+fit_content = true
+
+[node name="Graphics" type="MarginContainer" parent="TabContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 200
+script = ExtResource("3_icc2x")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Graphics"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LightingText" type="RichTextLabel" parent="TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Lighting"
+fit_content = true
+
+[node name="SDFGIButton" type="CheckButton" parent="TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+text = "Global Illumination"
+script = ExtResource("7_cqf8g")
+
+[node name="SSAOButton" type="CheckButton" parent="TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+text = "Ambient Occlusion"
+script = ExtResource("8_jepd7")
+
+[node name="GlowButton" type="CheckButton" parent="TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+text = "Glow"
+script = ExtResource("9_gw5an")
+
+[node name="ShadowBoxContainer" type="HBoxContainer" parent="TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+alignment = 1
+
+[node name="LightingText" type="RichTextLabel" parent="TabContainer/Graphics/VBoxContainer/ShadowBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+bbcode_enabled = true
+text = " Shadow Quality
+"
+fit_content = true
+autowrap_mode = 0
+
+[node name="ShadowQualityDropDown" type="OptionButton" parent="TabContainer/Graphics/VBoxContainer/ShadowBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+alignment = 1
+item_count = 3
+selected = 2
+popup/item_0/text = "Low"
+popup/item_0/id = 0
+popup/item_1/text = "Medium"
+popup/item_1/id = 1
+popup/item_2/text = "High"
+popup/item_2/id = 2
+script = ExtResource("10_161b8")
+
+[node name="WindowText" type="RichTextLabel" parent="TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+bbcode_enabled = true
+text = "[center]Window"
+fit_content = true
+
+[node name="ShadowBoxContainer2" type="HBoxContainer" parent="TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+alignment = 1
+
+[node name="WindowModeText" type="RichTextLabel" parent="TabContainer/Graphics/VBoxContainer/ShadowBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 2
+bbcode_enabled = true
+text = "Window Mode"
+fit_content = true
+autowrap_mode = 0
+
+[node name="WindowModeDropDown" type="OptionButton" parent="TabContainer/Graphics/VBoxContainer/ShadowBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+alignment = 1
+item_count = 4
+selected = 0
+popup/item_0/text = "Windowed"
+popup/item_0/id = 0
+popup/item_1/text = "Fullscreen"
+popup/item_1/id = 2
+popup/item_2/text = "Borderless Windowed"
+popup/item_2/id = 3
+popup/item_3/text = "Borderless Fullscreen"
+popup/item_3/id = 1
+script = ExtResource("11_jpde3")
+
+[node name="ShadowBoxContainer3" type="HBoxContainer" parent="TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+alignment = 1
+
+[node name="ResolutionText" type="RichTextLabel" parent="TabContainer/Graphics/VBoxContainer/ShadowBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 2
+bbcode_enabled = true
+text = "Window Size"
+fit_content = true
+autowrap_mode = 0
+
+[node name="ResolutionDropDown" type="OptionButton" parent="TabContainer/Graphics/VBoxContainer/ShadowBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 8
+alignment = 1
+script = ExtResource("12_xqml4")
+
+[node name="PerformanceText" type="RichTextLabel" parent="TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+bbcode_enabled = true
+text = "other visual settings?? perhaps...."
+fit_content = true
+
+[node name="BackButtonMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 115.0
+grow_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="BackButton" type="Button" parent="BackButtonMargin"]
+layout_mode = 2
+text = "Back to menu"
+
+[connection signal="value_changed" from="TabContainer/Controls/VBoxContainer/MouseSlider" to="TabContainer/Controls" method="_on_mouse_slider_value_changed"]
+[connection signal="value_changed" from="TabContainer/Controls/VBoxContainer/ControllerSlider" to="TabContainer/Controls" method="_on_controller_slider_value_changed"]
+[connection signal="toggled" from="TabContainer/Graphics/VBoxContainer/SDFGIButton" to="TabContainer/Graphics" method="_on_sdfgi_button_toggled"]
+[connection signal="toggled" from="TabContainer/Graphics/VBoxContainer/SSAOButton" to="TabContainer/Graphics" method="_on_ssao_button_toggled"]
+[connection signal="toggled" from="TabContainer/Graphics/VBoxContainer/GlowButton" to="TabContainer/Graphics" method="_on_glow_button_toggled"]
+[connection signal="item_selected" from="TabContainer/Graphics/VBoxContainer/ShadowBoxContainer/ShadowQualityDropDown" to="TabContainer/Graphics" method="_on_shadow_quality_drop_down_item_selected"]
+[connection signal="item_selected" from="TabContainer/Graphics/VBoxContainer/ShadowBoxContainer2/WindowModeDropDown" to="TabContainer/Graphics/VBoxContainer/ShadowBoxContainer2/WindowModeDropDown" method="_on_item_selected"]
+[connection signal="item_selected" from="TabContainer/Graphics/VBoxContainer/ShadowBoxContainer3/ResolutionDropDown" to="TabContainer/Graphics/VBoxContainer/ShadowBoxContainer3/ResolutionDropDown" method="_on_item_selected"]
+[connection signal="pressed" from="BackButtonMargin/BackButton" to="." method="_on_back_button_pressed"]

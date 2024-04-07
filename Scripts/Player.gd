@@ -7,8 +7,10 @@ class_name Player
 
 @onready var camera_controller = $CameraController
 @onready var spring_arm = $CameraController/SpringArm3D
-@export var camera_mouse_sensitivity = 0.01
-@export var camera_controller_sensitivity = 0.1
+
+@onready var camera_mouse_sensitivity = Global.mouse_sensitivity
+@onready var camera_controller_sensitivity = Global.controller_sensitivity
+
 var twist_input = 0.0
 var pitch_input = 0.0
 
