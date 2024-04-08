@@ -14,3 +14,6 @@ func _on_glow_button_toggled(toggled_on):
 
 func _on_shadow_quality_drop_down_item_selected(index):
 	Global.shadow_quality = index
+
+func _on_ssr_button_toggled(toggled_on):
+	Global.ssr = toggled_on

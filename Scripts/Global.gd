@@ -10,5 +10,7 @@ var controller_sensitivity = 0.1
 var sdfgi = true
 var ssao = true
 var glow = true
+var ssr = true
 var shadow_quality = 2
 
+var msaa = RenderingServer.VIEWPORT_MSAA_DISABLED
