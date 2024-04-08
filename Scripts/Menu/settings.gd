@@ -1,7 +1,7 @@
 extends Control
 
 func _ready():
-	$TabContainer/Audio/VBoxContainer/MasterSlider.grab_focus()
+	$TabContainer.get_tab_bar().grab_focus()
 	$TabContainer.current_tab = 0
 
 func _process(_delta):

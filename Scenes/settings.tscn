@@ -33,6 +33,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+focus_neighbor_top = NodePath("Graphics/VBoxContainer/MaxFPSContainer/MaxFPSDropDown")
 tab_alignment = 1
 current_tab = 2
 all_tabs_in_front = true
@@ -61,7 +62,7 @@ fit_content = true
 [node name="MasterSlider" type="HSlider" parent="TabContainer/Audio/VBoxContainer"]
 layout_mode = 2
 max_value = 1.0
-step = 0.001
+step = 0.01
 script = ExtResource("1_6j3xx")
 bus_name = "Master"
 
@@ -75,7 +76,7 @@ fit_content = true
 [node name="SFXSlider" type="HSlider" parent="TabContainer/Audio/VBoxContainer"]
 layout_mode = 2
 max_value = 1.0
-step = 0.001
+step = 0.01
 script = ExtResource("1_6j3xx")
 bus_name = "SFX"
 
@@ -88,7 +89,7 @@ fit_content = true
 [node name="MusicSlider" type="HSlider" parent="TabContainer/Audio/VBoxContainer"]
 layout_mode = 2
 max_value = 1.0
-step = 0.001
+step = 0.01
 script = ExtResource("1_6j3xx")
 bus_name = "Music"
 
@@ -135,14 +136,9 @@ fit_content = true
 layout_mode = 2
 min_value = 0.001
 max_value = 0.5
-step = 0.001
+step = 0.005
 value = 0.001
 script = ExtResource("5_hbbqy")
-
-[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Controls/VBoxContainer"]
-layout_mode = 2
-text = "rebinding keys ?? ... idk ...."
-fit_content = true
 
 [node name="Graphics" type="MarginContainer" parent="TabContainer"]
 layout_mode = 2
@@ -354,6 +350,8 @@ theme_override_constants/margin_bottom = 10
 
 [node name="BackButton" type="Button" parent="BackButtonMargin"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../../TabContainer/Graphics/VBoxContainer/MaxFPSContainer/MaxFPSDropDown")
+focus_neighbor_right = NodePath(".")
 text = "Back to menu"
 
 [connection signal="value_changed" from="TabContainer/Controls/VBoxContainer/MouseSlider" to="TabContainer/Controls" method="_on_mouse_slider_value_changed"]

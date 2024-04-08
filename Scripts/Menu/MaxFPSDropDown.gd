@@ -1,6 +1,5 @@
 extends OptionButton
 
-
 func _ready():
 	match Engine.get_max_fps():
 		0:
@@ -13,7 +12,6 @@ func _ready():
 			selected = 3
 		144:
 			selected = 4
-
 
 func _on_item_selected(index):
 	match index:
