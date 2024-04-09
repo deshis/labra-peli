@@ -70,7 +70,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.85626, -30.9978, -7.17089)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -33.9563, 20.0543)
 
 [node name="Enemy" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -34.1236, 9.91872)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.39193, -34.1236, 9.91872)
+
+[node name="Enemy2" parent="." instance=ExtResource("5_rk86j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -33.242, 9.91872)
+
+[node name="Enemy3" parent="." instance=ExtResource("5_rk86j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.39755, -32.8294, 9.91872)
 
 [node name="UI" type="CanvasLayer" parent="."]
 

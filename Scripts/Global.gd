@@ -3,7 +3,7 @@ extends Node
 #default values for global variables. these can be adjusted in the settings menu
 
 #controls
-var mouse_sensitivity = 0.005
+var mouse_sensitivity = 0.01
 var controller_sensitivity = 0.1
 
 #graphics
