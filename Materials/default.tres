@@ -1,0 +1,4 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://o1l05avgrhki"]
+
+[resource]
+grow_amount = 0.25
