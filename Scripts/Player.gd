@@ -24,6 +24,9 @@ var camera_locked_on = false
 var lock_on_targets = null
 var camera_target_index = 0
 
+@onready var highlight_material = preload("res://Materials/highlighted.tres")
+@onready var default_material = preload("res://Materials/default.tres")
+
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -75,6 +78,9 @@ func _physics_process(delta):
 			for i in range(lock_on_targets.size()):
 				if lock_on_targets[i].global_position.distance_to(global_position) < lock_on_targets[camera_target_index].global_position.distance_to(global_position):
 					camera_target_index = i
+			
+			#highlight the locked on enemy
+			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, highlight_material)
 		
 		else:
 			lock_on_targets = null
@@ -87,13 +93,34 @@ func _physics_process(delta):
 				camera_target_index = lock_on_targets.size()-1
 			else:
 				camera_target_index-=1
+				
+			#highlight locked on enemy and unhighlight everyone else
+			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, highlight_material)
+			for i in lock_on_targets.size():
+				if i != camera_target_index:
+					lock_on_targets[i].get_node("capsule/Mball_001").set_surface_override_material(0, default_material)
 		if Input.is_action_just_pressed("camera_switch_target_right"):
 			if(camera_target_index>=lock_on_targets.size()-1):
 				camera_target_index = 0
 			else:
 				camera_target_index+=1
+				
+			#highlight locked on enemy and unhighlight everyone else
+			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, highlight_material)
+			for i in lock_on_targets.size():
+				if i != camera_target_index:
+					lock_on_targets[i].get_node("capsule/Mball_001").set_surface_override_material(0, default_material)
+		
 		
 		var current_target = lock_on_targets[camera_target_index]
+		
+		#default_material
+		#target_material.visible = false 
+		#target_material.cull_mode = BaseMaterial3D.CULL_FRONT
+		#target_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		#target_material.albedo_color = Color.WHITE
+		#target_material.grow = true
+		#target_material.grow_amount = 0.25
 		
 		#smooth camera movement while locked on. look_at cannot be lerped directly so we have to use quaternions...
 		var current_horizontal_rotation = camera_controller.global_transform.basis.get_rotation_quaternion()

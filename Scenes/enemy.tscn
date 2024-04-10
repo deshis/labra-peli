@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dfbfxm4ytxuls"]
 
 [ext_resource type="Script" path="res://Scripts/enemy.gd" id="1_ffijx"]
-[ext_resource type="PackedScene" uid="uid://28lx42e07qjf" path="res://Assets/capsule.glb" id="1_wdp5s"]
+[ext_resource type="PackedScene" uid="uid://cnrhjnh3etayx" path="res://Scenes/capsule.tscn" id="2_vi048"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ngfqe"]
 radius = 0.56416
@@ -20,7 +20,7 @@ height = 2.17
 radius = 0.75
 neighbor_distance = 10.0
 
-[node name="Capsule" parent="." instance=ExtResource("1_wdp5s")]
+[node name="capsule" parent="." instance=ExtResource("2_vi048")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

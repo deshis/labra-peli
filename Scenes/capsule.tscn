@@ -1,5 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://cnrhjnh3etayx"]
+[gd_scene load_steps=3 format=3 uid="uid://cnrhjnh3etayx"]
 
-[ext_resource type="PackedScene" uid="uid://28lx42e07qjf" path="res://Assets/capsule.glb" id="1_bat40"]
+[ext_resource type="PackedScene" uid="uid://28lx42e07qjf" path="res://Assets/capsule.glb" id="1_i35r7"]
+[ext_resource type="Material" uid="uid://o1l05avgrhki" path="res://Materials/default.tres" id="2_qnsfr"]
 
-[node name="capsule" instance=ExtResource("1_bat40")]
+[node name="capsule" instance=ExtResource("1_i35r7")]
+
+[node name="Mball_001" parent="." index="0"]
+surface_material_override/0 = ExtResource("2_qnsfr")
