@@ -81,7 +81,7 @@ func _physics_process(delta):
 			camera_locked_on = false
 	
 	
-	if(camera_locked_on):
+	if(camera_locked_on and lock_on_targets):
 		if Input.is_action_just_pressed("camera_switch_target_left"):
 			if(camera_target_index<=0):
 				camera_target_index = lock_on_targets.size()-1

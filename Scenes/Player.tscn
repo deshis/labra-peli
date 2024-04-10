@@ -11,6 +11,7 @@ height = 2.11726
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_qwqt7"]
 
 [node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.06547, 0)
 script = ExtResource("1_wddm7")
 SPEED = 10.0
 

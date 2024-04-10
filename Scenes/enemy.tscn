@@ -8,12 +8,22 @@ radius = 0.56416
 height = 2.11726
 
 [node name="Enemy" type="CharacterBody3D" groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08642, 0)
 script = ExtResource("1_ffijx")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.5
+target_desired_distance = 0.5
+path_max_distance = 2.01
+avoidance_enabled = true
+height = 2.17
+radius = 0.75
+neighbor_distance = 10.0
 
 [node name="Capsule" parent="." instance=ExtResource("1_wdp5s")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_ngfqe")
+
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]
