@@ -81,8 +81,11 @@ func _physics_process(delta):
 			
 			#highlight the locked on enemy
 			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, highlight_material)
+			
 		
 		else:
+			#highlight the locked on enemy
+			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, default_material)
 			lock_on_targets = null
 			camera_locked_on = false
 	
@@ -115,11 +118,14 @@ func _physics_process(delta):
 		
 		var current_target = lock_on_targets[camera_target_index]
 		
-		#smooth camera movement while locked on. look_at cannot be lerped directly so we have to use quaternions...
-		var current_horizontal_rotation = camera_controller.global_transform.basis.get_rotation_quaternion()
-		camera_controller.look_at(current_target.position)
-		var target_horizontal_rotation = camera_controller.global_transform.basis.get_rotation_quaternion()
-		camera_controller.rotation = current_horizontal_rotation.slerp(target_horizontal_rotation, 0.1).get_euler()
+		#lock on camera
+		camera_controller.look_at(current_target.position, Vector3.UP)
+		camera_controller.rotation.x=0 #x rotation is handled by spring_arm
+		
+		spring_arm.look_at(current_target.position)
+		#aim camera a bit down so you can see the enemy better
+		spring_arm.rotation.x += deg_to_rad(-20)
+		spring_arm.rotation.x = clamp(spring_arm.rotation.x, deg_to_rad(-80), deg_to_rad(50)) #prevent upside down camera
 		
 	else:
 		#moving camera with controller. mouse input is handled in _unhandled_input
