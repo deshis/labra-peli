@@ -73,46 +73,94 @@ func _physics_process(delta):
 		if(!camera_locked_on):
 			lock_on_targets = get_tree().get_nodes_in_group("enemies")
 			camera_locked_on = true
-			#find closest target
+			
+			#find closest target to camera center.
+			#1. draw a line forward from the camera
+			#2. calculate the point on the line closest to the enemys location
+			#3. use the difference vector from point to enemy to calculate angle from camera to enemy
+			#4. figure out which enemy has the smallest angle and lock onto it.
+			var smallest_angle_left = 181
+			var smallest_angle_right = -181
+			var closest_to_right_index
+			var closest_to_left_index
+			var look_dir = -camera_controller.basis.z.normalized()
+			for i in range(lock_on_targets.size()):
+				var enemy = lock_on_targets[i]
+				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, position, look_dir)
+				var difference = enemy.position-closest_point
+				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
+				if(angle_to_enemy<=smallest_angle_left and angle_to_enemy>=0):
+					smallest_angle_left = angle_to_enemy
+					closest_to_left_index=i
+				elif(angle_to_enemy>=smallest_angle_right and angle_to_enemy<=0):
+					smallest_angle_right = angle_to_enemy
+					closest_to_right_index=i
+			
+			if(abs(smallest_angle_left)<=abs(smallest_angle_right)):
+				camera_target_index = closest_to_left_index
+			elif(abs(smallest_angle_right)<=abs(smallest_angle_left)):
+				camera_target_index = closest_to_right_index
+			
+			#highlight the locked on enemy
+			if(camera_target_index != null):
+				lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, highlight_material)
+		
+		else:
+			#unhighlight deselected enemy
+			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, default_material)
+			lock_on_targets = null
+			camera_target_index = null
+			camera_locked_on = false
+	
+	if(camera_locked_on and lock_on_targets):
+			#same as finding closest to camera center, except only on one side
+		if Input.is_action_just_pressed("camera_switch_target_left"):
+			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, default_material)
+			var next_to_left_index
+			var smallest_angle = 181
+			var look_dir = -camera_controller.basis.z.normalized()
+			for i in range(lock_on_targets.size()):
+				var enemy = lock_on_targets[i]
+				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, position, look_dir)
+				var difference = enemy.position-closest_point
+				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
+				if(angle_to_enemy>=1): #only check ones to the left. ones to right are negative
+					if(angle_to_enemy<=smallest_angle):
+						if(i!=camera_target_index):
+							smallest_angle = angle_to_enemy
+							next_to_left_index=i
+			if(next_to_left_index!=null):
+				camera_target_index = next_to_left_index
+			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, highlight_material)
+		
+		#same as left...
+		if Input.is_action_just_pressed("camera_switch_target_right"):
+			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, default_material)
+			var next_to_right_index
+			var smallest_angle = -181
+			var look_dir = -camera_controller.basis.z.normalized()
+			for i in range(lock_on_targets.size()):
+				var enemy = lock_on_targets[i]
+				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, position, look_dir)
+				var difference = enemy.position-closest_point
+				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
+				if(angle_to_enemy<=1):
+					if(angle_to_enemy>=smallest_angle):
+						if(i!=camera_target_index):
+							smallest_angle = angle_to_enemy
+							next_to_right_index=i
+			if(next_to_right_index!=null):
+				camera_target_index = next_to_right_index
+			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, highlight_material)
+		
+		if Input.is_action_just_pressed("camera_switch_target_closest"):
+			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, default_material)
+			#find closest to player
 			camera_target_index = 0
 			for i in range(lock_on_targets.size()):
 				if lock_on_targets[i].global_position.distance_to(global_position) < lock_on_targets[camera_target_index].global_position.distance_to(global_position):
 					camera_target_index = i
 			
-			#highlight the locked on enemy
-			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, highlight_material)
-			
-		
-		else:
-			#highlight the locked on enemy
-			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, default_material)
-			lock_on_targets = null
-			camera_locked_on = false
-	
-	
-	if(camera_locked_on and lock_on_targets):
-		if Input.is_action_just_pressed("camera_switch_target_left"):
-			if(camera_target_index<=0):
-				camera_target_index = lock_on_targets.size()-1
-				#unhighlight deselected target
-				lock_on_targets[0].get_node("capsule/Mball_001").set_surface_override_material(0, default_material)
-			else:
-				camera_target_index-=1
-				#unhighlight deselected target
-				lock_on_targets[camera_target_index+1].get_node("capsule/Mball_001").set_surface_override_material(0, default_material)
-			#highlight selected target
-			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, highlight_material)
-
-		if Input.is_action_just_pressed("camera_switch_target_right"):
-			if(camera_target_index>=lock_on_targets.size()-1):
-				camera_target_index = 0
-				#unhighlight deselected target
-				lock_on_targets[lock_on_targets.size()-1].get_node("capsule/Mball_001").set_surface_override_material(0, default_material)
-			else:
-				camera_target_index+=1
-				#unhighlight deselected target
-				lock_on_targets[camera_target_index-1].get_node("capsule/Mball_001").set_surface_override_material(0, default_material)
-			#highlight selected target
 			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, highlight_material)
 		
 		
