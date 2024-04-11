@@ -17,8 +17,9 @@ target_desired_distance = 0.5
 path_max_distance = 2.01
 avoidance_enabled = true
 height = 2.17
-radius = 0.75
+radius = 0.7
 neighbor_distance = 10.0
+debug_enabled = true
 
 [node name="capsule" parent="." instance=ExtResource("2_vi048")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
