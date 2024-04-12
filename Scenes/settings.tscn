@@ -1,21 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://cuyljjssidrap"]
+[gd_scene load_steps=5 format=3 uid="uid://cuyljjssidrap"]
 
 [ext_resource type="Script" path="res://Scripts/Menu/VolumeSlider.gd" id="1_6j3xx"]
 [ext_resource type="Script" path="res://Scripts/Menu/settings.gd" id="1_11n80"]
-[ext_resource type="Script" path="res://Scripts/Menu/Controls.gd" id="3_ei8g8"]
+[ext_resource type="Script" path="res://Scripts/Menu/Controls.gd" id="3_5mddw"]
 [ext_resource type="Script" path="res://Scripts/Menu/Graphics.gd" id="3_icc2x"]
-[ext_resource type="Script" path="res://Scripts/Menu/MouseSlider.gd" id="4_1ont5"]
-[ext_resource type="Script" path="res://Scripts/Menu/ControllerSlider.gd" id="5_hbbqy"]
-[ext_resource type="Script" path="res://Scripts/Menu/SDFGIButton.gd" id="7_cqf8g"]
-[ext_resource type="Script" path="res://Scripts/Menu/SSAOButton.gd" id="8_jepd7"]
-[ext_resource type="Script" path="res://Scripts/Menu/GlowButton.gd" id="9_gw5an"]
-[ext_resource type="Script" path="res://Scripts/Menu/ShadowQualityDropDown.gd" id="10_161b8"]
-[ext_resource type="Script" path="res://Scripts/Menu/SSRButton.gd" id="10_yhvv2"]
-[ext_resource type="Script" path="res://Scripts/Menu/WindowModeDropDown.gd" id="11_jpde3"]
-[ext_resource type="Script" path="res://Scripts/Menu/ResolutionDropDown.gd" id="12_xqml4"]
-[ext_resource type="Script" path="res://Scripts/Menu/VSyncButton.gd" id="14_smjsv"]
-[ext_resource type="Script" path="res://Scripts/Menu/AntiAliasingDropDown.gd" id="15_1fjcg"]
-[ext_resource type="Script" path="res://Scripts/Menu/MaxFPSDropDown.gd" id="16_8x46l"]
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -33,7 +21,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-focus_neighbor_top = NodePath("Graphics/VBoxContainer/MaxFPSContainer/MaxFPSDropDown")
 tab_alignment = 1
 current_tab = 2
 all_tabs_in_front = true
@@ -101,7 +88,7 @@ size_flags_vertical = 4
 theme_override_constants/margin_left = 200
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 200
-script = ExtResource("3_ei8g8")
+script = ExtResource("3_5mddw")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Controls"]
 layout_mode = 2
@@ -122,7 +109,6 @@ min_value = 0.001
 max_value = 0.1
 step = 0.001
 value = 0.001
-script = ExtResource("4_1ont5")
 
 [node name="ControllerText" type="RichTextLabel" parent="TabContainer/Controls/VBoxContainer"]
 layout_mode = 2
@@ -138,7 +124,6 @@ min_value = 0.001
 max_value = 0.5
 step = 0.005
 value = 0.001
-script = ExtResource("5_hbbqy")
 
 [node name="Graphics" type="MarginContainer" parent="TabContainer"]
 layout_mode = 2
@@ -162,22 +147,18 @@ fit_content = true
 [node name="SDFGIButton" type="CheckButton" parent="TabContainer/Graphics/VBoxContainer"]
 layout_mode = 2
 text = "Global Illumination"
-script = ExtResource("7_cqf8g")
 
 [node name="SSAOButton" type="CheckButton" parent="TabContainer/Graphics/VBoxContainer"]
 layout_mode = 2
 text = "Ambient Occlusion"
-script = ExtResource("8_jepd7")
 
-[node name="GlowButton2" type="CheckButton" parent="TabContainer/Graphics/VBoxContainer"]
+[node name="GlowButton" type="CheckButton" parent="TabContainer/Graphics/VBoxContainer"]
 layout_mode = 2
 text = "Glow"
-script = ExtResource("9_gw5an")
 
 [node name="SSRButton" type="CheckButton" parent="TabContainer/Graphics/VBoxContainer"]
 layout_mode = 2
 text = "Reflections"
-script = ExtResource("10_yhvv2")
 
 [node name="ShadowBoxContainer" type="HBoxContainer" parent="TabContainer/Graphics/VBoxContainer"]
 layout_mode = 2
@@ -206,64 +187,6 @@ popup/item_1/text = "Medium"
 popup/item_1/id = 1
 popup/item_2/text = "High"
 popup/item_2/id = 2
-script = ExtResource("10_161b8")
-
-[node name="WindowText" type="RichTextLabel" parent="TabContainer/Graphics/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 0
-bbcode_enabled = true
-text = "[center]Window"
-fit_content = true
-
-[node name="WindowModeContainer" type="HBoxContainer" parent="TabContainer/Graphics/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 0
-alignment = 1
-
-[node name="WindowModeText" type="RichTextLabel" parent="TabContainer/Graphics/VBoxContainer/WindowModeContainer"]
-layout_mode = 2
-size_flags_horizontal = 2
-bbcode_enabled = true
-text = "Window Mode"
-fit_content = true
-autowrap_mode = 0
-
-[node name="WindowModeDropDown" type="OptionButton" parent="TabContainer/Graphics/VBoxContainer/WindowModeContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-alignment = 1
-item_count = 4
-selected = 0
-fit_to_longest_item = false
-popup/item_0/text = "Windowed"
-popup/item_0/id = 0
-popup/item_1/text = "Fullscreen"
-popup/item_1/id = 2
-popup/item_2/text = "Borderless Windowed"
-popup/item_2/id = 3
-popup/item_3/text = "Borderless Fullscreen"
-popup/item_3/id = 1
-script = ExtResource("11_jpde3")
-
-[node name="WindowSizeContainer" type="HBoxContainer" parent="TabContainer/Graphics/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 0
-alignment = 1
-
-[node name="ResolutionText" type="RichTextLabel" parent="TabContainer/Graphics/VBoxContainer/WindowSizeContainer"]
-layout_mode = 2
-size_flags_horizontal = 2
-bbcode_enabled = true
-text = "Window Size"
-fit_content = true
-autowrap_mode = 0
-
-[node name="ResolutionDropDown" type="OptionButton" parent="TabContainer/Graphics/VBoxContainer/WindowSizeContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-alignment = 1
-fit_to_longest_item = false
-script = ExtResource("12_xqml4")
 
 [node name="PerformanceText" type="RichTextLabel" parent="TabContainer/Graphics/VBoxContainer"]
 layout_mode = 2
@@ -275,7 +198,6 @@ fit_content = true
 [node name="VSyncButton" type="CheckButton" parent="TabContainer/Graphics/VBoxContainer"]
 layout_mode = 2
 text = "VSync"
-script = ExtResource("14_smjsv")
 
 [node name="AntiAliasingContainer2" type="HBoxContainer" parent="TabContainer/Graphics/VBoxContainer"]
 layout_mode = 2
@@ -304,38 +226,17 @@ popup/item_2/text = "MSAA 4x"
 popup/item_2/id = 2
 popup/item_3/text = "MSAA 8x"
 popup/item_3/id = 3
-script = ExtResource("15_1fjcg")
 
-[node name="MaxFPSContainer" type="HBoxContainer" parent="TabContainer/Graphics/VBoxContainer"]
+[node name="WindowText" type="RichTextLabel" parent="TabContainer/Graphics/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
-alignment = 1
-
-[node name="MaxFPSText" type="RichTextLabel" parent="TabContainer/Graphics/VBoxContainer/MaxFPSContainer"]
-layout_mode = 2
-size_flags_horizontal = 2
 bbcode_enabled = true
-text = " Max FPS"
+text = "[center]Window"
 fit_content = true
-autowrap_mode = 0
 
-[node name="MaxFPSDropDown" type="OptionButton" parent="TabContainer/Graphics/VBoxContainer/MaxFPSContainer"]
+[node name="FullScreenButton" type="CheckButton" parent="TabContainer/Graphics/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 8
-alignment = 1
-item_count = 5
-fit_to_longest_item = false
-popup/item_0/text = "No Limit"
-popup/item_0/id = 4
-popup/item_1/text = "30"
-popup/item_1/id = 0
-popup/item_2/text = "60"
-popup/item_2/id = 1
-popup/item_3/text = "120"
-popup/item_3/id = 2
-popup/item_4/text = "144"
-popup/item_4/id = 3
-script = ExtResource("16_8x46l")
+text = "Full Screen"
 
 [node name="BackButtonMargin" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -350,7 +251,6 @@ theme_override_constants/margin_bottom = 10
 
 [node name="BackButton" type="Button" parent="BackButtonMargin"]
 layout_mode = 2
-focus_neighbor_top = NodePath("../../TabContainer/Graphics/VBoxContainer/MaxFPSContainer/MaxFPSDropDown")
 focus_neighbor_right = NodePath(".")
 text = "Back to menu"
 
@@ -358,12 +258,10 @@ text = "Back to menu"
 [connection signal="value_changed" from="TabContainer/Controls/VBoxContainer/ControllerSlider" to="TabContainer/Controls" method="_on_controller_slider_value_changed"]
 [connection signal="toggled" from="TabContainer/Graphics/VBoxContainer/SDFGIButton" to="TabContainer/Graphics" method="_on_sdfgi_button_toggled"]
 [connection signal="toggled" from="TabContainer/Graphics/VBoxContainer/SSAOButton" to="TabContainer/Graphics" method="_on_ssao_button_toggled"]
-[connection signal="toggled" from="TabContainer/Graphics/VBoxContainer/GlowButton2" to="TabContainer/Graphics" method="_on_glow_button_toggled"]
+[connection signal="toggled" from="TabContainer/Graphics/VBoxContainer/GlowButton" to="TabContainer/Graphics" method="_on_glow_button_toggled"]
 [connection signal="toggled" from="TabContainer/Graphics/VBoxContainer/SSRButton" to="TabContainer/Graphics" method="_on_ssr_button_toggled"]
 [connection signal="item_selected" from="TabContainer/Graphics/VBoxContainer/ShadowBoxContainer/ShadowQualityDropDown" to="TabContainer/Graphics" method="_on_shadow_quality_drop_down_item_selected"]
-[connection signal="item_selected" from="TabContainer/Graphics/VBoxContainer/WindowModeContainer/WindowModeDropDown" to="TabContainer/Graphics/VBoxContainer/WindowModeContainer/WindowModeDropDown" method="_on_item_selected"]
-[connection signal="item_selected" from="TabContainer/Graphics/VBoxContainer/WindowSizeContainer/ResolutionDropDown" to="TabContainer/Graphics/VBoxContainer/WindowSizeContainer/ResolutionDropDown" method="_on_item_selected"]
-[connection signal="toggled" from="TabContainer/Graphics/VBoxContainer/VSyncButton" to="TabContainer/Graphics/VBoxContainer/VSyncButton" method="_on_toggled"]
-[connection signal="item_selected" from="TabContainer/Graphics/VBoxContainer/AntiAliasingContainer2/AntiAliasingDropDown" to="TabContainer/Graphics/VBoxContainer/AntiAliasingContainer2/AntiAliasingDropDown" method="_on_item_selected"]
-[connection signal="item_selected" from="TabContainer/Graphics/VBoxContainer/MaxFPSContainer/MaxFPSDropDown" to="TabContainer/Graphics/VBoxContainer/MaxFPSContainer/MaxFPSDropDown" method="_on_item_selected"]
+[connection signal="toggled" from="TabContainer/Graphics/VBoxContainer/VSyncButton" to="TabContainer/Graphics" method="_on_v_sync_button_toggled"]
+[connection signal="item_selected" from="TabContainer/Graphics/VBoxContainer/AntiAliasingContainer2/AntiAliasingDropDown" to="TabContainer/Graphics" method="_on_anti_aliasing_drop_down_item_selected"]
+[connection signal="toggled" from="TabContainer/Graphics/VBoxContainer/FullScreenButton" to="TabContainer/Graphics" method="_on_full_screen_button_toggled"]
 [connection signal="pressed" from="BackButtonMargin/BackButton" to="." method="_on_back_button_pressed"]

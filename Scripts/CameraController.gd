@@ -3,8 +3,9 @@ extends Node3D
 @onready var spring_arm = $SpringArm3D
 @onready var player = get_parent()
 
-@onready var camera_mouse_sensitivity = Global.mouse_sensitivity
-@onready var camera_controller_sensitivity = Global.controller_sensitivity
+var camera_mouse_sensitivity
+var camera_controller_sensitivity
+
 var twist_input = 0.0
 var pitch_input = 0.0
 
@@ -19,6 +20,11 @@ var lock_on_change_angle_threshold = -1.0
 var lock_on_change_angle_max = 180
 
 func _ready():
+	var config = ConfigFile.new()
+	config.load("user://settings.cfg")
+	camera_mouse_sensitivity = config.get_value("Controls", "mouse_sensitivity")
+	camera_controller_sensitivity = config.get_value("Controls", "controller_sensitivity")
+	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Input.set_use_accumulated_input(false)
 
