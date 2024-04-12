@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://tr2nbcbcmnu2"]
+[gd_scene load_steps=7 format=3 uid="uid://tr2nbcbcmnu2"]
 
 [ext_resource type="PackedScene" uid="uid://28lx42e07qjf" path="res://Assets/capsule.glb" id="1_2cfi2"]
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_wddm7"]
 [ext_resource type="Script" path="res://Scripts/PlayerCamera.gd" id="3_27x43"]
+[ext_resource type="Script" path="res://Scripts/CameraController.gd" id="3_vfb1n"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_43n53"]
 radius = 0.56416
@@ -23,6 +24,7 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="CameraController" type="Node3D" parent="."]
 top_level = true
+script = ExtResource("3_vfb1n")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CameraController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
