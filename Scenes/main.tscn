@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://chpqcweaiakc5"]
+[gd_scene load_steps=17 format=3 uid="uid://chpqcweaiakc5"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_cx8ll"]
 [ext_resource type="Script" path="res://Scripts/WorldEnvironment.gd" id="2_7q2bx"]
@@ -27,11 +27,16 @@ adjustment_brightness = 0.41
 adjustment_contrast = 2.66
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_7y7p8"]
-vertices = PackedVector3Array(-14.2886, 33.5709, -21.7532, -14.2886, 33.5709, 6.99683, 14.4614, 33.5709, 6.99683, 14.4614, 33.5709, -21.7532, -14.0386, 13.0709, -21.5032, -14.0386, 13.0709, 6.49683, 13.9614, 13.0709, 6.49683, 13.9614, 13.0709, -21.5032)
-polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(7, 6, 4), PackedInt32Array(4, 6, 5)]
+vertices = PackedVector3Array(-14.2886, 33.5709, -21.7532, -14.2886, 33.5709, 6.99683, 14.4614, 33.5709, 6.99683, 14.4614, 33.5709, -21.7532, 5.4614, 13.0709, -7.75317, 5.9614, 13.0709, -6.50317, 13.9614, 13.0709, -6.50317, 13.9614, 13.0709, -21.5032, -5.2886, 13.0709, -7.75317, 5.4614, 13.0709, -7.75317, 13.9614, 13.0709, -21.5032, -14.0386, 13.0709, -21.5032, -14.0386, 13.0709, -21.5032, -14.0386, 13.0709, -7.75317, -5.2886, 13.0709, -7.75317, -5.2886, 13.0709, -3.50317, -3.2886, 13.0709, -3.50317, -3.2886, 13.0709, -5.00317, -5.2886, 13.0709, -5.00317, -5.2886, 13.0709, -5.00317, -5.7886, 13.0709, -5.50317, -14.0386, 13.0709, -7.75317, -14.0386, 13.0709, -0.75317, -5.7886, 13.0709, -3.00317, -5.2886, 13.0709, -3.50317, -14.0386, 13.0709, -0.75317, -5.7886, 13.0709, -1.25317, -5.7886, 13.0709, -3.00317, -5.7886, 13.0709, -5.50317, -5.7886, 13.0709, -7.25317, -14.0386, 13.0709, -7.75317, -14.0386, 13.0709, -0.75317, -5.2886, 13.0709, -0.75317, -5.7886, 13.0709, -1.25317, -5.7886, 13.0709, -7.25317, -5.2886, 13.0709, -7.75317, -14.0386, 13.0709, -7.75317, 5.4614, 13.0709, -5.00317, 5.4614, 13.0709, -3.50317, 5.9614, 13.0709, -2.00317, 13.9614, 13.0709, -2.00317, 13.9614, 13.0709, -6.50317, 5.9614, 13.0709, -6.50317, -3.2886, 13.0709, -5.00317, -3.2886, 13.0709, -3.50317, 5.4614, 13.0709, -3.50317, 5.4614, 13.0709, -5.00317, 5.4614, 13.0709, -0.75317, 3.9614, 13.0709, -0.75317, 4.2114, 13.0709, 6.49683, 13.9614, 13.0709, -2.00317, 5.9614, 13.0709, -2.00317, 5.4614, 13.0709, -0.75317, 4.2114, 13.0709, 6.49683, 13.9614, 13.0709, 6.49683, -4.0386, 13.0709, 6.49683, -3.7886, 13.0709, -0.75317, -5.2886, 13.0709, -0.75317, -5.2886, 13.0709, -0.75317, -14.0386, 13.0709, -0.75317, -14.0386, 13.0709, 6.49683, -4.0386, 13.0709, 6.49683, -4.0386, 13.0709, 6.49683, 4.2114, 13.0709, 6.49683, 3.9614, 13.0709, -0.75317, -3.7886, 13.0709, -0.75317)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(5, 4, 6), PackedInt32Array(6, 4, 7), PackedInt32Array(9, 8, 10), PackedInt32Array(10, 8, 11), PackedInt32Array(14, 13, 12), PackedInt32Array(18, 17, 15), PackedInt32Array(15, 17, 16), PackedInt32Array(24, 23, 19), PackedInt32Array(19, 23, 20), PackedInt32Array(20, 23, 22), PackedInt32Array(20, 22, 21), PackedInt32Array(27, 26, 25), PackedInt32Array(30, 29, 28), PackedInt32Array(33, 32, 31), PackedInt32Array(36, 35, 34), PackedInt32Array(37, 42, 38), PackedInt32Array(38, 42, 39), PackedInt32Array(39, 42, 41), PackedInt32Array(39, 41, 40), PackedInt32Array(46, 45, 43), PackedInt32Array(43, 45, 44), PackedInt32Array(49, 48, 47), PackedInt32Array(52, 51, 53), PackedInt32Array(53, 51, 50), PackedInt32Array(53, 50, 54), PackedInt32Array(57, 56, 55), PackedInt32Array(59, 58, 60), PackedInt32Array(60, 58, 61), PackedInt32Array(65, 64, 62), PackedInt32Array(62, 64, 63)]
 geometry_parsed_geometry_type = 2
 agent_height = 2.3
 agent_radius = 0.6
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yw33l"]
+size = Vector3(10.0215, 4.89069, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4cslk"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_cx8ll")
@@ -66,8 +71,31 @@ navigation_mesh = SubResource("NavigationMesh_7y7p8")
 [node name="mental-asylum" parent="NavigationRegion3D" instance=ExtResource("4_b3svt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.3209, -7.46457)
 
+[node name="wall" type="StaticBody3D" parent="NavigationRegion3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/wall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0078125, 15.1373, -2.19841)
+shape = SubResource("BoxShape3D_yw33l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/wall"]
+transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 1, 0, 15.0748, -2.19841)
+mesh = SubResource("BoxMesh_4cslk")
+skeleton = NodePath("../..")
+
+[node name="wall2" type="StaticBody3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.09171)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/wall2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0078125, 15.1373, -2.19841)
+shape = SubResource("BoxShape3D_yw33l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/wall2"]
+transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 1, 0, 15.0748, -2.19841)
+mesh = SubResource("BoxMesh_4cslk")
+skeleton = NodePath("../..")
+
 [node name="monkey" parent="." instance=ExtResource("4_y0b6v")]
-transform = Transform3D(0.999939, -0.0110303, 0, 0.0110303, 0.999939, 0, 0, 0, 1, -1.1114, -36.9156, -4.24438)
+transform = Transform3D(0.999939, -0.0110303, 0, 0.0110303, 0.999939, 0, 0, 0, 1, -1.1114, -36.9156, -2.75628)
 
 [node name="Player" parent="." instance=ExtResource("2_d6f1p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -39.2584, 20.0543)
@@ -127,16 +155,13 @@ text = "Quit To Menu"
 script = ExtResource("10_uq3l4")
 
 [node name="Enemy" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.8581, -39.5807, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.1397, -34.555, 17.4577)
 
 [node name="Enemy2" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.670697, -39.0442, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.670697, -39.0442, 7.33195)
 
 [node name="Enemy3" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5788, -38.5758, 0)
-
-[node name="Enemy4" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.2952, -39.5807, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -38.5758, -5.65439)
 
 [connection signal="timeout" from="EnemyPathfindingTimer" to="." method="_on_enemy_pathfinding_timer_timeout"]
 [connection signal="timeout" from="MainEnemySwitchTimer" to="." method="_on_main_enemy_switch_timer_timeout"]
