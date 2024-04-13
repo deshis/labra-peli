@@ -13,6 +13,8 @@ height = 2.11726
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.06547, 0)
+collision_layer = 2
+collision_mask = 5
 script = ExtResource("1_wddm7")
 SPEED = 10.0
 
@@ -35,3 +37,7 @@ spring_length = 4.0
 current = true
 fov = 90.0
 script = ExtResource("3_27x43")
+
+[node name="LockOnRayCast" type="RayCast3D" parent="CameraController"]
+collision_mask = 5
+debug_shape_custom_color = Color(0.839216, 0.458824, 0, 1)
