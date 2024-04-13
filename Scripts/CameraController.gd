@@ -18,7 +18,7 @@ var camera_target_index = 0
 @onready var highlight_material = preload("res://Materials/highlighted.tres")
 @onready var default_material = preload("res://Materials/default.tres")
 
-var lock_on_change_angle_threshold = -1.0
+var lock_on_change_angle_threshold = 0.0
 var lock_on_change_angle_max = 180
 
 func _ready():
@@ -62,10 +62,7 @@ func _physics_process(_delta):
 				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.position, look_dir)
 				var difference = enemy.position-closest_point
 				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
-				
-				ray.set_target_position(to_local(enemy.position))
-				ray.force_raycast_update()
-				if(ray.get_collider() != null and ray.get_collider().get_groups().has("enemies") and ray.get_collider()==enemy):
+				if(!is_wall_in_way(enemy)):
 					if(angle_to_enemy<=smallest_angle_left and angle_to_enemy>=0):
 						smallest_angle_left = angle_to_enemy
 						closest_to_left_index=i
@@ -107,10 +104,7 @@ func _physics_process(_delta):
 				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.position, look_dir)
 				var difference = enemy.position-closest_point
 				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
-				
-				ray.set_target_position(to_local(enemy.position))
-				ray.force_raycast_update()
-				if(ray.get_collider() != null and ray.get_collider().get_groups().has("enemies") and ray.get_collider()==enemy):
+				if(!is_wall_in_way(enemy)):
 					if(angle_to_enemy>=lock_on_change_angle_threshold): #only check ones to the left. ones to right are negative
 						if(angle_to_enemy<=smallest_angle):
 							if(i!=camera_target_index):
@@ -131,9 +125,7 @@ func _physics_process(_delta):
 				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.position, look_dir)
 				var difference = enemy.position-closest_point
 				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
-				ray.set_target_position(to_local(enemy.position))
-				ray.force_raycast_update()
-				if(ray.get_collider() != null and ray.get_collider().get_groups().has("enemies") and ray.get_collider()==enemy):
+				if(!is_wall_in_way(enemy)):
 					if(angle_to_enemy<=lock_on_change_angle_threshold):
 						if(angle_to_enemy>=smallest_angle):
 							if(i!=camera_target_index):
@@ -186,3 +178,21 @@ func _unhandled_input(event):
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 			twist_input = - event.relative.x * camera_mouse_sensitivity
 			pitch_input = - event.relative.y * camera_mouse_sensitivity
+
+func is_wall_in_way(target):
+	ray.set_target_position(to_local(target.position))
+	ray.force_raycast_update()
+	
+	var objects_collide = [] #The colliding objects go here.
+	while ray.is_colliding():
+		var obj = ray.get_collider() #get the next object that is colliding.
+		objects_collide.append( obj ) #add it to the array.
+		ray.add_exception( obj ) #add to ray's exception. That way it could detect something being behind it.
+		ray.force_raycast_update() #update the ray's collision query.
+	var collided_with_wall = false
+	for obj in objects_collide:
+		if(obj.get_class()=="StaticBody3D"):
+			collided_with_wall=true
+		ray.remove_exception(obj)
+		
+	return collided_with_wall
