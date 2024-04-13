@@ -9,17 +9,15 @@ height = 2.11726
 
 [node name="Enemy" type="CharacterBody3D" groups=["enemies"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08642, 0)
+collision_layer = 4
+collision_mask = 3
 script = ExtResource("1_ffijx")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-path_desired_distance = 0.5
-target_desired_distance = 0.5
-path_max_distance = 2.01
 avoidance_enabled = true
 height = 2.17
-radius = 0.7
+radius = 0.56
 neighbor_distance = 10.0
-debug_enabled = true
 
 [node name="capsule" parent="." instance=ExtResource("2_vi048")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
@@ -29,6 +27,7 @@ shape = SubResource("CapsuleShape3D_ngfqe")
 
 [node name="PlayerDetectionRayCast" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.619354, 0)
+collision_mask = 3
 debug_shape_custom_color = Color(0, 0.74902, 0.337255, 1)
 debug_shape_thickness = 5
 
