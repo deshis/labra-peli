@@ -15,6 +15,15 @@ var formation_offset = Vector3.ZERO
 
 @onready var ray = $PlayerDetectionRayCast
 
+@export var max_health = 100
+var health
+@onready var health_bar = $HealthBar/SubViewport/TextureProgressBar
+
+func _ready():
+	health = max_health
+	update_health_bar()
+
+
 func _physics_process(delta):
 	var next_location 
 	var current_location
@@ -33,6 +42,7 @@ func _physics_process(delta):
 	#gravity
 	if not is_on_floor():
 		velocity.y -= gravity*delta
+	
 
 #calculating safe velocity for avoidance to prevent enemies clumping together
 func _on_navigation_agent_3d_velocity_computed(safe_velocity):
@@ -50,3 +60,10 @@ func update_target_location(target_location):
 		ray.force_raycast_update()
 		if(ray.get_collider() == player):
 			aggro = true 
+
+func take_damage(dmg):
+	health-=dmg
+	update_health_bar()
+
+func update_health_bar(): #call this when take dmg
+	health_bar.value = health
