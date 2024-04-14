@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://chpqcweaiakc5"]
+[gd_scene load_steps=18 format=3 uid="uid://chpqcweaiakc5"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_cx8ll"]
 [ext_resource type="Script" path="res://Scripts/WorldEnvironment.gd" id="2_7q2bx"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://doceu5pqyb70l" path="res://Sprites/UI/Bar/full.png" id="6_dnqkv"]
 [ext_resource type="Script" path="res://Scripts/Menu/PauseMenu.gd" id="9_5iedf"]
 [ext_resource type="Script" path="res://Scripts/Menu/Button.gd" id="10_uq3l4"]
+[ext_resource type="PackedScene" uid="uid://brclekuybe0fv" path="res://Scenes/PlayerHitBox.tscn" id="13_t8t2e"]
 
 [sub_resource type="Environment" id="Environment_p801p"]
 ambient_light_color = Color(1, 1, 1, 1)
@@ -155,7 +156,9 @@ text = "Quit To Menu"
 script = ExtResource("10_uq3l4")
 
 [node name="Enemy3" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.64314, -38.5758, 20.0576)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.64314, -38.5758, 7.00848)
+
+[node name="PlayerHitBox" parent="." instance=ExtResource("13_t8t2e")]
 
 [node name="Enemy4" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -38.5758, -5.65439)

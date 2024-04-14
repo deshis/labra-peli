@@ -62,15 +62,16 @@ func _physics_process(_delta):
 				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.position, look_dir)
 				var difference = enemy.position-closest_point
 				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
-				if(!is_wall_in_way(enemy)):
-					if(angle_to_enemy<=smallest_angle_left and angle_to_enemy>=0):
-						smallest_angle_left = angle_to_enemy
-						closest_to_left_index=i
-					elif(angle_to_enemy>=smallest_angle_right and angle_to_enemy<=0):
-						smallest_angle_right = angle_to_enemy
-						closest_to_right_index=i
-				else: #raycast does not find enemy, dont lock on
-					camera_target_index = null
+				if(!enemy.dead):
+					if(!is_wall_in_way(enemy)):
+						if(angle_to_enemy<=smallest_angle_left and angle_to_enemy>=0):
+							smallest_angle_left = angle_to_enemy
+							closest_to_left_index=i
+						elif(angle_to_enemy>=smallest_angle_right and angle_to_enemy<=0):
+							smallest_angle_right = angle_to_enemy
+							closest_to_right_index=i
+					else: #raycast does not find enemy, dont lock on
+						camera_target_index = null
 			
 			if(abs(smallest_angle_left)<=abs(smallest_angle_right)):
 				camera_target_index = closest_to_left_index
@@ -104,12 +105,13 @@ func _physics_process(_delta):
 				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.position, look_dir)
 				var difference = enemy.position-closest_point
 				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
-				if(!is_wall_in_way(enemy)):
-					if(angle_to_enemy>=lock_on_change_angle_threshold): #only check ones to the left. ones to right are negative
-						if(angle_to_enemy<=smallest_angle):
-							if(i!=camera_target_index):
-								smallest_angle = angle_to_enemy
-								next_to_left_index=i
+				if(!enemy.dead):
+					if(!is_wall_in_way(enemy)):
+						if(angle_to_enemy>=lock_on_change_angle_threshold): #only check ones to the left. ones to right are negative
+							if(angle_to_enemy<=smallest_angle):
+								if(i!=camera_target_index):
+									smallest_angle = angle_to_enemy
+									next_to_left_index=i
 			if(next_to_left_index!=null):
 				camera_target_index = next_to_left_index
 			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, highlight_material)
@@ -125,12 +127,13 @@ func _physics_process(_delta):
 				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.position, look_dir)
 				var difference = enemy.position-closest_point
 				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
-				if(!is_wall_in_way(enemy)):
-					if(angle_to_enemy<=lock_on_change_angle_threshold):
-						if(angle_to_enemy>=smallest_angle):
-							if(i!=camera_target_index):
-								smallest_angle = angle_to_enemy
-								next_to_right_index=i
+				if(!enemy.dead):
+					if(!is_wall_in_way(enemy)):
+						if(angle_to_enemy<=lock_on_change_angle_threshold):
+							if(angle_to_enemy>=smallest_angle):
+								if(i!=camera_target_index):
+									smallest_angle = angle_to_enemy
+									next_to_right_index=i
 			if(next_to_right_index!=null):
 				camera_target_index = next_to_right_index
 			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, highlight_material)
