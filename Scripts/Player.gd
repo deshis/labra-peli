@@ -5,9 +5,12 @@ class_name Player
 @export var SPEED = 5.0
 @export var JUMP_VELOCITY = 10
 
-@export var maxHealth = 10
-@onready var currentHealth = maxHealth
+@export var max_health = 100
+var health = max_health
+
 signal healthChanged
+
+signal playerDied
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -34,9 +37,24 @@ func _physics_process(delta):
 	move_and_slide()
 	
 	if Input.is_action_just_pressed("testi"):
-		updateHealth(-1)
+		take_damage(50)
 
-func updateHealth(amount):
-	if(currentHealth >= 0):
-		currentHealth = clamp(currentHealth+amount, 0, maxHealth)
-		healthChanged.emit()
+func update_health():
+	if(health <= 0):
+		die()
+	health = clamp(health, 0, max_health)
+	healthChanged.emit()
+
+func take_damage(dmg):
+	health-=dmg
+	update_health()
+
+func die():
+	SPEED = 0
+	playerDied.emit()
+
+func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
+	print(area)
+	if area.get_groups().has("enemy_hitbox"):
+		print(area.damage)
+		take_damage(area.damage)

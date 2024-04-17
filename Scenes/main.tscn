@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://chpqcweaiakc5"]
+[gd_scene load_steps=20 format=3 uid="uid://chpqcweaiakc5"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_cx8ll"]
 [ext_resource type="Script" path="res://Scripts/WorldEnvironment.gd" id="2_7q2bx"]
@@ -12,7 +12,9 @@
 [ext_resource type="Texture2D" uid="uid://doceu5pqyb70l" path="res://Sprites/UI/Bar/full.png" id="6_dnqkv"]
 [ext_resource type="Script" path="res://Scripts/Menu/PauseMenu.gd" id="9_5iedf"]
 [ext_resource type="Script" path="res://Scripts/Menu/Button.gd" id="10_uq3l4"]
+[ext_resource type="Script" path="res://Scripts/DeathScreen.gd" id="12_qcvik"]
 [ext_resource type="PackedScene" uid="uid://brclekuybe0fv" path="res://Scenes/PlayerHitBox.tscn" id="13_t8t2e"]
+[ext_resource type="PackedScene" uid="uid://djvx4hkl3rvyq" path="res://Scenes/EnemyHitBox.tscn" id="14_gwttd"]
 
 [sub_resource type="Environment" id="Environment_p801p"]
 ambient_light_color = Color(1, 1, 1, 1)
@@ -155,10 +157,61 @@ theme_override_font_sizes/font_size = 48
 text = "Quit To Menu"
 script = ExtResource("10_uq3l4")
 
+[node name="DeathScreen" type="CanvasLayer" parent="." node_paths=PackedStringArray("ui_layer", "pause_layer", "player")]
+follow_viewport_enabled = true
+script = ExtResource("12_qcvik")
+ui_layer = NodePath("../UI")
+pause_layer = NodePath("../PauseMenu")
+player = NodePath("../Player")
+
+[node name="DeathButtonsContainer" type="VBoxContainer" parent="DeathScreen"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -33.0
+offset_right = 46.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 50
+
+[node name="DeathText" type="RichTextLabel" parent="DeathScreen/DeathButtonsContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 48
+bbcode_enabled = true
+text = "[center]YOU DIED"
+fit_content = true
+scroll_active = false
+
+[node name="RestartButton" type="Button" parent="DeathScreen/DeathButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+focus_neighbor_top = NodePath("../QuitGameButton")
+theme_override_font_sizes/font_size = 48
+text = "Restart Level"
+script = ExtResource("10_uq3l4")
+
+[node name="QuitGameButton" type="Button" parent="DeathScreen/DeathButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_bottom = NodePath("../RestartButton")
+theme_override_font_sizes/font_size = 48
+text = "Quit To Menu"
+script = ExtResource("10_uq3l4")
+
 [node name="Enemy3" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.64314, -38.5758, 7.00848)
 
 [node name="PlayerHitBox" parent="." instance=ExtResource("13_t8t2e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.16151, -39.9981, 19.3012)
 
 [node name="Enemy4" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -38.5758, -5.65439)
@@ -172,9 +225,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.51166, -37.6309, 6.56334)
 [node name="Enemy7" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94313, -37.5348, -11.3088)
 
+[node name="EnemyHitBox" parent="." instance=ExtResource("14_gwttd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.41714, -40.5304, 20.0413)
+
 [connection signal="timeout" from="EnemyPathfindingTimer" to="." method="_on_enemy_pathfinding_timer_timeout"]
 [connection signal="timeout" from="MainEnemySwitchTimer" to="." method="_on_main_enemy_switch_timer_timeout"]
 [connection signal="mouse_entered" from="PauseMenu/PauseButtonsContainer/ContinueButton" to="PauseMenu/PauseButtonsContainer/ContinueButton" method="_on_mouse_entered"]
 [connection signal="pressed" from="PauseMenu/PauseButtonsContainer/ContinueButton" to="PauseMenu" method="_on_continue_button_pressed"]
 [connection signal="mouse_entered" from="PauseMenu/PauseButtonsContainer/QuitGameButton" to="PauseMenu/PauseButtonsContainer/QuitGameButton" method="_on_mouse_entered"]
 [connection signal="pressed" from="PauseMenu/PauseButtonsContainer/QuitGameButton" to="PauseMenu" method="_on_quit_game_button_pressed"]
+[connection signal="mouse_entered" from="DeathScreen/DeathButtonsContainer/RestartButton" to="DeathScreen/DeathButtonsContainer/RestartButton" method="_on_mouse_entered"]
+[connection signal="pressed" from="DeathScreen/DeathButtonsContainer/RestartButton" to="DeathScreen" method="_on_restart_button_pressed"]
+[connection signal="mouse_entered" from="DeathScreen/DeathButtonsContainer/QuitGameButton" to="DeathScreen/DeathButtonsContainer/QuitGameButton" method="_on_mouse_entered"]
+[connection signal="pressed" from="DeathScreen/DeathButtonsContainer/QuitGameButton" to="DeathScreen" method="_on_quit_game_button_pressed"]

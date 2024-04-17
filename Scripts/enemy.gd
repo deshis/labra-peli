@@ -16,13 +16,12 @@ var formation_offset = Vector3.ZERO
 @onready var ray = $PlayerDetectionRayCast
 
 @export var max_health = 100
-var health
+var health = max_health
 @onready var health_bar = $HealthBar/SubViewport/TextureProgressBar
 
 var dead = false
 
 func _ready():
-	health = max_health
 	update_health_bar()
 
 func _physics_process(delta):
