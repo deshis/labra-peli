@@ -9,32 +9,37 @@ class_name Player
 var health = max_health
 
 signal healthChanged
-
 signal playerDied
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var camera_controller = $CameraController
+@onready var skeleton = $Skeleton3D
+
+var dead = false
 
 func _physics_process(delta):
 	#Gravity
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	
-	#Jumping
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-	
-	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-	var direction = (camera_controller.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
-	
-	move_and_slide()
+	if(!dead):
+		#Jumping
+		if Input.is_action_just_pressed("jump") and is_on_floor():
+			velocity.y = JUMP_VELOCITY
+		
+		var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+		var direction = (camera_controller.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		if direction:
+			velocity.x = direction.x * SPEED
+			velocity.z = direction.z * SPEED
+			skeleton.look_at(to_global(-direction), Vector3.UP)
+			skeleton.rotation.x=0
+		else:
+			velocity.x = move_toward(velocity.x, 0, SPEED)
+			velocity.z = move_toward(velocity.z, 0, SPEED)
+		
+		move_and_slide()
 	
 	if Input.is_action_just_pressed("testi"):
 		take_damage(50)
@@ -50,7 +55,8 @@ func take_damage(dmg):
 	update_health()
 
 func die():
-	SPEED = 0
+	skeleton.physical_bones_start_simulation()
+	dead = true
 	playerDied.emit()
 
 func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
