@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhovnbvuoe5us"
-path.s3tc="res://.godot/imported/Moustache.png-03af1f1753554fba1a2df273b30f7edb.s3tc.ctex"
+uid="uid://b0s3a1sbt837i"
+path.s3tc="res://.godot/imported/guy_Body.png-03324e274ffcf5bf6c39a771867c96a5.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "563eb4ca4a7d0dc4f93b5665a28d0c58"
+}
 
 [deps]
 
-source_file="res://Assets/Textures/Moustache.png"
-dest_files=["res://.godot/imported/Moustache.png-03af1f1753554fba1a2df273b30f7edb.s3tc.ctex"]
+source_file="res://Assets/Models/Player/guy_Body.png"
+dest_files=["res://.godot/imported/guy_Body.png-03324e274ffcf5bf6c39a771867c96a5.s3tc.ctex"]
 
 [params]
 

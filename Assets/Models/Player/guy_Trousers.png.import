@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bipb3u7bm007q"
-path.s3tc="res://.godot/imported/Shirt.png-f9504cbb2f3d7407defa0a578db08a87.s3tc.ctex"
+uid="uid://mb82uswx1rew"
+path.s3tc="res://.godot/imported/guy_Trousers.png-ff6ba993487e7419da3f29d34c50a0b0.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "646aeb9184626b5797a5786aa0d10f1e"
+}
 
 [deps]
 
-source_file="res://Assets/Textures/Shirt.png"
-dest_files=["res://.godot/imported/Shirt.png-f9504cbb2f3d7407defa0a578db08a87.s3tc.ctex"]
+source_file="res://Assets/Models/Player/guy_Trousers.png"
+dest_files=["res://.godot/imported/guy_Trousers.png-ff6ba993487e7419da3f29d34c50a0b0.s3tc.ctex"]
 
 [params]
 

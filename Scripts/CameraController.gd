@@ -15,6 +15,8 @@ var camera_locked_on = false
 var lock_on_targets = null
 var camera_target_index = 0
 
+var enemy
+
 @onready var highlight_material = preload("res://Materials/highlighted.tres")
 @onready var default_material = preload("res://Materials/default.tres")
 
@@ -58,7 +60,7 @@ func _physics_process(_delta):
 			var closest_to_left_index
 			var look_dir = -basis.z.normalized()
 			for i in range(lock_on_targets.size()):
-				var enemy = lock_on_targets[i]
+				enemy = lock_on_targets[i]
 				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.position, look_dir)
 				var difference = enemy.position-closest_point
 				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
@@ -101,7 +103,7 @@ func _physics_process(_delta):
 			var smallest_angle = lock_on_change_angle_max
 			var look_dir = -basis.z.normalized()
 			for i in range(lock_on_targets.size()):
-				var enemy = lock_on_targets[i]
+				enemy = lock_on_targets[i]
 				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.position, look_dir)
 				var difference = enemy.position-closest_point
 				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
@@ -123,7 +125,7 @@ func _physics_process(_delta):
 			var smallest_angle = -lock_on_change_angle_max
 			var look_dir = -basis.z.normalized()
 			for i in range(lock_on_targets.size()):
-				var enemy = lock_on_targets[i]
+				enemy = lock_on_targets[i]
 				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.position, look_dir)
 				var difference = enemy.position-closest_point
 				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
@@ -153,6 +155,7 @@ func _physics_process(_delta):
 		
 		#lock on camera. lerping breaks the lock on system so we have to use a stiff camera...
 		look_at(current_target.position, Vector3.UP)
+		player.look_at(current_target.position, Vector3.UP)
 
 		rotation.x=0 #x rotation is handled by spring_arm
 		

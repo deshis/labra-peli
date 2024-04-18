@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://caa2217snswsd"
-path.s3tc="res://.godot/imported/Shoes.png-89e4fb7e98092927e4c8adc0f3f4769d.s3tc.ctex"
+uid="uid://bcvjp3n0sbxof"
+path.s3tc="res://.godot/imported/guy_Shirt.png-d097f14dd23a60f4e74bc7cb395553a2.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "53f541c3159f866514e546c2db541036"
+}
 
 [deps]
 
-source_file="res://Assets/Textures/Shoes.png"
-dest_files=["res://.godot/imported/Shoes.png-89e4fb7e98092927e4c8adc0f3f4769d.s3tc.ctex"]
+source_file="res://Assets/Models/Player/guy_Shirt.png"
+dest_files=["res://.godot/imported/guy_Shirt.png-d097f14dd23a60f4e74bc7cb395553a2.s3tc.ctex"]
 
 [params]
 

@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://te8mumj8gpm4"
-path.s3tc="res://.godot/imported/Body.png-220ab17b11b5553ae7606eff6caa24f3.s3tc.ctex"
+uid="uid://em5igskop2y2"
+path.s3tc="res://.godot/imported/guy_Shoes.png-11bda33c5462d73ccc3a289a0bb4a1da.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "4b79fbc2b93ae9e2069e6808785014c3"
+}
 
 [deps]
 
-source_file="res://Assets/Textures/Body.png"
-dest_files=["res://.godot/imported/Body.png-220ab17b11b5553ae7606eff6caa24f3.s3tc.ctex"]
+source_file="res://Assets/Models/Player/guy_Shoes.png"
+dest_files=["res://.godot/imported/guy_Shoes.png-11bda33c5462d73ccc3a289a0bb4a1da.s3tc.ctex"]
 
 [params]
 
