@@ -20,6 +20,8 @@ var health = max_health
 
 var dead = false
 
+@onready var skeleton = $guy/DRV_Armature/Skeleton3D
+
 func _ready():
 	update_health_bar()
 
@@ -42,6 +44,15 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity*delta
 	
+	if(new_velocity):
+		if(abs(global_position - player.global_position).length()<10): #if close to player, look at player
+			skeleton.look_at(player.global_position)
+			skeleton.rotate_object_local(Vector3.UP, PI)
+		else: #else look at navigation path direction
+			skeleton.look_at(to_global(new_velocity))
+			skeleton.rotate_object_local(Vector3.UP, PI)
+		skeleton.rotation.x = 0
+		skeleton.rotation.z = 0
 
 #calculating safe velocity for avoidance to prevent enemies clumping together
 func _on_navigation_agent_3d_velocity_computed(safe_velocity):
