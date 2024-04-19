@@ -4,3 +4,5 @@
 
 [resource]
 next_pass = ExtResource("1_x6vdu")
+cull_mode = 2
+albedo_color = Color(0.678431, 0.678431, 0.678431, 1)
