@@ -1,6 +1,5 @@
 extends CharacterBody3D
 
-
 @export var SPEED = 5.0
 
 @onready var player = get_node('/root/Main/Player')
@@ -66,7 +65,6 @@ func update_health_bar(): #call this when take dmg
 	health_bar.value = health
 
 func die():
-	print(get_name() + " DIED")
 	aggro = false 
 	dead = true
 

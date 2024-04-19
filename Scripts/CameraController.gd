@@ -2,7 +2,6 @@ extends Node3D
 
 @onready var spring_arm = $SpringArm3D
 @onready var player = get_parent()
-#@onready var ray = get_node("../LockOnRayCast")
 @onready var ray = $LockOnRayCast
 
 var camera_mouse_sensitivity
