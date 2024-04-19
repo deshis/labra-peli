@@ -22,6 +22,8 @@ var enemy
 var lock_on_change_angle_threshold = 0.0
 var lock_on_change_angle_max = 180
 
+var current_target
+
 func _ready():
 	var config = ConfigFile.new()
 	config.load("user://settings.cfg")
@@ -149,15 +151,11 @@ func _physics_process(_delta):
 			
 			lock_on_targets[camera_target_index].get_node("capsule/Mball_001").set_surface_override_material(0, highlight_material)
 		
-		var current_target = lock_on_targets[camera_target_index]
-		
-		
+		current_target = lock_on_targets[camera_target_index]
 		#lock on camera. lerping breaks the lock on system so we have to use a stiff camera...
 		look_at(current_target.position, Vector3.UP)
-		player.look_at(current_target.position, Vector3.UP)
-
-		rotation.x=0 #x rotation is handled by spring_arm
 		
+		rotation.x=0 #x rotation is handled by spring_arm
 		spring_arm.look_at(current_target.position)
 		spring_arm.rotation.x += deg_to_rad(-25) #aim camera a bit down so you can see the enemy better
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, deg_to_rad(-80), deg_to_rad(50)) #prevent upside down camera

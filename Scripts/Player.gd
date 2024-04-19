@@ -45,10 +45,11 @@ func _physics_process(delta):
 			if(!camera_controller.camera_locked_on):
 				rotation = Vector3.ZERO;
 				skeleton.look_at(to_global(-direction), Vector3.UP)
-				skeleton.rotation.x=0
 			else:
-				skeleton.rotation = Vector3(0, deg_to_rad(180), 0)
-				skeleton.rotation.x=0
+				skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
+				rotate_object_local(Vector3.UP, PI) #look_at points in the opposite direction so we have to flip 180
+			skeleton.rotation.x=0
+			skeleton.rotation.z=0
 		else:
 			velocity.x = move_toward(velocity.x, 0, current_speed)
 			velocity.z = move_toward(velocity.z, 0, current_speed)
