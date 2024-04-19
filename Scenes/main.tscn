@@ -210,22 +210,22 @@ text = "Quit To Menu"
 script = ExtResource("10_uq3l4")
 
 [node name="Enemy3" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 8.64314, -38.5758, 7.00848)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 8.64314, -39.2447, 7.00848)
 
 [node name="PlayerHitBox" parent="." instance=ExtResource("13_t8t2e")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.16151, -39.9981, 19.3012)
 
 [node name="Enemy4" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.471565, -38.5758, -5.65439)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.471565, -39.2447, -5.65439)
 
 [node name="Enemy5" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.471565, -38.5758, 7.59001)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.471565, -39.2447, 7.59001)
 
 [node name="Enemy6" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 6.51166, -37.6309, 6.56334)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 6.51166, -38.2998, 6.56334)
 
 [node name="Enemy7" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.94313, -37.5348, -11.3088)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.94313, -38.2037, -11.3088)
 
 [node name="EnemyHitBox" parent="." instance=ExtResource("14_gwttd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.41714, -40.5304, 20.0413)

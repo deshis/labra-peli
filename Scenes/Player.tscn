@@ -6,8 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://cvgjonbqjpxxo" path="res://Scenes/guy.tscn" id="4_4c36t"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_43n53"]
-radius = 0.56416
-height = 2.11726
+radius = 0.623568
+height = 3.30581
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_qwqt7"]
 
@@ -22,8 +22,7 @@ collision_mask = 5
 script = ExtResource("1_wddm7")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.24169, 0)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.309562, 0)
 shape = SubResource("CapsuleShape3D_43n53")
 
 [node name="CameraController" type="Node3D" parent="."]
