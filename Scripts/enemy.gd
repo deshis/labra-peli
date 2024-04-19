@@ -24,11 +24,19 @@ var dead = false
 var close_to_player = false
 
 @onready var skeleton = $guy/DRV_Armature/Skeleton3D
-
 @onready var animation_tree = $guy/AnimationTree
+@onready var default_material = preload("res://Materials/default.tres")
+
+@onready var attack_timer = $AttackTimer
+@export var attack_cooldown_min = 1.0
+@export var attack_cooldown_max = 3.0
+@export var attack_range = 2.25
+var can_attack = true
+var rng = RandomNumberGenerator.new()
 
 func _ready():
 	update_health_bar()
+	skeleton.get_node("Guy").set_surface_override_material(0, default_material)
 
 func _physics_process(delta):
 	var next_location 
@@ -61,6 +69,9 @@ func _physics_process(delta):
 			animation_tree.set("parameters/idle-run/blend_position", velocity.length() / current_speed)
 		skeleton.rotation.x = 0
 		skeleton.rotation.z = 0
+		
+		if(abs(global_position - player.global_position).length()<attack_range and can_attack):
+			attack()
 	else:
 		velocity.x = 0
 		velocity.z = 0
@@ -68,8 +79,6 @@ func _physics_process(delta):
 	#gravity
 	if not is_on_floor():
 		velocity.y -= gravity*delta
-	
-
 
 #calculating safe velocity for avoidance to prevent enemies clumping together
 func _on_navigation_agent_3d_velocity_computed(safe_velocity):
@@ -95,6 +104,8 @@ func update_health_bar(): #call this when take dmg
 func die():
 	aggro = false 
 	dead = true
+	remove_from_group("enemies")
+	get_tree().current_scene._on_main_enemy_switch_timer_timeout() #force main enemy to switch when enemy dies
 
 func take_damage(dmg):
 	health-=dmg
@@ -102,7 +113,16 @@ func take_damage(dmg):
 	if(health <=0):
 		die()
 
+func attack():
+	if(can_attack):
+		print(str(self)+"tried to attack")
+		can_attack = false
+		attack_timer.start(rng.randf_range(attack_cooldown_min, attack_cooldown_max))
+		#attack animation here(?)
+
 func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
 	if area.get_groups().has("player_hitbox"):
 		take_damage(area.damage)
 
+func _on_attack_timer_timeout():
+	can_attack = true

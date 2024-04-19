@@ -34,7 +34,6 @@ func _on_enemy_pathfinding_timer_timeout():
 			enemy.formation_offset =  offset_direction * passive_enemy_distance
 
 func _on_main_enemy_switch_timer_timeout():
-
 	#reset timer
 	main_enemy_switch_timer.start(rng.randf_range(main_enemy_switch_lower, main_enemy_switch_higher))
 	
