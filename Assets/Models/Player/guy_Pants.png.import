@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwpt40fj71i6t"
-path.s3tc="res://.godot/imported/guy_Glasses.png-403596aa6f580273be2c5417c1b98734.s3tc.ctex"
+uid="uid://by6f8fi6m31wy"
+path.s3tc="res://.godot/imported/guy_Pants.png-8b7c4471193295129e6ce475296d1dfb.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "f958faf953517ee4aaade53a507e68fb"
+"md5": "4d0e7bf252e77d454bb4ca21598a9802"
 }
 
 [deps]
 
-source_file="res://Assets/Models/Player/guy_Glasses.png"
-dest_files=["res://.godot/imported/guy_Glasses.png-403596aa6f580273be2c5417c1b98734.s3tc.ctex"]
+source_file="res://Assets/Models/Player/guy_Pants.png"
+dest_files=["res://.godot/imported/guy_Pants.png-8b7c4471193295129e6ce475296d1dfb.s3tc.ctex"]
 
 [params]
 
