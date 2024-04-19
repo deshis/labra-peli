@@ -101,7 +101,9 @@ skeleton = NodePath("../..")
 transform = Transform3D(0.999939, -0.0110303, 0, 0.0110303, 0.999939, 0, 0, 0, 1, -1.1114, -36.9156, -2.75628)
 
 [node name="Player" parent="." instance=ExtResource("2_d6f1p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -39.2584, 20.0543)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -39.2584, 20.0543)
+WALK_SPEED = 5.0
+RUN_SPEED = 7.0
 JUMP_VELOCITY = 5
 
 [node name="UI" type="CanvasLayer" parent="."]

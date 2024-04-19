@@ -2,7 +2,10 @@ extends CharacterBody3D
 
 class_name Player
 
-@export var SPEED = 5.0
+@export var WALK_SPEED = 4.0
+@export var RUN_SPEED = 6.0
+var current_speed
+
 @export var JUMP_VELOCITY = 10
 
 @export var max_health = 100
@@ -24,6 +27,11 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	
+	if camera_controller.camera_locked_on:
+		current_speed=WALK_SPEED
+	else:
+		current_speed=RUN_SPEED
+	
 	if(!dead):
 		#Jumping
 		if Input.is_action_just_pressed("jump") and is_on_floor():
@@ -32,9 +40,9 @@ func _physics_process(delta):
 		var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 		var direction = (camera_controller.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if direction:
-			velocity.x = direction.x * SPEED
-			velocity.z = direction.z * SPEED
-			if(!$CameraController.camera_locked_on):
+			velocity.x = direction.x * current_speed
+			velocity.z = direction.z * current_speed
+			if(!camera_controller.camera_locked_on):
 				rotation = Vector3.ZERO;
 				skeleton.look_at(to_global(-direction), Vector3.UP)
 				skeleton.rotation.x=0
@@ -42,13 +50,13 @@ func _physics_process(delta):
 				skeleton.rotation = Vector3(0, deg_to_rad(180), 0)
 				skeleton.rotation.x=0
 		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
-			velocity.z = move_toward(velocity.z, 0, SPEED)
+			velocity.x = move_toward(velocity.x, 0, current_speed)
+			velocity.z = move_toward(velocity.z, 0, current_speed)
 		
 		move_and_slide()
-		if(!$CameraController.camera_locked_on):
+		if(!camera_controller.camera_locked_on):
 			animation_tree.set("parameters/isStrafe/blend_amount", 0.0)
-			animation_tree.set("parameters/idle-run/blend_position", velocity.length() / SPEED)
+			animation_tree.set("parameters/idle-run/blend_position", velocity.length() / current_speed)
 		else:
 			animation_tree.set("parameters/isStrafe/blend_amount", 1.0)
 			animation_tree.set("parameters/strafe/blend_position", input_dir)
@@ -72,7 +80,5 @@ func die():
 	playerDied.emit()
 
 func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
-	print(area)
 	if area.get_groups().has("enemy_hitbox"):
-		print(area.damage)
 		take_damage(area.damage)
