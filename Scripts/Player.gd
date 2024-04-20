@@ -18,9 +18,13 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var camera_controller = $CameraController
 @onready var skeleton = $guy/DRV_Armature/Skeleton3D
+@onready var ragdoll_skeleton = $ragdoll_guy/DRV_Armature/Skeleton3D
 @onready var animation_tree = $guy/AnimationTree
 
 var dead = false
+
+func _ready():
+	$ragdoll_guy.visible = false
 
 func _physics_process(delta):
 	#Gravity
@@ -45,11 +49,15 @@ func _physics_process(delta):
 			if(!camera_controller.camera_locked_on):
 				rotation = Vector3.ZERO;
 				skeleton.look_at(to_global(-direction), Vector3.UP)
+				ragdoll_skeleton.look_at(to_global(-direction), Vector3.UP)
 			else:
 				skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
-				rotate_object_local(Vector3.UP, PI) #look_at points in the opposite direction so we have to flip 180
+				ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
+				rotate_object_local(Vector3.UP, PI) #look_at points in the opposite direction so we have t
 			skeleton.rotation.x=0
 			skeleton.rotation.z=0
+			ragdoll_skeleton.rotation.x=0
+			ragdoll_skeleton.rotation.z=0
 		else:
 			velocity.x = move_toward(velocity.x, 0, current_speed)
 			velocity.z = move_toward(velocity.z, 0, current_speed)
@@ -66,7 +74,7 @@ func _physics_process(delta):
 		take_damage(50)
 
 func update_health():
-	if(health <= 0):
+	if(health <= 0 and not dead):
 		die()
 	health = clamp(health, 0, max_health)
 	healthChanged.emit()
@@ -76,7 +84,9 @@ func take_damage(dmg):
 	update_health()
 
 func die():
-	skeleton.physical_bones_start_simulation()
+	$guy.visible = false
+	$ragdoll_guy.visible = true
+	ragdoll_skeleton.physical_bones_start_simulation()
 	dead = true
 	playerDied.emit()
 

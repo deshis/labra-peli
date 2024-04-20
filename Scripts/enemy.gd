@@ -24,6 +24,7 @@ var dead = false
 var close_to_player = false
 
 @onready var skeleton = $guy/DRV_Armature/Skeleton3D
+@onready var ragdoll_skeleton = $ragdoll_guy/DRV_Armature/Skeleton3D
 @onready var animation_tree = $guy/AnimationTree
 @onready var default_material = preload("res://Materials/default.tres")
 
@@ -37,6 +38,7 @@ var rng = RandomNumberGenerator.new()
 func _ready():
 	update_health_bar()
 	skeleton.get_node("Guy").set_surface_override_material(0, default_material)
+	$ragdoll_guy.visible = false
 
 func _physics_process(delta):
 	var next_location 
@@ -59,16 +61,20 @@ func _physics_process(delta):
 		
 		if(close_to_player or new_velocity.length()<0.001): #look at player and strafe
 			skeleton.look_at(player.global_position)
-			skeleton.rotate_object_local(Vector3.UP, PI)
+			ragdoll_skeleton.look_at(player.global_position)
 			animation_tree.set("parameters/isStrafe/blend_amount", 1.0)
 			animation_tree.set("parameters/strafe/blend_position", velocity)
 		else: #else look at navigation path direction and run
 			skeleton.look_at(to_global(new_velocity), Vector3.UP)
-			skeleton.rotate_object_local(Vector3.UP, PI)
+			ragdoll_skeleton.look_at(to_global(new_velocity), Vector3.UP)
 			animation_tree.set("parameters/isStrafe/blend_amount", 0.0)
 			animation_tree.set("parameters/idle-run/blend_position", velocity.length() / current_speed)
+		skeleton.rotate_object_local(Vector3.UP, PI)
+		ragdoll_skeleton.rotate_object_local(Vector3.UP, PI)
 		skeleton.rotation.x = 0
 		skeleton.rotation.z = 0
+		ragdoll_skeleton.rotation.x = 0
+		ragdoll_skeleton.rotation.z = 0
 		
 		if(abs(global_position - player.global_position).length()<attack_range and can_attack):
 			attack()
@@ -106,11 +112,20 @@ func die():
 	dead = true
 	remove_from_group("enemies")
 	get_tree().current_scene._on_main_enemy_switch_timer_timeout() #force main enemy to switch when enemy dies
+	$guy.visible=false
+	$ragdoll_guy.visible = true
+	ragdoll_skeleton.physical_bones_start_simulation()
+	
+	#remove everything except ragdoll
+	var children = get_children()
+	children.erase($ragdoll_guy)
+	for node in children:
+		node.queue_free()
 
 func take_damage(dmg):
 	health-=dmg
 	update_health_bar()
-	if(health <=0):
+	if(health <=0 and not dead):
 		die()
 
 func attack():

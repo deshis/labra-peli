@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://tr2nbcbcmnu2"]
+[gd_scene load_steps=9 format=3 uid="uid://tr2nbcbcmnu2"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_wddm7"]
 [ext_resource type="Script" path="res://Scripts/PlayerCamera.gd" id="3_27x43"]
 [ext_resource type="Script" path="res://Scripts/CameraController.gd" id="3_vfb1n"]
 [ext_resource type="PackedScene" uid="uid://cvgjonbqjpxxo" path="res://Scenes/guy.tscn" id="4_4c36t"]
+[ext_resource type="PackedScene" uid="uid://2iexlpog4mst" path="res://Scenes/ragdoll_guy.tscn" id="5_vy4nw"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_43n53"]
 radius = 0.623568
@@ -58,5 +59,9 @@ shape = SubResource("CapsuleShape3D_qdti0")
 
 [node name="guy" parent="." instance=ExtResource("4_4c36t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+
+[node name="ragdoll_guy" parent="." instance=ExtResource("5_vy4nw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.88228, 0)
+visible = false
 
 [connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]

@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dfbfxm4ytxuls"]
+[gd_scene load_steps=8 format=3 uid="uid://dfbfxm4ytxuls"]
 
 [ext_resource type="Script" path="res://Scripts/enemy.gd" id="1_ffijx"]
 [ext_resource type="Texture2D" uid="uid://oqa10pqkpila" path="res://Sprites/UI/Bar/enemy_hp_bar_empty.png" id="2_3ct80"]
 [ext_resource type="Texture2D" uid="uid://lwe1qtmnv8cl" path="res://Sprites/UI/Bar/enemy_hp_bar_full.png" id="3_f85xr"]
 [ext_resource type="PackedScene" uid="uid://cvgjonbqjpxxo" path="res://Scenes/guy.tscn" id="4_y5bqc"]
+[ext_resource type="PackedScene" uid="uid://2iexlpog4mst" path="res://Scenes/ragdoll_guy.tscn" id="5_mv6b6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ngfqe"]
 radius = 0.56416
@@ -71,6 +72,9 @@ shape = SubResource("CapsuleShape3D_ngfqe")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.07806, 0)
 
 [node name="AttackTimer" type="Timer" parent="."]
+
+[node name="ragdoll_guy" parent="." instance=ExtResource("5_mv6b6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 
 [connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]
 [connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]
