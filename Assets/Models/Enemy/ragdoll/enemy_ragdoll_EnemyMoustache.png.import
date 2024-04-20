@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dg1iwayxnr4ci"
-path.s3tc="res://.godot/imported/enemy_ragdoll_EnemyShirt.png-6326033aab691b618087aacca17a731f.s3tc.ctex"
+uid="uid://cr1lb1lssttlr"
+path.s3tc="res://.godot/imported/enemy_ragdoll_EnemyMoustache.png-d91c61b7e6a6e59a870ea86a250cadcc.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "48ba5dfa29a8208ba0ded12ed78e3cfd"
+"md5": "c949f9705d7c790b3ce174edbd01386b"
 }
 
 [deps]
 
-source_file="res://Assets/Models/Enemy/enemy_ragdoll_EnemyShirt.png"
-dest_files=["res://.godot/imported/enemy_ragdoll_EnemyShirt.png-6326033aab691b618087aacca17a731f.s3tc.ctex"]
+source_file="res://Assets/Models/Enemy/ragdoll/enemy_ragdoll_EnemyMoustache.png"
+dest_files=["res://.godot/imported/enemy_ragdoll_EnemyMoustache.png-d91c61b7e6a6e59a870ea86a250cadcc.s3tc.ctex"]
 
 [params]
 

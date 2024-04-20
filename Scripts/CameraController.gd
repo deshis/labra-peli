@@ -37,8 +37,8 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Input.set_use_accumulated_input(false)
 	
-	for enemy in get_tree().get_nodes_in_group("enemies"):
-		enemy.enemyDied.connect(_on_enemy_death)
+	for group_enemy in get_tree().get_nodes_in_group("enemies"):
+		group_enemy.enemyDied.connect(_on_enemy_death)
 
 func _physics_process(_delta):
 	#camera follows player with lerp smoothing

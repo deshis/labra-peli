@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dj3qge47xo36v"
-path.s3tc="res://.godot/imported/Moustache.png-981db88ed5064b9bc949e87ac695e08c.s3tc.ctex"
+uid="uid://dg1iwayxnr4ci"
+path.s3tc="res://.godot/imported/enemy_ragdoll_EnemyShirt.png-025f76e01261daf2eb37ef5961fe2e13.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "48ba5dfa29a8208ba0ded12ed78e3cfd"
+}
 
 [deps]
 
-source_file="res://Assets/Models/Player/ragdoll_old/Moustache.png"
-dest_files=["res://.godot/imported/Moustache.png-981db88ed5064b9bc949e87ac695e08c.s3tc.ctex"]
+source_file="res://Assets/Models/Enemy/ragdoll/enemy_ragdoll_EnemyShirt.png"
+dest_files=["res://.godot/imported/enemy_ragdoll_EnemyShirt.png-025f76e01261daf2eb37ef5961fe2e13.s3tc.ctex"]
 
 [params]
 

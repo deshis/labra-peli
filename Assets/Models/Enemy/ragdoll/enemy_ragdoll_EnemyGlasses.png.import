@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://egcejvgv2gb"
-path.s3tc="res://.godot/imported/Shirt.png-ed47c6da19a908a3eb7041a9d6a6de86.s3tc.ctex"
+uid="uid://ctnmbkkmxqd5m"
+path.s3tc="res://.godot/imported/enemy_ragdoll_EnemyGlasses.png-c3cba087e21284e137afde04852560ff.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "407af5c6b3e27fe3a95bd97475776a99"
+}
 
 [deps]
 
-source_file="res://Assets/Models/Player/ragdoll_old/Shirt.png"
-dest_files=["res://.godot/imported/Shirt.png-ed47c6da19a908a3eb7041a9d6a6de86.s3tc.ctex"]
+source_file="res://Assets/Models/Enemy/ragdoll/enemy_ragdoll_EnemyGlasses.png"
+dest_files=["res://.godot/imported/enemy_ragdoll_EnemyGlasses.png-c3cba087e21284e137afde04852560ff.s3tc.ctex"]
 
 [params]
 

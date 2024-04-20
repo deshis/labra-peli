@@ -122,7 +122,6 @@ func die():
 	ragdoll_skeleton.physical_bones_start_simulation()
 	
 	#add random impulse to make ragdoll more interesting
-	var rng = RandomNumberGenerator.new()
 	var random_direction = Vector3(rng.randf_range(-1,1), rng.randf_range(-1,1), rng.randf_range(-1,1)).normalized()
 	ragdoll_skeleton.get_node("Physical Bone Hip").apply_central_impulse(random_direction*20)
 	dead = true

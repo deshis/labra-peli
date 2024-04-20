@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://dagx7qkawiel"]
 
-[ext_resource type="PackedScene" uid="uid://dtd6c5ho0gp6d" path="res://Assets/Models/Enemy/enemy_ragdoll.glb" id="1_8n0hd"]
+[ext_resource type="PackedScene" uid="uid://dtd6c5ho0gp6d" path="res://Assets/Models/Enemy/ragdoll/enemy_ragdoll.glb" id="1_8n0hd"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hcxih"]
 radius = 0.139148

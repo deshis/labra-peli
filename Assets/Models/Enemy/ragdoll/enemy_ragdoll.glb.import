@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dtd6c5ho0gp6d"
-path="res://.godot/imported/enemy_ragdoll.glb-e352e8555d3d71a6c1c61f4e56b1e297.scn"
+path="res://.godot/imported/enemy_ragdoll.glb-3462253e5a0a3d67c096c9fc4fe8bef0.scn"
 
 [deps]
 
-source_file="res://Assets/Models/Enemy/enemy_ragdoll.glb"
-dest_files=["res://.godot/imported/enemy_ragdoll.glb-e352e8555d3d71a6c1c61f4e56b1e297.scn"]
+source_file="res://Assets/Models/Enemy/ragdoll/enemy_ragdoll.glb"
+dest_files=["res://.godot/imported/enemy_ragdoll.glb-3462253e5a0a3d67c096c9fc4fe8bef0.scn"]
 
 [params]
 

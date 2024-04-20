@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cpqcwru2h2ch4"
-path.s3tc="res://.godot/imported/Body.png-38a13465d6a4862a397bee399a4afbb5.s3tc.ctex"
+uid="uid://oeoomorl7y4s"
+path.s3tc="res://.godot/imported/enemy_ragdoll_EnemyBody.png-5a10b6a3d352db2779a1d870d586131b.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "5722058ef1fb73a9399779cb28034bd1"
+}
 
 [deps]
 
-source_file="res://Assets/Models/Player/ragdoll_old/Body.png"
-dest_files=["res://.godot/imported/Body.png-38a13465d6a4862a397bee399a4afbb5.s3tc.ctex"]
+source_file="res://Assets/Models/Enemy/ragdoll/enemy_ragdoll_EnemyBody.png"
+dest_files=["res://.godot/imported/enemy_ragdoll_EnemyBody.png-5a10b6a3d352db2779a1d870d586131b.s3tc.ctex"]
 
 [params]
 
