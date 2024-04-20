@@ -27,6 +27,18 @@ func _ready():
 	$ragdoll_guy.visible = false
 
 func _physics_process(delta):
+	
+	
+	#Attack
+	if Input.is_action_just_pressed("attack"):
+		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "punch"):
+			animation_tree.set("parameters/AttackState/conditions/combo", true)
+			animation_tree.set("parameters/AttackState/conditions/stop", false)
+		else:
+			animation_tree.set("parameters/AttackState/conditions/combo", false)
+			animation_tree.set("parameters/AttackState/conditions/stop", true)
+			animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+	
 	#Gravity
 	if not is_on_floor():
 		velocity.y -= gravity * delta
