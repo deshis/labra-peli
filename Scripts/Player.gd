@@ -21,6 +21,9 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var ragdoll_skeleton = $ragdoll_guy/DRV_Armature/Skeleton3D
 @onready var animation_tree = $guy/AnimationTree
 
+var hitbox = preload("res://Scenes/PlayerHitBox.tscn")
+@export var attack_damage = 10
+
 var dead = false
 
 func _ready():
@@ -28,16 +31,8 @@ func _ready():
 
 func _physics_process(delta):
 	
-	
-	#Attack
 	if Input.is_action_just_pressed("attack"):
-		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "punch"):
-			animation_tree.set("parameters/AttackState/conditions/combo", true)
-			animation_tree.set("parameters/AttackState/conditions/stop", false)
-		else:
-			animation_tree.set("parameters/AttackState/conditions/combo", false)
-			animation_tree.set("parameters/AttackState/conditions/stop", true)
-			animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+		attack()
 	
 	#Gravity
 	if not is_on_floor():
@@ -84,6 +79,27 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("testi"):
 		take_damage(50)
+	
+
+func attack():
+	var hand
+	if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "punch"): #right hand punch
+		hand = skeleton.get_node("RightHandAttachment")
+		animation_tree.set("parameters/AttackState/conditions/combo", true)
+		animation_tree.set("parameters/AttackState/conditions/stop", false)
+	else: #left hand punch
+		hand = skeleton.get_node("LeftHandAttachment")
+		animation_tree.set("parameters/AttackState/conditions/combo", false)
+		animation_tree.set("parameters/AttackState/conditions/stop", true)
+		animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
+	#prevent multiple hitboxes from spawning
+	if(hand.get_children().size()>0):
+		for child in hand.get_children():
+			child.queue_free()
+	var punch_hitbox = hitbox.instantiate()
+	punch_hitbox.damage = attack_damage
+	hand.add_child(punch_hitbox)
+	#hitbox gets deleted in animationtree signal
 
 func update_health():
 	if(health <= 0 and not dead):
@@ -105,3 +121,11 @@ func die():
 func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 	if area.get_groups().has("enemy_hitbox"):
 		take_damage(area.damage)
+
+func _on_animation_tree_animation_finished(anim_name):
+	if(anim_name=="punch"):
+		for child in skeleton.get_node("LeftHandAttachment").get_children():
+			child.queue_free()
+	elif(anim_name == "punch2"):
+		for child in skeleton.get_node("RightHandAttachment").get_children():
+			child.queue_free()

@@ -35,6 +35,8 @@ var close_to_player = false
 var can_attack = true
 var rng = RandomNumberGenerator.new()
 
+signal enemyDied
+
 func _ready():
 	update_health_bar()
 	skeleton.get_node("Guy").set_surface_override_material(0, default_material)
@@ -115,6 +117,7 @@ func die():
 	$guy.visible=false
 	$ragdoll_guy.visible = true
 	ragdoll_skeleton.physical_bones_start_simulation()
+	enemyDied.emit()
 	
 	#remove everything except ragdoll
 	var children = get_children()

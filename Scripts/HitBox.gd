@@ -1,3 +1,3 @@
 extends Area3D
 
-var damage = 100
+var damage = 10
