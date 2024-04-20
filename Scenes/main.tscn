@@ -101,9 +101,9 @@ skeleton = NodePath("../..")
 transform = Transform3D(0.999939, -0.0110303, 0, 0.0110303, 0.999939, 0, 0, 0, 1, -1.1114, -36.9156, -2.75628)
 
 [node name="Player" parent="." instance=ExtResource("2_d6f1p")]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -39.2584, 20.0543)
-WALK_SPEED = 5.0
-RUN_SPEED = 7.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -39.2584, 20.0543)
+WALK_SPEED = 6.0
+RUN_SPEED = 9.0
 JUMP_VELOCITY = 5
 
 [node name="UI" type="CanvasLayer" parent="."]
@@ -210,22 +210,32 @@ text = "Quit To Menu"
 script = ExtResource("10_uq3l4")
 
 [node name="Enemy3" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 8.64314, -39.2447, 7.00848)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.64314, -39.2447, 7.00848)
+WALK_SPEED = 5.5
+RUN_SPEED = 8.5
 
 [node name="PlayerHitBox" parent="." instance=ExtResource("13_t8t2e")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.16151, -39.9981, 19.3012)
 
 [node name="Enemy4" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.471565, -39.2447, -5.65439)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -39.2447, -5.65439)
+WALK_SPEED = 5.5
+RUN_SPEED = 8.5
 
 [node name="Enemy5" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.471565, -39.2447, 7.59001)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -39.2447, 7.59001)
+WALK_SPEED = 5.5
+RUN_SPEED = 8.5
 
 [node name="Enemy6" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 6.51166, -38.2998, 6.56334)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.51166, -38.2998, 6.56334)
+WALK_SPEED = 5.5
+RUN_SPEED = 8.5
 
 [node name="Enemy7" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.94313, -38.2037, -11.3088)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94313, -38.2037, -11.3088)
+WALK_SPEED = 5.5
+RUN_SPEED = 8.5
 
 [node name="EnemyHitBox" parent="." instance=ExtResource("14_gwttd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.41714, -40.5304, 20.0413)
