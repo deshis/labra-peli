@@ -87,7 +87,8 @@ func _physics_process(_delta):
 			
 			#highlight the locked on enemy
 			if(camera_target_index != null):
-				lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, highlight_material)
+				if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)):
+					lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, highlight_material)
 			else: #lock on failed.
 				lock_on_targets = null
 				camera_target_index = null
@@ -95,7 +96,8 @@ func _physics_process(_delta):
 		
 		else:
 			#unhighlight deselected enemy
-			lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, default_material)
+			if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)):
+				lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, default_material)
 			lock_on_targets = null
 			camera_target_index = null
 			camera_locked_on = false
@@ -103,7 +105,8 @@ func _physics_process(_delta):
 	if(camera_locked_on and lock_on_targets):
 		#same as finding closest to camera center, except only on one side
 		if Input.is_action_just_pressed("camera_switch_target_left"):
-			lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, default_material)
+			if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)):
+				lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, default_material)
 			var next_to_left_index
 			var smallest_angle = lock_on_change_angle_max
 			var look_dir = -basis.z.normalized()
@@ -121,11 +124,13 @@ func _physics_process(_delta):
 									next_to_left_index=i
 			if(next_to_left_index!=null):
 				camera_target_index = next_to_left_index
-			lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, highlight_material)
+			if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)):
+				lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, highlight_material)
 		
 		#same as left...
 		if Input.is_action_just_pressed("camera_switch_target_right"):
-			lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, default_material)
+			if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)):
+				lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, default_material)
 			var next_to_right_index
 			var smallest_angle = -lock_on_change_angle_max
 			var look_dir = -basis.z.normalized()
@@ -143,17 +148,19 @@ func _physics_process(_delta):
 									next_to_right_index=i
 			if(next_to_right_index!=null):
 				camera_target_index = next_to_right_index
-			lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, highlight_material)
+			if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)):
+				lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, highlight_material)
 		
 		if Input.is_action_just_pressed("camera_switch_target_closest"):
-			lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, default_material)
+			if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)):
+				lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, default_material)
 			#find closest to player
 			camera_target_index = 0
 			for i in range(lock_on_targets.size()):
 				if lock_on_targets[i].global_position.distance_to(global_position) < lock_on_targets[camera_target_index].global_position.distance_to(global_position):
 					camera_target_index = i
-			
-			lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, highlight_material)
+			if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)):
+				lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, highlight_material)
 		
 		current_target = lock_on_targets[camera_target_index]
 		#lock on camera. lerping breaks the lock on system so we have to use a stiff camera...
