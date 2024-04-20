@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://chpqcweaiakc5"]
+[gd_scene load_steps=19 format=3 uid="uid://chpqcweaiakc5"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_cx8ll"]
 [ext_resource type="Script" path="res://Scripts/WorldEnvironment.gd" id="2_7q2bx"]
@@ -14,7 +14,6 @@
 [ext_resource type="Script" path="res://Scripts/Menu/Button.gd" id="10_uq3l4"]
 [ext_resource type="Script" path="res://Scripts/DeathScreen.gd" id="12_qcvik"]
 [ext_resource type="PackedScene" uid="uid://brclekuybe0fv" path="res://Scenes/PlayerHitBox.tscn" id="13_t8t2e"]
-[ext_resource type="PackedScene" uid="uid://djvx4hkl3rvyq" path="res://Scenes/EnemyHitBox.tscn" id="14_gwttd"]
 
 [sub_resource type="Environment" id="Environment_p801p"]
 ambient_light_color = Color(1, 1, 1, 1)
@@ -236,9 +235,6 @@ RUN_SPEED = 8.5
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94313, -38.2037, -11.3088)
 WALK_SPEED = 5.5
 RUN_SPEED = 8.5
-
-[node name="EnemyHitBox" parent="." instance=ExtResource("14_gwttd")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -6.62296, -40.5304, 20.0413)
 
 [connection signal="timeout" from="EnemyPathfindingTimer" to="." method="_on_enemy_pathfinding_timer_timeout"]
 [connection signal="timeout" from="MainEnemySwitchTimer" to="." method="_on_main_enemy_switch_timer_timeout"]

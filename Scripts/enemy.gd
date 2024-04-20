@@ -29,13 +29,16 @@ var close_to_player = false
 @onready var default_material = preload("res://Materials/default.tres")
 
 @onready var attack_timer = $AttackTimer
-@export var attack_cooldown_min = 1.0
-@export var attack_cooldown_max = 3.0
-@export var attack_range = 2.25
+@export var attack_cooldown_min = 1.25
+@export var attack_cooldown_max = 2.5
+@export var attack_range = 2.5
 var can_attack = true
 var rng = RandomNumberGenerator.new()
 
 signal enemyDied
+
+var hitbox = preload("res://Scenes/EnemyHitBox.tscn")
+@export var attack_damage = 10
 
 func _ready():
 	update_health_bar()
@@ -133,10 +136,34 @@ func take_damage(dmg):
 
 func attack():
 	if(can_attack):
-		print(str(self)+"tried to attack")
 		can_attack = false
-		attack_timer.start(rng.randf_range(attack_cooldown_min, attack_cooldown_max))
-		#attack animation here(?)
+		var combo = false
+		
+		#33% chance to do combo attack
+		if(rng.randf_range(0,1)<0.33):
+			combo=true
+		if(combo):
+			attack_timer.start(0.1)
+		else:
+			attack_timer.start(rng.randf_range(attack_cooldown_min, attack_cooldown_max))
+		var hand
+		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "punch"): #right hand punch
+			hand = skeleton.get_node("RightHandAttachment")
+			animation_tree.set("parameters/AttackState/conditions/combo", true)
+			animation_tree.set("parameters/AttackState/conditions/stop", false)
+		else: #left hand punch
+			hand = skeleton.get_node("LeftHandAttachment")
+			animation_tree.set("parameters/AttackState/conditions/combo", false)
+			animation_tree.set("parameters/AttackState/conditions/stop", true)
+			animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
+		#prevent multiple hitboxes from spawning
+		if(hand.get_children().size()>0):
+			for child in hand.get_children():
+				child.queue_free()
+		var punch_hitbox = hitbox.instantiate()
+		punch_hitbox.damage = attack_damage
+		hand.add_child(punch_hitbox)
+		#hitbox gets deleted in animationtree signal
 
 func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
 	if area.get_groups().has("player_hitbox"):
@@ -144,3 +171,11 @@ func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
 
 func _on_attack_timer_timeout():
 	can_attack = true
+
+func _on_animation_tree_animation_finished(anim_name):
+	if(anim_name=="punch"):
+		for child in skeleton.get_node("LeftHandAttachment").get_children():
+			child.queue_free()
+	elif(anim_name == "punch2"):
+		for child in skeleton.get_node("RightHandAttachment").get_children():
+			child.queue_free()
