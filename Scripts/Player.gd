@@ -60,7 +60,7 @@ func _physics_process(delta):
 			else:
 				skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
 				ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
-				rotate_object_local(Vector3.UP, PI) #look_at points in the opposite direction so we have t
+				rotate_object_local(Vector3.UP, PI) #look_at points in the opposite direction so we have to flip 180
 			skeleton.rotation.x=0
 			skeleton.rotation.z=0
 			ragdoll_skeleton.rotation.x=0
@@ -92,6 +92,15 @@ func attack():
 		animation_tree.set("parameters/AttackState/conditions/combo", false)
 		animation_tree.set("parameters/AttackState/conditions/stop", true)
 		animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
+	if(camera_controller.camera_locked_on):
+		skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
+		ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
+		rotate_object_local(Vector3.UP, PI) #look_at points in the opposite direction so we have to flip 180
+		skeleton.rotation.x=0
+		skeleton.rotation.z=0
+		ragdoll_skeleton.rotation.x=0
+		ragdoll_skeleton.rotation.z=0
+	
 	#prevent multiple hitboxes from spawning
 	if(hand.get_children().size()>0):
 		for child in hand.get_children():
@@ -121,6 +130,7 @@ func die():
 func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 	if area.get_groups().has("enemy_hitbox"):
 		take_damage(area.damage)
+		area.queue_free()
 
 func _on_animation_tree_animation_finished(anim_name):
 	if(anim_name=="punch"):

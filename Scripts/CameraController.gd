@@ -197,6 +197,8 @@ func _unhandled_input(event):
 			pitch_input = - event.relative.y * camera_mouse_sensitivity
 
 func _on_enemy_death():
+	if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)):
+		lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, default_material)
 	spring_arm.rotation.x = 0
 	spring_arm.rotation.y = 0
 	spring_arm.rotation.z = 0

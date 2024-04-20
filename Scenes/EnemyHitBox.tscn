@@ -1,10 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://djvx4hkl3rvyq"]
+[gd_scene load_steps=3 format=3 uid="uid://djvx4hkl3rvyq"]
 
 [ext_resource type="Script" path="res://Scripts/HitBox.gd" id="1_y5s21"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_nhubd"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_locwf"]
+radius = 0.25
 
 [node name="EnemyHitBox" type="Area3D" groups=["enemy_hitbox"]]
 collision_layer = 16
@@ -13,7 +12,3 @@ script = ExtResource("1_y5s21")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_nhubd")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 0, 0)
-mesh = SubResource("BoxMesh_locwf")

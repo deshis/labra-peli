@@ -168,6 +168,7 @@ func attack():
 func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
 	if area.get_groups().has("player_hitbox"):
 		take_damage(area.damage)
+		area.queue_free()
 
 func _on_attack_timer_timeout():
 	can_attack = true
