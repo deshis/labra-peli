@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bah33w2cmpho5"
-path="res://.godot/imported/ragdoll_guy.blend-d4de827ecc83b8577ba0efb0cba49139.scn"
+path="res://.godot/imported/ragdoll_guy.blend-d424eac382fe4b8e364bec79a22a89ff.scn"
 
 [deps]
 
-source_file="res://Assets/Models/Player/ragdoll/ragdoll_guy.blend"
-dest_files=["res://.godot/imported/ragdoll_guy.blend-d4de827ecc83b8577ba0efb0cba49139.scn"]
+source_file="res://Assets/Models/Player/ragdoll_old/ragdoll_guy.blend"
+dest_files=["res://.godot/imported/ragdoll_guy.blend-d424eac382fe4b8e364bec79a22a89ff.scn"]
 
 [params]
 

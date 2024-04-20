@@ -5,7 +5,7 @@ extends CanvasLayer
 @onready var continue_button = $PauseButtonsContainer/ContinueButton
 
 func _process(_delta):
-	if Input.is_action_just_pressed("ui_cancel"):
+	if Input.is_action_just_pressed("ui_cancel") and Global.can_pause:
 		toggle_pause_menu()
 
 func toggle_pause_menu():

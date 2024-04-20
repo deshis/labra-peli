@@ -24,7 +24,7 @@ var dead = false
 var close_to_player = false
 
 @onready var skeleton = $guy/DRV_Armature/Skeleton3D
-@onready var ragdoll_skeleton = $ragdoll_guy/DRV_Armature/Skeleton3D
+@onready var ragdoll_skeleton = $enemy_ragdoll/DRV_Armature/Skeleton3D
 @onready var animation_tree = $guy/AnimationTree
 @onready var default_material = preload("res://Materials/default.tres")
 
@@ -43,7 +43,7 @@ var hitbox = preload("res://Scenes/EnemyHitBox.tscn")
 func _ready():
 	update_health_bar()
 	skeleton.get_node("Guy").set_surface_override_material(0, default_material)
-	$ragdoll_guy.visible = false
+	$enemy_ragdoll.visible = false
 
 func _physics_process(delta):
 	var next_location 
@@ -118,13 +118,20 @@ func die():
 	remove_from_group("enemies")
 	get_tree().current_scene._on_main_enemy_switch_timer_timeout() #force main enemy to switch when enemy dies
 	$guy.visible=false
-	$ragdoll_guy.visible = true
+	$enemy_ragdoll.visible = true
 	ragdoll_skeleton.physical_bones_start_simulation()
+	
+	#add random impulse to make ragdoll more interesting
+	var rng = RandomNumberGenerator.new()
+	var random_direction = Vector3(rng.randf_range(-1,1), rng.randf_range(-1,1), rng.randf_range(-1,1)).normalized()
+	ragdoll_skeleton.get_node("Physical Bone Hip").apply_central_impulse(random_direction*20)
+	dead = true
+	
 	enemyDied.emit()
 	
 	#remove everything except ragdoll
 	var children = get_children()
-	children.erase($ragdoll_guy)
+	children.erase($enemy_ragdoll)
 	for node in children:
 		node.queue_free()
 

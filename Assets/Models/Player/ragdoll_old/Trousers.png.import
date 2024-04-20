@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cpqcwru2h2ch4"
-path.s3tc="res://.godot/imported/Body.png-3dcf44d21cf61db4254e6a5599218137.s3tc.ctex"
+uid="uid://cr41srm08op34"
+path.s3tc="res://.godot/imported/Trousers.png-2531d909eedb8bf50bbc34fdc7f0ab5a.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Models/Player/ragdoll/Body.png"
-dest_files=["res://.godot/imported/Body.png-3dcf44d21cf61db4254e6a5599218137.s3tc.ctex"]
+source_file="res://Assets/Models/Player/ragdoll_old/Trousers.png"
+dest_files=["res://.godot/imported/Trousers.png-2531d909eedb8bf50bbc34fdc7f0ab5a.s3tc.ctex"]
 
 [params]
 

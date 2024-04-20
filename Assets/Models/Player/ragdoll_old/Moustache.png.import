@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dj3qge47xo36v"
-path.s3tc="res://.godot/imported/Moustache.png-870879158c00936e3b9503d703555e22.s3tc.ctex"
+path.s3tc="res://.godot/imported/Moustache.png-981db88ed5064b9bc949e87ac695e08c.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Models/Player/ragdoll/Moustache.png"
-dest_files=["res://.godot/imported/Moustache.png-870879158c00936e3b9503d703555e22.s3tc.ctex"]
+source_file="res://Assets/Models/Player/ragdoll_old/Moustache.png"
+dest_files=["res://.godot/imported/Moustache.png-981db88ed5064b9bc949e87ac695e08c.s3tc.ctex"]
 
 [params]
 

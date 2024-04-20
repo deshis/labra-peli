@@ -11,7 +11,7 @@ func _ready():
 
 func open_death_screen():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	#ui_layer.visible = false
+	Global.can_pause = false
 	pause_layer.visible = false
 	buttons.visible = true
 	restart_button.grab_focus()

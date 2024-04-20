@@ -18,7 +18,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var camera_controller = $CameraController
 @onready var skeleton = $guy/DRV_Armature/Skeleton3D
-@onready var ragdoll_skeleton = $ragdoll_guy/DRV_Armature/Skeleton3D
+@onready var ragdoll_skeleton = $player_ragdoll/DRV_Armature/Skeleton3D
 @onready var animation_tree = $guy/AnimationTree
 
 var hitbox = preload("res://Scenes/PlayerHitBox.tscn")
@@ -27,7 +27,7 @@ var hitbox = preload("res://Scenes/PlayerHitBox.tscn")
 var dead = false
 
 func _ready():
-	$ragdoll_guy.visible = false
+	$player_ragdoll.visible = false
 
 func _physics_process(delta):
 	
@@ -122,8 +122,13 @@ func take_damage(dmg):
 
 func die():
 	$guy.visible = false
-	$ragdoll_guy.visible = true
+	$player_ragdoll.visible = true
 	ragdoll_skeleton.physical_bones_start_simulation()
+	
+	#add random impulse to make ragdoll more interesting
+	var rng = RandomNumberGenerator.new()
+	var random_direction = Vector3(rng.randf_range(-1,1), rng.randf_range(-1,1), rng.randf_range(-1,1)).normalized()
+	ragdoll_skeleton.get_node("Physical Bone Hip").apply_central_impulse(random_direction*20)
 	dead = true
 	playerDied.emit()
 
