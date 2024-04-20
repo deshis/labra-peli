@@ -1,10 +1,12 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://guo0dqjarpc8"]
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://guo0dqjarpc8"]
 
+[ext_resource type="Texture2D" uid="uid://cwgw4me72f72j" path="res://Assets/Models/Enemy/enemy-guy_EnemyBody.png" id="1_3qau3"]
 [ext_resource type="Material" uid="uid://cfe6jmmqjgjdb" path="res://Materials/highlighted_next_pass.tres" id="1_x6vdu"]
 
 [resource]
 next_pass = ExtResource("1_x6vdu")
 cull_mode = 2
 albedo_color = Color(0.678431, 0.678431, 0.678431, 1)
+albedo_texture = ExtResource("1_3qau3")
 texture_filter = 1
 grow_amount = 0.07
