@@ -36,6 +36,9 @@ func _ready():
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Input.set_use_accumulated_input(false)
+	
+	for enemy in get_tree().get_nodes_in_group("enemies"):
+		enemy.enemyDied.connect(_on_enemy_death)
 
 func _physics_process(_delta):
 	#camera follows player with lerp smoothing
@@ -192,6 +195,16 @@ func _unhandled_input(event):
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 			twist_input = - event.relative.x * camera_mouse_sensitivity
 			pitch_input = - event.relative.y * camera_mouse_sensitivity
+
+func _on_enemy_death():
+	spring_arm.rotation.x = 0
+	spring_arm.rotation.y = 0
+	spring_arm.rotation.z = 0
+	rotation.x = 0
+	rotation.z = 0
+	lock_on_targets = null
+	camera_target_index = null
+	camera_locked_on = false
 
 func is_wall_in_way(target):
 	ray.set_target_position(to_local(target.position))
