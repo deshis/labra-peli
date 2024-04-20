@@ -86,7 +86,7 @@ func take_damage(dmg):
 func die():
 	$guy.visible = false
 	$ragdoll_guy.visible = true
-	$ragdoll_guy/DRV_Armature/Skeleton3D.physical_bones_start_simulation()
+	ragdoll_skeleton.physical_bones_start_simulation()
 	dead = true
 	playerDied.emit()
 
