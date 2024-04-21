@@ -209,9 +209,10 @@ func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
 		#set flincher
 		animation_tree.set("parameters/Flinch/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 		#knockback
+		
 		var dir = global_position - area.get_parent().get_parent().global_position
 		dir.y=0
-		velocity += dir*area.knockback_strength
+		velocity = dir.normalized()*area.knockback_strength
 		move_and_slide()
 		area.queue_free()
 

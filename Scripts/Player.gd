@@ -23,7 +23,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var hitbox = preload("res://Scenes/PlayerHitBox.tscn")
 @export var attack_damage = 50
-@export var attack_knockback_strength = 3.5
+@export var attack_knockback_strength = 10
 
 var dead = false
 
@@ -183,7 +183,7 @@ func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 			#knockback
 			var dir = global_position - area.get_parent().get_parent().global_position
 			dir.y=0
-			velocity += dir*area.knockback_strength
+			velocity = dir.normalized()*area.knockback_strength
 			move_and_slide()
 		area.queue_free()
 
