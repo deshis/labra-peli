@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 class_name Player
 
-@export var WALK_SPEED = 4.0
+@export var WALK_SPEED = 4
 @export var RUN_SPEED = 6.0
 var current_speed
 
@@ -56,7 +56,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	
-	if(!can_start_new_attack_combo or blocking):
+	if(!can_start_new_attack_combo):
 		current_speed = 0
 	elif(camera_controller.camera_locked_on):
 		current_speed = WALK_SPEED
@@ -110,7 +110,7 @@ func _physics_process(delta):
 			animation_tree.set("parameters/idle-run/blend_position", velocity.length() / current_speed)
 		else:
 			animation_tree.set("parameters/isStrafe/blend_amount", 1.0)
-			animation_tree.set("parameters/strafe/blend_position", input_dir)
+			animation_tree.set("parameters/strafe/blend_position", Vector2(input_dir.x, -input_dir.y))
 	
 	if Input.is_action_just_pressed("testi"):
 		take_damage(50)
