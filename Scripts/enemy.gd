@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
-@export var WALK_SPEED = 3.5
-@export var RUN_SPEED = 5.5
+@export var WALK_SPEED = 2.5
+@export var RUN_SPEED = 5
 var current_speed
 
 @onready var player = get_node('/root/Main/Player')
@@ -35,7 +35,7 @@ var close_to_player = false
 var can_attack = true
 var rng = RandomNumberGenerator.new()
 
-signal enemyDied
+signal enemyDied(guy)
 
 var hitbox = preload("res://Scenes/EnemyHitBox.tscn")
 @export var attack_damage = 10
@@ -127,7 +127,7 @@ func die():
 	ragdoll_skeleton.get_node("Physical Bone Hip").apply_central_impulse(random_direction*20)
 	dead = true
 	
-	enemyDied.emit()
+	enemyDied.emit(self)
 	
 	#remove everything except ragdoll
 	var children = get_children()

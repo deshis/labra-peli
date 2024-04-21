@@ -210,31 +210,21 @@ script = ExtResource("10_uq3l4")
 
 [node name="Enemy3" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.64314, -39.2447, 7.00848)
-WALK_SPEED = 5.5
-RUN_SPEED = 8.5
 
 [node name="PlayerHitBox" parent="." instance=ExtResource("13_t8t2e")]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 4.16151, -39.9981, 18.7098)
 
 [node name="Enemy4" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -39.2447, -5.65439)
-WALK_SPEED = 5.5
-RUN_SPEED = 8.5
 
 [node name="Enemy5" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -39.2447, 7.59001)
-WALK_SPEED = 5.5
-RUN_SPEED = 8.5
 
 [node name="Enemy6" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.51166, -38.2998, 6.56334)
-WALK_SPEED = 5.5
-RUN_SPEED = 8.5
 
 [node name="Enemy7" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94313, -38.2037, -11.3088)
-WALK_SPEED = 5.5
-RUN_SPEED = 8.5
 
 [connection signal="timeout" from="EnemyPathfindingTimer" to="." method="_on_enemy_pathfinding_timer_timeout"]
 [connection signal="timeout" from="MainEnemySwitchTimer" to="." method="_on_main_enemy_switch_timer_timeout"]

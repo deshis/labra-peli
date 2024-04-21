@@ -85,9 +85,6 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("testi"):
 		take_damage(50)
 	
-	#print(animation_tree.get("parameters/AttackState/conditions/stop"))
-	#print(animation_tree.get("parameters/AttackState/conditions/combo"))
-	
 
 func attack():
 	var hand
