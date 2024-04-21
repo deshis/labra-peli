@@ -90,7 +90,7 @@ func _physics_process(delta):
 
 func attack():
 	var hand
-	if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "punch"): #right hand punch
+	if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "l1"): #right hand punch
 		hand = skeleton.get_node("RightHandAttachment")
 		animation_tree.set("parameters/AttackState/conditions/combo", true)
 		animation_tree.set("parameters/AttackState/conditions/stop", false)
@@ -145,6 +145,8 @@ func die():
 func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 	if area.get_groups().has("enemy_hitbox"):
 		take_damage(area.damage)
+		#set flincher
+		animation_tree.set("parameters/Flinch/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 		#knockback
 		var dir = global_position - area.get_parent().get_parent().global_position
 		dir.y=0
@@ -154,15 +156,15 @@ func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 		
 		area.queue_free()
 
-func _on_animation_tree_animation_finished(anim_name):
+func animation_finished(anim_name):
 	match anim_name:
-		"punch":
+		"attack_l1":
 			for child in skeleton.get_node("LeftHandAttachment").get_children():
 				child.queue_free()
-		"punch2":
+		"attack_l2":
 			for child in skeleton.get_node("RightHandAttachment").get_children():
 				child.queue_free()
-		"punch_stop":
+		"attack_l1_stop":
 			can_start_new_attack_combo = true
-		"punch2stop":
+		"attack_l2_stop":
 			can_start_new_attack_combo = true

@@ -24,7 +24,7 @@ var lock_on_change_angle_max = 180
 
 var current_target
 
-var enemy_material_node_path = "guy/DRV_Armature/Skeleton3D/Guy"
+var enemy_material_node_path = "enemy_guy/DRV_Armature/Skeleton3D/Guy"
 
 
 

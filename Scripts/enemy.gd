@@ -23,9 +23,9 @@ var health = max_health
 var dead = false
 var close_to_player = false
 
-@onready var skeleton = $guy/DRV_Armature/Skeleton3D
+@onready var skeleton = $enemy_guy/DRV_Armature/Skeleton3D
 @onready var ragdoll_skeleton = $enemy_ragdoll/DRV_Armature/Skeleton3D
-@onready var animation_tree = $guy/AnimationTree
+@onready var animation_tree = $enemy_guy/AnimationTree
 @onready var default_material = preload("res://Materials/default.tres")
 
 @onready var attack_timer = $AttackTimer
@@ -121,7 +121,7 @@ func die():
 	dead = true
 	remove_from_group("enemies")
 	get_tree().current_scene._on_main_enemy_switch_timer_timeout() #force main enemy to switch when enemy dies
-	$guy.visible=false
+	$enemy_guy.visible=false
 	$enemy_ragdoll.visible = true
 	ragdoll_skeleton.physical_bones_start_simulation()
 	
@@ -179,6 +179,8 @@ func attack():
 func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
 	if area.get_groups().has("player_hitbox"):
 		take_damage(area.damage)
+		#set flincher
+		animation_tree.set("parameters/Flinch/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 		#knockback
 		var dir = global_position - area.get_parent().get_parent().global_position
 		dir.y=0
@@ -191,10 +193,11 @@ func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
 func _on_attack_timer_timeout():
 	can_attack = true
 
-func _on_animation_tree_animation_finished(anim_name):
-	if(anim_name=="punch"):
-		for child in skeleton.get_node("LeftHandAttachment").get_children():
-			child.queue_free()
-	elif(anim_name == "punch2"):
-		for child in skeleton.get_node("RightHandAttachment").get_children():
-			child.queue_free()
+func animation_finished(anim_name):
+	match anim_name:
+		"attack_l1":
+			for child in skeleton.get_node("LeftHandAttachment").get_children():
+				child.queue_free()
+		"attack_l2":
+			for child in skeleton.get_node("RightHandAttachment").get_children():
+				child.queue_free()
