@@ -53,7 +53,10 @@ func _physics_process(delta):
 	
 	if(abs(global_position - player.global_position).length()<5): #if close to player
 		close_to_player = true
-		current_speed = WALK_SPEED
+		if(!can_attack):
+			current_speed = 0
+		else:
+			current_speed = WALK_SPEED
 	else:
 		close_to_player = false
 		current_speed = RUN_SPEED

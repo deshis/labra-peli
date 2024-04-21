@@ -45,6 +45,7 @@ func _physics_process(_delta):
 	position = lerp(position, player.position, 0.15)
 	
 	if Input.is_action_just_pressed("camera_lock_on"):
+		
 		#reset camera to prevent weird behaviour
 		spring_arm.rotation.x = 0
 		spring_arm.rotation.y = 0
@@ -207,6 +208,7 @@ func _on_enemy_death(guy):
 		rotation.z = 0
 		camera_locked_on = false
 		Input.action_press("camera_lock_on")
+		Input.action_release("camera_lock_on")
 
 
 func is_wall_in_way(target):

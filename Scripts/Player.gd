@@ -22,7 +22,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var animation_tree = $guy/AnimationTree
 
 var hitbox = preload("res://Scenes/PlayerHitBox.tscn")
-@export var attack_damage = 10
+@export var attack_damage = 50
 @export var attack_knockback_strength = 3.5
 
 var dead = false
@@ -43,10 +43,12 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	
-	if camera_controller.camera_locked_on:
-		current_speed=WALK_SPEED
+	if camera_controller.camera_locked_on and can_start_new_attack_combo:
+		current_speed = WALK_SPEED
+	elif(!can_start_new_attack_combo):
+		current_speed = 0
 	else:
-		current_speed=RUN_SPEED
+		current_speed = RUN_SPEED
 	
 	if(!dead):
 		#Jumping

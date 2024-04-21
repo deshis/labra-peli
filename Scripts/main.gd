@@ -43,6 +43,10 @@ func _on_main_enemy_switch_timer_timeout():
 	for enemy in enemy_array:
 		if(enemy.aggro):
 			aggrod_enemies.push_back(enemy)
-	var random_aggrod_enemy_index = rng.randi_range(0,aggrod_enemies.size()-1)
+			
 	if(aggrod_enemies.size()>0):
-		main_enemy_index = enemy_array.find(aggrod_enemies[random_aggrod_enemy_index])
+		var random_aggrod_enemy_index = rng.randi_range(0,aggrod_enemies.size()-1)
+		if(aggrod_enemies.size()>0):
+			main_enemy_index = enemy_array.find(aggrod_enemies[random_aggrod_enemy_index])
+	else: #if there are no aggrod enemies, pick random enemy
+		main_enemy_index = rng.randi_range(0,enemy_array.size()-1)
