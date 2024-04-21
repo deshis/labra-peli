@@ -162,8 +162,6 @@ func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 		dir.y=0
 		velocity += dir*area.knockback_strength
 		move_and_slide()
-		#flinch animation here (?)
-		
 		area.queue_free()
 
 func animation_finished(anim_name):

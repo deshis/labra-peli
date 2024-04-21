@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://chpqcweaiakc5"]
+[gd_scene load_steps=18 format=3 uid="uid://chpqcweaiakc5"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_cx8ll"]
 [ext_resource type="Script" path="res://Scripts/WorldEnvironment.gd" id="2_7q2bx"]
@@ -13,7 +13,6 @@
 [ext_resource type="Script" path="res://Scripts/Menu/PauseMenu.gd" id="9_5iedf"]
 [ext_resource type="Script" path="res://Scripts/Menu/Button.gd" id="10_uq3l4"]
 [ext_resource type="Script" path="res://Scripts/DeathScreen.gd" id="12_qcvik"]
-[ext_resource type="PackedScene" uid="uid://brclekuybe0fv" path="res://Scenes/PlayerHitBox.tscn" id="13_t8t2e"]
 
 [sub_resource type="Environment" id="Environment_p801p"]
 ambient_light_color = Color(1, 1, 1, 1)
@@ -210,9 +209,6 @@ script = ExtResource("10_uq3l4")
 
 [node name="Enemy3" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.64314, -39.2447, 7.00848)
-
-[node name="PlayerHitBox" parent="." instance=ExtResource("13_t8t2e")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 4.16151, -39.9981, 18.7098)
 
 [node name="Enemy4" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -39.2447, -5.65439)

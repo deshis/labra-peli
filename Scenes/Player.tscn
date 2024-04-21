@@ -14,7 +14,7 @@ height = 3.30581
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qdti0"]
 radius = 0.356283
-height = 2.58288
+height = 3.75991
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.09055, 0)
@@ -46,12 +46,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.774111, 0)
 shape = SubResource("CapsuleShape3D_43n53")
 
 [node name="HurtBox" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.960215, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.160215, 0)
 collision_layer = 32
 collision_mask = 16
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.494681, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.133275, 0)
 shape = SubResource("CapsuleShape3D_qdti0")
 
 [node name="player_ragdoll" parent="." instance=ExtResource("19_h2ue4")]

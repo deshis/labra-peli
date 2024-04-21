@@ -6,22 +6,26 @@
 [ext_resource type="PackedScene" uid="uid://ib78gj8d3n8d" path="res://Scenes/enemy_guy.tscn" id="5_ddpgf"]
 [ext_resource type="PackedScene" uid="uid://dagx7qkawiel" path="res://Scenes/enemy_ragdoll.tscn" id="20_yn77p"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ngfqe"]
-radius = 0.56416
-height = 3.46169
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bx7uk"]
+radius = 0.623568
+height = 3.30581
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_41m2h"]
 viewport_path = NodePath("HealthBar/SubViewport")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xq8go"]
 radius = 0.356283
-height = 2.58288
+height = 3.56473
 
 [node name="Enemy" type="CharacterBody3D" groups=["enemies"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08642, 0)
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_ffijx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.774111, 0)
+shape = SubResource("CapsuleShape3D_bx7uk")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 0.5
@@ -30,11 +34,6 @@ avoidance_enabled = true
 height = 2.17
 radius = 0.8
 neighbor_distance = 10.0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.669747, 0)
-visible = false
-shape = SubResource("CapsuleShape3D_ngfqe")
 
 [node name="PlayerDetectionRayCast" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.619354, 0)
@@ -78,6 +77,7 @@ shape = SubResource("CapsuleShape3D_xq8go")
 
 [node name="enemy_ragdoll" parent="." instance=ExtResource("20_yn77p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+visible = false
 
 [node name="enemy_guy" parent="." instance=ExtResource("5_ddpgf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)

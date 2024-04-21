@@ -41,12 +41,26 @@ var hitbox = preload("res://Scenes/EnemyHitBox.tscn")
 @export var attack_damage = 10
 @export var attack_knockback_strength = 10
 
+
+@onready var collider = $CollisionShape3D
+@onready var hurtbox = $HurtBox/CollisionShape3D
+var collider_offset=0.65
+
+
 func _ready():
 	update_health_bar()
 	skeleton.get_node("Guy").set_surface_override_material(0, default_material)
 	$enemy_ragdoll.visible = false
 
 func _physics_process(delta):
+	#sync colliders with animation
+	if(collider!=null and hurtbox!=null):
+		collider.global_position = skeleton.get_node("ColliderAttachment").global_position
+		collider.position.y=collider_offset
+		hurtbox.global_position = skeleton.get_node("ColliderAttachment").global_position
+		hurtbox.position.y=collider_offset
+	
+	
 	var next_location 
 	var current_location
 	var new_velocity
@@ -112,6 +126,7 @@ func update_target_location(target_location):
 		ray.force_raycast_update()
 		if(ray.get_collider() == player):
 			aggro = true 
+			get_tree().current_scene._on_main_enemy_switch_timer_timeout() #force main enemy to switch when new enemy aggros
 
 func update_health_bar(): #call this when take dmg
 	health_bar.value = health
@@ -186,8 +201,6 @@ func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
 		dir.y=0
 		velocity += dir*area.knockback_strength
 		move_and_slide()
-		#flinch animation here (?)
-		
 		area.queue_free()
 
 func _on_attack_timer_timeout():

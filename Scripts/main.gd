@@ -8,7 +8,7 @@ var main_enemy_switch_lower = 7.0
 var main_enemy_switch_higher = 13.0
 
 @export var passive_enemy_distance = 5
-@export var main_enemy_distance = 2
+@export var main_enemy_distance = 1.25
 
 var main_enemy_index = 0
 var enemy_array = []
