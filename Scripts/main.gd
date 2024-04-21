@@ -16,6 +16,7 @@ var enemy_array = []
 func _ready():
 	main_enemy_switch_timer.start(0.3)
 	enemy_array = get_tree().get_nodes_in_group("enemies")
+	Global.can_pause = true
 
 func _on_enemy_pathfinding_timer_timeout():
 	#set enemy path finding target
