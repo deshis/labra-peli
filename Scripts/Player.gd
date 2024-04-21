@@ -35,6 +35,8 @@ var can_start_new_attack_combo = true
 @onready var hurtbox = $HurtBox/CollisionShape3D
 var collider_offset = -0.35 
 
+var blocking = false
+
 func _ready():
 	$player_ragdoll.visible = false
 
@@ -44,22 +46,29 @@ func _physics_process(delta):
 	collider.position.y=collider_offset
 	hurtbox.global_position = skeleton.get_node("CameraAttachment").global_position
 	hurtbox.position.y=collider_offset
-	
-	if Input.is_action_just_pressed("attack"):
-		attack()
+
+	blocking = false
 	
 	#Gravity
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	
-	if camera_controller.camera_locked_on and can_start_new_attack_combo:
-		current_speed = WALK_SPEED
-	elif(!can_start_new_attack_combo):
+	if(!can_start_new_attack_combo or blocking):
 		current_speed = 0
+	elif(camera_controller.camera_locked_on):
+		current_speed = WALK_SPEED
 	else:
 		current_speed = RUN_SPEED
 	
 	if(!dead):
+		if(Input.is_action_pressed("block")):
+			blocking = true
+		
+		#blocking animation here ??
+		
+		if Input.is_action_just_pressed("attack"):
+			attack()
+		
 		#Jumping
 		if Input.is_action_just_pressed("jump") and is_on_floor():
 			velocity.y = JUMP_VELOCITY
@@ -98,27 +107,29 @@ func _physics_process(delta):
 		take_damage(50)
 	
 
+
 func attack():
 	var hand
-	if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "l1"): #right hand punch
-		hand = skeleton.get_node("RightHandAttachment")
-		animation_tree.set("parameters/AttackState/conditions/combo", true)
-		animation_tree.set("parameters/AttackState/conditions/stop", false)
-	elif(can_start_new_attack_combo): #left hand punch
-		can_start_new_attack_combo = false
-		hand = skeleton.get_node("LeftHandAttachment")
-		animation_tree.set("parameters/AttackState/conditions/combo", false)
-		animation_tree.set("parameters/AttackState/conditions/stop", true)
-		animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
-		
-	if(camera_controller.camera_locked_on): # look at locked on enemy
-		skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
-		ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
-		rotate_object_local(Vector3.UP, PI)
-		skeleton.rotation.x=0
-		skeleton.rotation.z=0
-		ragdoll_skeleton.rotation.x=0
-		ragdoll_skeleton.rotation.z=0
+	if(!blocking):
+		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "l1"): #right hand punch
+			hand = skeleton.get_node("RightHandAttachment")
+			animation_tree.set("parameters/AttackState/conditions/combo", true)
+			animation_tree.set("parameters/AttackState/conditions/stop", false)
+		elif(can_start_new_attack_combo): #left hand punch
+			can_start_new_attack_combo = false
+			hand = skeleton.get_node("LeftHandAttachment")
+			animation_tree.set("parameters/AttackState/conditions/combo", false)
+			animation_tree.set("parameters/AttackState/conditions/stop", true)
+			animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
+			
+		if(camera_controller.camera_locked_on): # look at locked on enemy
+			skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
+			ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
+			rotate_object_local(Vector3.UP, PI)
+			skeleton.rotation.x=0
+			skeleton.rotation.z=0
+			ragdoll_skeleton.rotation.x=0
+			ragdoll_skeleton.rotation.z=0
 	
 
 	if(hand!=null):
@@ -154,15 +165,18 @@ func die():
 
 func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 	if area.get_groups().has("enemy_hitbox"):
-		take_damage(area.damage)
-		#set flincher
-		animation_tree.set("parameters/Flinch/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
-		#knockback
-		var dir = global_position - area.get_parent().get_parent().global_position
-		dir.y=0
-		velocity += dir*area.knockback_strength
-		move_and_slide()
-		area.queue_free()
+		if(blocking):
+			print("attack blocked!!")
+		else:
+			take_damage(area.damage)
+			#set flincher
+			animation_tree.set("parameters/Flinch/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+			#knockback
+			var dir = global_position - area.get_parent().get_parent().global_position
+			dir.y=0
+			velocity += dir*area.knockback_strength
+			move_and_slide()
+			area.queue_free()
 
 func animation_finished(anim_name):
 	match anim_name:
