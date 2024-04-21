@@ -65,11 +65,15 @@ func _physics_process(delta):
 		
 		
 	if(!dead):
-		blocking = false
-		if(Input.is_action_pressed("block")):
+		if(Input.is_action_pressed("block") && animation_tree.get("parameters/GuardState/playback").get_current_node() != "guard"):
 			blocking = true
-			
-		#blocking animation here ??
+			animation_tree.set("parameters/GuardState/conditions/guard_stop", false)
+			animation_tree.set("parameters/Guard/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
+		
+		if(Input.is_action_just_released("block") && blocking):
+			animation_tree.set("parameters/GuardState/conditions/guard_stop", true)
+			blocking = false
+		
 		
 		if Input.is_action_just_pressed("attack"):
 			attack()

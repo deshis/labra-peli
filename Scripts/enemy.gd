@@ -91,7 +91,7 @@ func _physics_process(delta):
 			skeleton.look_at(player.global_position)
 			ragdoll_skeleton.look_at(player.global_position)
 			animation_tree.set("parameters/isStrafe/blend_amount", 1.0)
-			animation_tree.set("parameters/strafe/blend_position", velocity)
+			animation_tree.set("parameters/strafe/blend_position", Vector2((next_location - current_location).normalized().rotated(Vector3.UP, skeleton.rotation.y).x, (next_location - current_location).normalized().rotated(Vector3.UP, skeleton.rotation.y).z))
 		else: #else look at navigation path direction and run
 			skeleton.look_at(to_global(new_velocity), Vector3.UP)
 			ragdoll_skeleton.look_at(to_global(new_velocity), Vector3.UP)
@@ -184,7 +184,7 @@ func attack():
 		else:
 			attack_timer.start(rng.randf_range(attack_cooldown_min, attack_cooldown_max))
 		var hand
-		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "punch"): #right hand punch
+		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "l1"): #right hand punch
 			hand = skeleton.get_node("RightHandAttachment")
 			animation_tree.set("parameters/AttackState/conditions/combo", true)
 			animation_tree.set("parameters/AttackState/conditions/stop", false)
