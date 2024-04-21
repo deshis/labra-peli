@@ -204,8 +204,6 @@ func _on_enemy_death():
 	spring_arm.rotation.z = 0
 	rotation.x = 0
 	rotation.z = 0
-	lock_on_targets = null
-	camera_target_index = null
 	camera_locked_on = false
 
 func is_wall_in_way(target):

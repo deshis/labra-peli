@@ -29,6 +29,8 @@ var dead = false
 
 var rng = RandomNumberGenerator.new()
 
+var can_start_new_attack_combo = true
+
 func _ready():
 	$player_ragdoll.visible = false
 
@@ -93,11 +95,13 @@ func attack():
 		hand = skeleton.get_node("RightHandAttachment")
 		animation_tree.set("parameters/AttackState/conditions/combo", true)
 		animation_tree.set("parameters/AttackState/conditions/stop", false)
-	else: #left hand punch
+	elif(can_start_new_attack_combo): #left hand punch
+		can_start_new_attack_combo = false
 		hand = skeleton.get_node("LeftHandAttachment")
 		animation_tree.set("parameters/AttackState/conditions/combo", false)
 		animation_tree.set("parameters/AttackState/conditions/stop", true)
 		animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
+		
 	if(camera_controller.camera_locked_on):
 		skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
 		ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
@@ -108,14 +112,15 @@ func attack():
 		ragdoll_skeleton.rotation.z=0
 	
 	#prevent multiple hitboxes from spawning
-	if(hand.get_children().size()>0):
-		for child in hand.get_children():
-			child.queue_free()
-	var punch_hitbox = hitbox.instantiate()
-	punch_hitbox.damage = attack_damage
-	punch_hitbox.knockback_strength = attack_knockback_strength
-	hand.add_child(punch_hitbox)
-	#hitbox gets deleted in animationtree signal
+	if(hand!=null):
+		if(hand.get_children().size()>0):
+			for child in hand.get_children():
+				child.queue_free()
+		var punch_hitbox = hitbox.instantiate()
+		punch_hitbox.damage = attack_damage
+		punch_hitbox.knockback_strength = attack_knockback_strength
+		hand.add_child(punch_hitbox)
+		#hitbox gets deleted in animationtree signal
 
 func update_health():
 	if(health <= 0 and not dead):
@@ -151,9 +156,14 @@ func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 		area.queue_free()
 
 func _on_animation_tree_animation_finished(anim_name):
-	if(anim_name=="punch"):
-		for child in skeleton.get_node("LeftHandAttachment").get_children():
-			child.queue_free()
-	elif(anim_name == "punch2"):
-		for child in skeleton.get_node("RightHandAttachment").get_children():
-			child.queue_free()
+	match anim_name:
+		"punch":
+			for child in skeleton.get_node("LeftHandAttachment").get_children():
+				child.queue_free()
+		"punch2":
+			for child in skeleton.get_node("RightHandAttachment").get_children():
+				child.queue_free()
+		"punch_stop":
+			can_start_new_attack_combo = true
+		"punch2stop":
+			can_start_new_attack_combo = true
