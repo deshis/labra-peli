@@ -39,6 +39,7 @@ signal enemyDied
 
 var hitbox = preload("res://Scenes/EnemyHitBox.tscn")
 @export var attack_damage = 10
+@export var attack_knockback_strength = 10
 
 func _ready():
 	update_health_bar()
@@ -168,12 +169,20 @@ func attack():
 				child.queue_free()
 		var punch_hitbox = hitbox.instantiate()
 		punch_hitbox.damage = attack_damage
+		punch_hitbox.knockback_strength = attack_knockback_strength
 		hand.add_child(punch_hitbox)
 		#hitbox gets deleted in animationtree signal
 
 func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
 	if area.get_groups().has("player_hitbox"):
 		take_damage(area.damage)
+		#knockback
+		var dir = global_position - area.get_parent().get_parent().global_position
+		dir.y=0
+		velocity += dir*area.knockback_strength
+		move_and_slide()
+		#flinch animation here (?)
+		
 		area.queue_free()
 
 func _on_attack_timer_timeout():

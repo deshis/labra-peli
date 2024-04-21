@@ -23,6 +23,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var hitbox = preload("res://Scenes/PlayerHitBox.tscn")
 @export var attack_damage = 10
+@export var attack_knockback_strength = 3.5
 
 var dead = false
 
@@ -82,6 +83,9 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("testi"):
 		take_damage(50)
 	
+	#print(animation_tree.get("parameters/AttackState/conditions/stop"))
+	#print(animation_tree.get("parameters/AttackState/conditions/combo"))
+	
 
 func attack():
 	var hand
@@ -109,6 +113,7 @@ func attack():
 			child.queue_free()
 	var punch_hitbox = hitbox.instantiate()
 	punch_hitbox.damage = attack_damage
+	punch_hitbox.knockback_strength = attack_knockback_strength
 	hand.add_child(punch_hitbox)
 	#hitbox gets deleted in animationtree signal
 
@@ -136,6 +141,13 @@ func die():
 func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 	if area.get_groups().has("enemy_hitbox"):
 		take_damage(area.damage)
+		#knockback
+		var dir = global_position - area.get_parent().get_parent().global_position
+		dir.y=0
+		velocity += dir*area.knockback_strength
+		move_and_slide()
+		#flinch animation here (?)
+		
 		area.queue_free()
 
 func _on_animation_tree_animation_finished(anim_name):
