@@ -39,6 +39,11 @@ var blocking = false
 
 func _ready():
 	$player_ragdoll.visible = false
+	#disable ragdoll collision while alive
+	for node in ragdoll_skeleton.get_children():
+		if node is PhysicalBone3D:
+			node.collision_layer = 0
+			node.collision_mask = 0
 
 func _physics_process(delta):
 	#keep colliders synced with animation
@@ -46,8 +51,6 @@ func _physics_process(delta):
 	collider.position.y=collider_offset
 	hurtbox.global_position = skeleton.get_node("CameraAttachment").global_position
 	hurtbox.position.y=collider_offset
-
-	blocking = false
 	
 	#Gravity
 	if not is_on_floor():
@@ -59,11 +62,13 @@ func _physics_process(delta):
 		current_speed = WALK_SPEED
 	else:
 		current_speed = RUN_SPEED
-	
+		
+		
 	if(!dead):
+		blocking = false
 		if(Input.is_action_pressed("block")):
 			blocking = true
-		
+			
 		#blocking animation here ??
 		
 		if Input.is_action_just_pressed("attack"):
@@ -105,8 +110,6 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("testi"):
 		take_damage(50)
-	
-
 
 func attack():
 	var hand
@@ -155,6 +158,12 @@ func take_damage(dmg):
 func die():
 	$guy.visible = false
 	$player_ragdoll.visible = true
+	#re-enable ragdoll collision
+	for node in ragdoll_skeleton.get_children():
+		if node is PhysicalBone3D:
+			node.collision_layer = 128
+			node.collision_mask = 129
+	
 	ragdoll_skeleton.physical_bones_start_simulation()
 	
 	#add random impulse to make ragdoll more interesting
@@ -176,7 +185,7 @@ func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 			dir.y=0
 			velocity += dir*area.knockback_strength
 			move_and_slide()
-			area.queue_free()
+		area.queue_free()
 
 func animation_finished(anim_name):
 	match anim_name:

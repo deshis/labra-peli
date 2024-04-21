@@ -51,6 +51,11 @@ func _ready():
 	update_health_bar()
 	skeleton.get_node("Guy").set_surface_override_material(0, default_material)
 	$enemy_ragdoll.visible = false
+	#disable ragdoll collision while alive
+	for node in ragdoll_skeleton.get_children():
+		if node is PhysicalBone3D:
+			node.collision_layer = 0
+			node.collision_mask = 0
 
 func _physics_process(delta):
 	#sync colliders with animation
@@ -138,6 +143,13 @@ func die():
 	get_tree().current_scene._on_main_enemy_switch_timer_timeout() #force main enemy to switch when enemy dies
 	$enemy_guy.visible=false
 	$enemy_ragdoll.visible = true
+	
+	#re-enabe ragdoll collision
+	for node in ragdoll_skeleton.get_children():
+		if node is PhysicalBone3D:
+			node.collision_layer = 128
+			node.collision_mask = 129
+	
 	ragdoll_skeleton.physical_bones_start_simulation()
 	
 	#add random impulse to make ragdoll more interesting
