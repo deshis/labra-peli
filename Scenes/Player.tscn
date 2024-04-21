@@ -6,11 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://cvgjonbqjpxxo" path="res://Scenes/guy.tscn" id="5_xy816"]
 [ext_resource type="PackedScene" uid="uid://ccbnoasmq85ei" path="res://Scenes/player_ragdoll.tscn" id="19_h2ue4"]
 
+[sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_qwqt7"]
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_43n53"]
 radius = 0.623568
 height = 3.30581
-
-[sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_qwqt7"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qdti0"]
 radius = 0.356283
@@ -22,11 +22,6 @@ collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_wddm7")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.309562, 0)
-visible = false
-shape = SubResource("CapsuleShape3D_43n53")
-
 [node name="CameraController" type="Node3D" parent="."]
 top_level = true
 visible = false
@@ -34,20 +29,21 @@ script = ExtResource("3_vfb1n")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CameraController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
-visible = false
 shape = SubResource("SeparationRayShape3D_qwqt7")
 spring_length = 4.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraController/SpringArm3D"]
-visible = false
 current = true
 fov = 90.0
 script = ExtResource("3_27x43")
 
 [node name="LockOnRayCast" type="RayCast3D" parent="CameraController"]
-visible = false
 collision_mask = 5
 debug_shape_custom_color = Color(0.839216, 0.458824, 0, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.774111, 0)
+shape = SubResource("CapsuleShape3D_43n53")
 
 [node name="HurtBox" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.960215, 0)
@@ -55,11 +51,12 @@ collision_layer = 32
 collision_mask = 16
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.902467, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.494681, 0)
 shape = SubResource("CapsuleShape3D_qdti0")
 
 [node name="player_ragdoll" parent="." instance=ExtResource("19_h2ue4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+visible = false
 
 [node name="guy" parent="." instance=ExtResource("5_xy816")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)

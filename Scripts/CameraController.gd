@@ -1,7 +1,7 @@
 extends Node3D
 
 @onready var spring_arm = $SpringArm3D
-@onready var player = get_parent()
+@onready var player = get_parent().get_node("guy/DRV_Armature/Skeleton3D/CameraAttachment")
 @onready var ray = $LockOnRayCast
 
 var camera_mouse_sensitivity
@@ -42,7 +42,7 @@ func _ready():
 
 func _physics_process(_delta):
 	#camera follows player with lerp smoothing
-	position = lerp(position, player.position, 0.15)
+	position = lerp(position, player.global_position, 0.15)
 	
 	if Input.is_action_just_pressed("camera_lock_on"):
 		
@@ -70,7 +70,7 @@ func _physics_process(_delta):
 			var look_dir = -basis.z.normalized()
 			for i in range(lock_on_targets.size()):
 				enemy = lock_on_targets[i]
-				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.position, look_dir)
+				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.global_position, look_dir)
 				var difference = enemy.position-closest_point
 				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
 				if(!enemy.dead):
@@ -116,7 +116,7 @@ func _physics_process(_delta):
 			var look_dir = -basis.z.normalized()
 			for i in range(lock_on_targets.size()):
 				enemy = lock_on_targets[i]
-				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.position, look_dir)
+				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.global_position, look_dir)
 				var difference = enemy.position-closest_point
 				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
 				if(!enemy.dead):
@@ -140,7 +140,7 @@ func _physics_process(_delta):
 			var look_dir = -basis.z.normalized()
 			for i in range(lock_on_targets.size()):
 				enemy = lock_on_targets[i]
-				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.position, look_dir)
+				var closest_point = Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.global_position, look_dir)
 				var difference = enemy.position-closest_point
 				var angle_to_enemy = rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
 				if(!enemy.dead):
@@ -198,17 +198,18 @@ func _unhandled_input(event):
 			pitch_input = - event.relative.y * camera_mouse_sensitivity
 
 func _on_enemy_death(guy):
-	if (guy == lock_on_targets[camera_target_index]):
-		if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)):
-			lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, default_material)
-		spring_arm.rotation.x = 0
-		spring_arm.rotation.y = 0
-		spring_arm.rotation.z = 0
-		rotation.x = 0
-		rotation.z = 0
-		camera_locked_on = false
-		Input.action_press("camera_lock_on")
-		Input.action_release("camera_lock_on")
+	if(camera_locked_on):
+		if (guy == lock_on_targets[camera_target_index]):
+			if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)):
+				lock_on_targets[camera_target_index].get_node(enemy_material_node_path).set_surface_override_material(0, default_material)
+			spring_arm.rotation.x = 0
+			spring_arm.rotation.y = 0
+			spring_arm.rotation.z = 0
+			rotation.x = 0
+			rotation.z = 0
+			camera_locked_on = false
+			Input.action_press("camera_lock_on")
+			Input.action_release("camera_lock_on")
 
 
 func is_wall_in_way(target):

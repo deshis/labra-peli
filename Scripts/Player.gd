@@ -31,10 +31,19 @@ var rng = RandomNumberGenerator.new()
 
 var can_start_new_attack_combo = true
 
+@onready var collider = $CollisionShape3D
+@onready var hurtbox = $HurtBox/CollisionShape3D
+var collider_offset = -0.35 
+
 func _ready():
 	$player_ragdoll.visible = false
 
 func _physics_process(delta):
+	#keep colliders synced with animation
+	collider.global_position = skeleton.get_node("CameraAttachment").global_position
+	collider.position.y=collider_offset
+	hurtbox.global_position = skeleton.get_node("CameraAttachment").global_position
+	hurtbox.position.y=collider_offset
 	
 	if Input.is_action_just_pressed("attack"):
 		attack()
@@ -60,14 +69,15 @@ func _physics_process(delta):
 		if direction:
 			velocity.x = direction.x * current_speed
 			velocity.z = direction.z * current_speed
-			if(!camera_controller.camera_locked_on):
-				rotation = Vector3.ZERO;
-				skeleton.look_at(to_global(-direction), Vector3.UP)
-				ragdoll_skeleton.look_at(to_global(-direction), Vector3.UP)
-			else:
-				skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
-				ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
-				rotate_object_local(Vector3.UP, PI) #look_at points in the opposite direction so we have to flip 180
+			if(can_start_new_attack_combo):
+				if(!camera_controller.camera_locked_on):
+					rotation = Vector3.ZERO;
+					skeleton.look_at(to_global(-direction), Vector3.UP)
+					ragdoll_skeleton.look_at(to_global(-direction), Vector3.UP)
+				else:
+					skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
+					ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
+					rotate_object_local(Vector3.UP, PI) #look_at points in the opposite direction so we have to flip 180
 			skeleton.rotation.x=0
 			skeleton.rotation.z=0
 			ragdoll_skeleton.rotation.x=0
@@ -101,18 +111,18 @@ func attack():
 		animation_tree.set("parameters/AttackState/conditions/stop", true)
 		animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
 		
-	if(camera_controller.camera_locked_on):
+	if(camera_controller.camera_locked_on): # look at locked on enemy
 		skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
 		ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
-		rotate_object_local(Vector3.UP, PI) #look_at points in the opposite direction so we have to flip 180
+		rotate_object_local(Vector3.UP, PI)
 		skeleton.rotation.x=0
 		skeleton.rotation.z=0
 		ragdoll_skeleton.rotation.x=0
 		ragdoll_skeleton.rotation.z=0
 	
-	#prevent multiple hitboxes from spawning
+
 	if(hand!=null):
-		if(hand.get_children().size()>0):
+		if(hand.get_children().size()>0):#prevent multiple hitboxes from spawning
 			for child in hand.get_children():
 				child.queue_free()
 		var punch_hitbox = hitbox.instantiate()
