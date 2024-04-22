@@ -184,16 +184,10 @@ func attack():
 			attack_timer.start(rng.randf_range(attack_cooldown_min, attack_cooldown_max))
 		var hand
 		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "l1"): #right hand punch
-			
-			print(str(self)+ "did a light combo attack")
-			
 			hand = skeleton.get_node("RightHandAttachment")
 			animation_tree.set("parameters/AttackState/conditions/combo", true)
 			animation_tree.set("parameters/AttackState/conditions/stop", false)
 		else: #left hand punch
-			
-			print(str(self)+ "did a light attack")
-			
 			hand = skeleton.get_node("LeftHandAttachment")
 			animation_tree.set("parameters/AttackState/conditions/combo", false)
 			animation_tree.set("parameters/AttackState/conditions/stop", true)
@@ -222,16 +216,10 @@ func heavy_attack():
 		#remember to remove hitbox in animation_finished
 		
 		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "l1"): #follow up kick / combo
-			
-			print(str(self)+ "did a heavy combo attack")
-			
 			foot = skeleton.get_node("LeftFootAttachment")
 			animation_tree.set("parameters/AttackState/conditions/combo", true)
 			animation_tree.set("parameters/AttackState/conditions/stop", false)
 		else: #starting kick
-			
-			print(str(self)+ "did a heavy attack")
-			
 			foot = skeleton.get_node("RightFootAttachment")
 			animation_tree.set("parameters/AttackState/conditions/combo", false)
 			animation_tree.set("parameters/AttackState/conditions/stop", true)
@@ -246,15 +234,12 @@ func heavy_attack():
 		punch_hitbox.knockback_strength = attack_knockback_strength
 		foot.add_child(punch_hitbox)
 
-
-
 func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
 	if area.get_groups().has("player_hitbox"):
 		take_damage(area.damage)
 		#set flincher
 		animation_tree.set("parameters/Flinch/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 		#knockback
-		
 		var dir = global_position - area.get_parent().get_parent().global_position
 		dir.y=0
 		velocity = dir.normalized()*area.knockback_strength

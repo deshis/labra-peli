@@ -37,6 +37,16 @@ var collider_offset = -0.35
 
 var blocking = false
 
+@onready var footsteps_player = $FootstepsPlayer
+var footstep_sounds = []
+@onready var punch_player = $PunchPlayer
+var punch_sounds = []
+@onready var hit_player = $HitPlayer
+var hit_sounds = []
+@onready var block_player = $BlockPlayer
+var block_sounds = []
+var sfx_dir = "res://Assets/Audio/SFX"
+
 func _ready():
 	$player_ragdoll.visible = false
 	#disable ragdoll collision while alive
@@ -44,6 +54,20 @@ func _ready():
 		if node is PhysicalBone3D:
 			node.collision_layer = 0
 			node.collision_mask = 0
+	
+	#create audio arrays
+	for file in DirAccess.open(sfx_dir+"/footsteps").get_files():
+		if file.reverse().left(4) =="3pm.":
+			footstep_sounds.append(load(sfx_dir+"/footsteps/"+file))
+	for file in DirAccess.open(sfx_dir+"/swing").get_files():
+		if file.reverse().left(4) =="3pm.":
+			punch_sounds.append(load(sfx_dir+"/swing/"+file))
+	for file in DirAccess.open(sfx_dir+"/hit").get_files():
+		if file.reverse().left(4) =="3pm.":
+			hit_sounds.append(load(sfx_dir+"/hit/"+file))
+	for file in DirAccess.open(sfx_dir+"/block").get_files():
+		if file.reverse().left(4) =="3pm.":
+			block_sounds.append(load(sfx_dir+"/block/"+file))
 
 func _physics_process(delta):
 	#keep colliders synced with animation
@@ -216,8 +240,9 @@ func die():
 
 func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 	if area.get_groups().has("enemy_hitbox"):
-		if(blocking):
-			print("attack blocked!!")
+		if(blocking):#block sound effect
+			block_player.set_stream(block_sounds[rng.randi_range(0, block_sounds.size()-1)])
+			block_player.play()
 		else:
 			take_damage(area.damage)
 			#set flincher
@@ -228,6 +253,10 @@ func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 			dir.y=0
 			velocity = dir.normalized()*area.knockback_strength
 			move_and_slide()
+			#hit sound effect
+			hit_player.set_stream(hit_sounds[rng.randi_range(0, hit_sounds.size()-1)])
+			hit_player.play()
+		
 		area.queue_free()
 
 func cancel_attack():
@@ -271,3 +300,6 @@ func animation_started(anim_name):
 	if "attack_" in anim_name:
 		animation_tree.set("parameters/AttackState/conditions/light", false)
 		animation_tree.set("parameters/AttackState/conditions/heavy", false)
+		if "_stop" not in anim_name: #swing sound effect
+			punch_player.set_stream(punch_sounds[rng.randi_range(0, punch_sounds.size()-1)])
+			punch_player.play()
