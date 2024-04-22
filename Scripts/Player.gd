@@ -62,10 +62,9 @@ func _physics_process(delta):
 		current_speed = WALK_SPEED
 	else:
 		current_speed = RUN_SPEED
-		
-		
+	
 	if(!dead):
-		if(Input.is_action_pressed("block") && animation_tree.get("parameters/GuardState/playback").get_current_node() != "guard"):
+		if(can_start_new_attack_combo && Input.is_action_pressed("block") && animation_tree.get("parameters/GuardState/playback").get_current_node() != "guard"):
 			blocking = true
 			animation_tree.set("parameters/GuardState/conditions/guard_stop", false)
 			animation_tree.set("parameters/Guard/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
