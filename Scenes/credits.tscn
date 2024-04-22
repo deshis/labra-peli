@@ -52,6 +52,7 @@ text = "Back to menu"
 
 [node name="MainMenuMusicPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_v3mst")
+bus = &"Music"
 script = ExtResource("3_1e27s")
 
 [connection signal="pressed" from="BackButtonMargin/BackButton" to="." method="_on_back_button_pressed"]

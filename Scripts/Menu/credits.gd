@@ -2,6 +2,10 @@ extends Control
 
 func _ready():
 	$BackButtonMargin/BackButton.grab_focus()
+	if(Global.main_menu_music_time):
+		$MainMenuMusicPlayer.play(Global.main_menu_music_time)
+	else:
+		$MainMenuMusicPlayer.play()
 
 func _process(_delta):
 	if Input.is_action_pressed("ui_cancel"):

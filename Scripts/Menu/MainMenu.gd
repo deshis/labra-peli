@@ -42,6 +42,13 @@ func _ready():
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(config.get_value("Audio", "volume_sfx")))
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(config.get_value("Audio", "volume_music")))
 	$ButtonsContainer/StartGameButton.grab_focus()
+	
+	#start mainmenu music
+	if(Global.main_menu_music_time):
+		$MainMenuMusicPlayer.play(Global.main_menu_music_time)
+	else:
+		$MainMenuMusicPlayer.play()
+
 
 func _on_start_game_button_pressed():
 	get_tree().change_scene_to_file("res://Scenes/main.tscn")

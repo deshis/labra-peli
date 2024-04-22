@@ -39,6 +39,11 @@ var blocking = false
 
 @onready var footsteps_player = $FootstepsPlayer
 var footstep_sounds = []
+var footsteps_cooldown = false
+@export var footsteps_run_cooldown_time = 60.0/146.0 #guy runs at 146 bpm
+@export var footsteps_walk_cooldown_time = 60.0/192.0 #guy walks at 192 (?) bpm
+@onready var footsteps_timer = $FootstepsTimer
+
 @onready var punch_player = $PunchPlayer
 var punch_sounds = []
 @onready var hit_player = $HitPlayer
@@ -113,10 +118,12 @@ func _physics_process(delta):
 			velocity.z = direction.z * current_speed
 			if(can_start_new_attack_combo):
 				if(!camera_controller.camera_locked_on):
+					play_footsteps(false)
 					rotation = Vector3.ZERO;
 					skeleton.look_at(to_global(-direction), Vector3.UP)
 					ragdoll_skeleton.look_at(to_global(-direction), Vector3.UP)
 				else:
+					play_footsteps(true)
 					skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
 					ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
 					rotate_object_local(Vector3.UP, PI) #look_at points in the opposite direction so we have to flip 180
@@ -303,3 +310,16 @@ func animation_started(anim_name):
 		if "_stop" not in anim_name: #swing sound effect
 			punch_player.set_stream(punch_sounds[rng.randi_range(0, punch_sounds.size()-1)])
 			punch_player.play()
+
+func play_footsteps(walking:bool):
+	if(!footsteps_cooldown):
+		if(walking):
+			footsteps_timer.start(footsteps_walk_cooldown_time)
+		else:
+			footsteps_timer.start(footsteps_run_cooldown_time)
+		footsteps_player.set_stream(footstep_sounds[rng.randi_range(0, footstep_sounds.size()-1)])
+		footsteps_player.play()
+		footsteps_cooldown=true
+	
+func _on_footsteps_timer_timeout():
+	footsteps_cooldown = false
