@@ -134,7 +134,7 @@ func _physics_process(delta):
 		else:
 			velocity.x = move_toward(velocity.x, 0, current_speed)
 			velocity.z = move_toward(velocity.z, 0, current_speed)
-		
+	
 		move_and_slide()
 		if(!camera_controller.camera_locked_on):
 			animation_tree.set("parameters/isStrafe/blend_amount", 0.0)
@@ -290,10 +290,7 @@ func animation_finished(anim_name):
 		if "_stop" in anim_name:
 			can_start_new_attack_combo = true
 			animation_tree.set("parameters/AttackState/conditions/stop", false)
-		else:
-			if !animation_tree.get("parameters/AttackState/conditions/light") and !animation_tree.get("parameters/AttackState/conditions/heavy"):
-				animation_tree.set("parameters/AttackState/conditions/stop", true)
-				
+			
 			for child in skeleton.get_node("LeftHandAttachment").get_children():
 				child.queue_free()
 			for child in skeleton.get_node("RightHandAttachment").get_children():
@@ -302,6 +299,26 @@ func animation_finished(anim_name):
 				child.queue_free()
 			for child in skeleton.get_node("RightFootAttachment").get_children():
 				child.queue_free()
+		else:
+			if !animation_tree.get("parameters/AttackState/conditions/light") and !animation_tree.get("parameters/AttackState/conditions/heavy"):
+				animation_tree.set("parameters/AttackState/conditions/stop", true)
+			match anim_name:
+				"attack_l1":
+					for child in skeleton.get_node("LeftHandAttachment").get_children():
+						child.queue_free()
+				"attack_l2":
+					for child in skeleton.get_node("RightHandAttachment").get_children():
+						child.queue_free()
+				"attack_h1":
+					for child in skeleton.get_node("RightFootAttachment").get_children():
+						child.queue_free()
+				"attack_l1h1":
+					for child in skeleton.get_node("RightFootAttachment").get_children():
+						child.queue_free()
+				"attack_l2h1":
+					for child in skeleton.get_node("LeftFootAttachment").get_children():
+						child.queue_free()
+
 
 func animation_started(anim_name):
 	if "attack_" in anim_name:
