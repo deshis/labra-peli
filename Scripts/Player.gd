@@ -118,16 +118,17 @@ func _physics_process(delta):
 func attack():
 	var hand
 	if(!blocking):
-		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "l1"): #right hand punch
-			hand = skeleton.get_node("RightHandAttachment")
-			animation_tree.set("parameters/AttackState/conditions/combo", true)
-			animation_tree.set("parameters/AttackState/conditions/stop", false)
-		elif(can_start_new_attack_combo): #left hand punch
-			can_start_new_attack_combo = false
+		if can_start_new_attack_combo:
 			hand = skeleton.get_node("LeftHandAttachment")
-			animation_tree.set("parameters/AttackState/conditions/combo", false)
-			animation_tree.set("parameters/AttackState/conditions/stop", true)
+			animation_tree.set("parameters/AttackState/conditions/light", true)
 			animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
+			can_start_new_attack_combo = false
+		else:
+			match animation_tree.get("parameters/AttackState/playback").get_current_node():
+				"l1":
+					animation_tree.set("parameters/AttackState/conditions/light", true)
+					hand = skeleton.get_node("RightHandAttachment")
+				
 			
 		if(camera_controller.camera_locked_on): # look at locked on enemy
 			skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
@@ -152,20 +153,19 @@ func attack():
 func heavy_attack():
 	var foot
 	if(!blocking):
-		
-		#the kciker animation here...
-		#remember to remove hitbox in animation_finished
-		
-		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "l1"): #follow up kick / combo
-			foot = skeleton.get_node("LeftFootAttachment")
-			animation_tree.set("parameters/AttackState/conditions/combo", true)
-			animation_tree.set("parameters/AttackState/conditions/stop", false)
-		elif(can_start_new_attack_combo): #starting kick
-			can_start_new_attack_combo = false
+		if can_start_new_attack_combo:
+			animation_tree.set("parameters/AttackState/conditions/heavy", true)
 			foot = skeleton.get_node("RightFootAttachment")
-			animation_tree.set("parameters/AttackState/conditions/combo", false)
-			animation_tree.set("parameters/AttackState/conditions/stop", true)
 			animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
+			can_start_new_attack_combo = false
+		else:
+			match animation_tree.get("parameters/AttackState/playback").get_current_node():
+				"l1":
+					animation_tree.set("parameters/AttackState/conditions/heavy", true)
+					foot = skeleton.get_node("RightFootAttachment")
+				"l2":
+					animation_tree.set("parameters/AttackState/conditions/heavy", true)
+					foot = skeleton.get_node("LeftFootAttachment")
 		
 		if(camera_controller.camera_locked_on): # look at locked on enemy
 			skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
@@ -221,6 +221,7 @@ func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 		else:
 			take_damage(area.damage)
 			#set flincher
+			cancel_attack()
 			animation_tree.set("parameters/Flinch/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 			#knockback
 			var dir = global_position - area.get_parent().get_parent().global_position
@@ -229,15 +230,44 @@ func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 			move_and_slide()
 		area.queue_free()
 
+func cancel_attack():
+	animation_tree.set("parameters/AttackState/conditions/light", false)
+	animation_tree.set("parameters/AttackState/conditions/heavy", false)	
+	animation_tree.set("parameters/AttackState/conditions/stop", false)	
+	
+	for child in skeleton.get_node("LeftHandAttachment").get_children():
+		child.queue_free()
+	for child in skeleton.get_node("RightHandAttachment").get_children():
+		child.queue_free()
+	for child in skeleton.get_node("LeftFootAttachment").get_children():
+		child.queue_free()
+	for child in skeleton.get_node("RightFootAttachment").get_children():
+		child.queue_free()
+	
+	var offset =  $guy/DRV_Armature/Skeleton3D.get_bone_pose_position($guy/DRV_Armature/Skeleton3D.find_bone("ROOT_CTRL")).z
+	translate(Vector3(0, 0, offset).rotated(Vector3.UP, $guy/DRV_Armature/Skeleton3D.rotation.y))
+	can_start_new_attack_combo = true
+	animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
+
 func animation_finished(anim_name):
-	match anim_name:
-		"attack_l1":
+	if "attack_" in anim_name:
+		if "_stop" in anim_name:
+			can_start_new_attack_combo = true
+			animation_tree.set("parameters/AttackState/conditions/stop", false)
+		else:
+			if !animation_tree.get("parameters/AttackState/conditions/light") and !animation_tree.get("parameters/AttackState/conditions/heavy"):
+				animation_tree.set("parameters/AttackState/conditions/stop", true)
+				
 			for child in skeleton.get_node("LeftHandAttachment").get_children():
 				child.queue_free()
-		"attack_l2":
 			for child in skeleton.get_node("RightHandAttachment").get_children():
 				child.queue_free()
-		"attack_l1_stop":
-			can_start_new_attack_combo = true
-		"attack_l2_stop":
-			can_start_new_attack_combo = true
+			for child in skeleton.get_node("LeftFootAttachment").get_children():
+				child.queue_free()
+			for child in skeleton.get_node("RightFootAttachment").get_children():
+				child.queue_free()
+
+func animation_started(anim_name):
+	if "attack_" in anim_name:
+		animation_tree.set("parameters/AttackState/conditions/light", false)
+		animation_tree.set("parameters/AttackState/conditions/heavy", false)
