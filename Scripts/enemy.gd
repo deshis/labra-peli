@@ -33,6 +33,7 @@ var close_to_player = false
 @export var attack_cooldown_max = 2.5
 @export var attack_range = 2.5
 var can_attack = true
+var can_combo = false
 var rng = RandomNumberGenerator.new()
 
 signal enemyDied(guy)
@@ -96,7 +97,7 @@ func _physics_process(delta):
 			skeleton.look_at(to_global(new_velocity), Vector3.UP)
 			ragdoll_skeleton.look_at(to_global(new_velocity), Vector3.UP)
 			animation_tree.set("parameters/isStrafe/blend_amount", 0.0)
-			animation_tree.set("parameters/idle-run/blend_position", velocity.length() / current_speed)
+			animation_tree.set("parameters/idle-run/blend_position", (current_speed != 0 if 0.5 else 0))
 		skeleton.rotate_object_local(Vector3.UP, PI)
 		ragdoll_skeleton.rotate_object_local(Vector3.UP, PI)
 		skeleton.rotation.x = 0
@@ -109,6 +110,18 @@ func _physics_process(delta):
 				attack()
 			else:
 				heavy_attack()
+		elif(abs(global_position - player.global_position).length()<attack_range and can_combo):
+			can_combo = false
+			match animation_tree.get("parameters/AttackState/playback").get_current_node():
+				"l1":
+					if(rng.randf_range(0,1)<0.5):
+						attack()
+					else:
+						heavy_attack()
+				"l2":
+					if(rng.randf_range(0,1)<0.5):
+						heavy_attack()
+		
 	else:
 		velocity.x = 0
 		velocity.z = 0
@@ -175,24 +188,20 @@ func take_damage(dmg):
 		die()
 
 func attack():
-	if(can_attack):
+	var hand
+	can_combo = false
+	if can_attack:
+		hand = skeleton.get_node("LeftHandAttachment")
+		animation_tree.set("parameters/AttackState/conditions/light", true)
+		animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
 		can_attack = false
-		#50% chance to do combo attack
-		if(rng.randf_range(0,1)<0.5):
-			attack_timer.start(0.1)
-		else:
-			attack_timer.start(rng.randf_range(attack_cooldown_min, attack_cooldown_max))
-		var hand
-		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "l1"): #right hand punch
-			hand = skeleton.get_node("RightHandAttachment")
-			animation_tree.set("parameters/AttackState/conditions/combo", true)
-			animation_tree.set("parameters/AttackState/conditions/stop", false)
-		else: #left hand punch
-			hand = skeleton.get_node("LeftHandAttachment")
-			animation_tree.set("parameters/AttackState/conditions/combo", false)
-			animation_tree.set("parameters/AttackState/conditions/stop", true)
-			animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
-		#prevent multiple hitboxes from spawning
+	else:
+		match animation_tree.get("parameters/AttackState/playback").get_current_node():
+			"l1":
+				animation_tree.set("parameters/AttackState/conditions/light", true)
+				hand = skeleton.get_node("RightHandAttachment")
+	#prevent multiple hitboxes from spawning
+	if(!hand != null):
 		if(hand.get_children().size()>0):
 			for child in hand.get_children():
 				child.queue_free()
@@ -203,29 +212,24 @@ func attack():
 		#hitbox gets deleted in animationtree signal
 
 func heavy_attack():
-	if(can_attack):
+	var foot
+	can_combo = false	
+	if can_attack:
+		animation_tree.set("parameters/AttackState/conditions/heavy", true)
+		foot = skeleton.get_node("RightFootAttachment")
+		animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
 		can_attack = false
-		#50% chance to do combo attack
-		if(rng.randf_range(0,1)<0.5):
-			attack_timer.start(0.1)
-		else:
-			attack_timer.start(rng.randf_range(attack_cooldown_min, attack_cooldown_max))
-		
-		var foot
-		#the kciker animation here...
-		#remember to remove hitbox in animation_finished
-		
-		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "l1"): #follow up kick / combo
-			foot = skeleton.get_node("LeftFootAttachment")
-			animation_tree.set("parameters/AttackState/conditions/combo", true)
-			animation_tree.set("parameters/AttackState/conditions/stop", false)
-		else: #starting kick
-			foot = skeleton.get_node("RightFootAttachment")
-			animation_tree.set("parameters/AttackState/conditions/combo", false)
-			animation_tree.set("parameters/AttackState/conditions/stop", true)
-			animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
-		
-		#prevent multiple hitboxes from spawning
+	else:
+		match animation_tree.get("parameters/AttackState/playback").get_current_node():
+			"l1":
+				animation_tree.set("parameters/AttackState/conditions/heavy", true)
+				foot = skeleton.get_node("RightFootAttachment")
+			"l2":
+				animation_tree.set("parameters/AttackState/conditions/heavy", true)
+				foot = skeleton.get_node("LeftFootAttachment")
+	
+	#prevent multiple hitboxes from spawning
+	if(!foot != null):
 		if(foot.get_children().size()>0):
 			for child in foot.get_children():
 				child.queue_free()
@@ -250,10 +254,28 @@ func _on_attack_timer_timeout():
 	can_attack = true
 
 func animation_finished(anim_name):
-	match anim_name:
-		"attack_l1":
+	if "attack_" in anim_name:
+		if "_stop" in anim_name:
+			can_attack = true
+			animation_tree.set("parameters/AttackState/conditions/stop", false)
+		else:
+			if !animation_tree.get("parameters/AttackState/conditions/light") and !animation_tree.get("parameters/AttackState/conditions/heavy"):
+				animation_tree.set("parameters/AttackState/conditions/stop", true)
+				can_combo = false
+				
 			for child in skeleton.get_node("LeftHandAttachment").get_children():
 				child.queue_free()
-		"attack_l2":
 			for child in skeleton.get_node("RightHandAttachment").get_children():
 				child.queue_free()
+			for child in skeleton.get_node("LeftFootAttachment").get_children():
+				child.queue_free()
+			for child in skeleton.get_node("RightFootAttachment").get_children():
+				child.queue_free()
+
+func animation_started(anim_name):
+	if "attack_" in anim_name:
+		animation_tree.set("parameters/AttackState/conditions/light", false)
+		animation_tree.set("parameters/AttackState/conditions/heavy", false)
+		if "_stop" not in anim_name:
+			if (rng.randf_range(0,1)<0.5):
+				can_combo = true

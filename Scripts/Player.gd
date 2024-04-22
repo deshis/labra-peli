@@ -112,10 +112,11 @@ func _physics_process(delta):
 				velocity.y = JUMP_VELOCITY
 		
 		var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+		var stick_Force = input_dir.length()
 		var direction = (camera_controller.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if direction:
-			velocity.x = direction.x * current_speed
-			velocity.z = direction.z * current_speed
+			velocity.x = direction.x * current_speed * stick_Force
+			velocity.z = direction.z * current_speed * stick_Force
 			if(can_start_new_attack_combo):
 				if(!camera_controller.camera_locked_on):
 					play_footsteps(false)
@@ -138,7 +139,7 @@ func _physics_process(delta):
 		move_and_slide()
 		if(!camera_controller.camera_locked_on):
 			animation_tree.set("parameters/isStrafe/blend_amount", 0.0)
-			animation_tree.set("parameters/idle-run/blend_position", velocity.length() / current_speed)
+			animation_tree.set("parameters/idle-run/blend_position", stick_Force)
 		else:
 			animation_tree.set("parameters/isStrafe/blend_amount", 1.0)
 			animation_tree.set("parameters/strafe/blend_position", Vector2(input_dir.x, -input_dir.y))
