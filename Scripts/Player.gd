@@ -64,22 +64,23 @@ func _physics_process(delta):
 		current_speed = RUN_SPEED
 	
 	if(!dead):
-		if(can_start_new_attack_combo && Input.is_action_pressed("block") && animation_tree.get("parameters/GuardState/playback").get_current_node() != "guard"):
-			blocking = true
-			animation_tree.set("parameters/GuardState/conditions/guard_stop", false)
-			animation_tree.set("parameters/Guard/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
-		
-		if(Input.is_action_just_released("block") && blocking):
-			animation_tree.set("parameters/GuardState/conditions/guard_stop", true)
-			blocking = false
-		
-		
 		if Input.is_action_just_pressed("attack"):
 			attack()
+		if Input.is_action_just_pressed("heavy_attack"):
+			heavy_attack()
 		
-		#Jumping
-		if Input.is_action_just_pressed("jump") and is_on_floor():
-			velocity.y = JUMP_VELOCITY
+		if(can_start_new_attack_combo):
+			if(Input.is_action_pressed("block") && animation_tree.get("parameters/GuardState/playback").get_current_node() != "guard"):
+				blocking = true
+				animation_tree.set("parameters/GuardState/conditions/guard_stop", false)
+				animation_tree.set("parameters/Guard/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
+			
+			if(Input.is_action_just_released("block") && blocking):
+				animation_tree.set("parameters/GuardState/conditions/guard_stop", true)
+				blocking = false
+			
+			if Input.is_action_just_pressed("jump") and is_on_floor() and can_start_new_attack_combo:
+				velocity.y = JUMP_VELOCITY
 		
 		var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 		var direction = (camera_controller.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
@@ -136,8 +137,7 @@ func attack():
 			skeleton.rotation.z=0
 			ragdoll_skeleton.rotation.x=0
 			ragdoll_skeleton.rotation.z=0
-	
-
+		
 	if(hand!=null):
 		if(hand.get_children().size()>0):#prevent multiple hitboxes from spawning
 			for child in hand.get_children():
@@ -147,6 +147,45 @@ func attack():
 		punch_hitbox.knockback_strength = attack_knockback_strength
 		hand.add_child(punch_hitbox)
 		#hitbox gets deleted in animationtree signal
+
+
+func heavy_attack():
+	var foot
+	if(!blocking):
+		
+		#the kciker animation here...
+		#remember to remove hitbox in animation_finished
+		
+		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "l1"): #follow up kick / combo
+			foot = skeleton.get_node("LeftFootAttachment")
+			animation_tree.set("parameters/AttackState/conditions/combo", true)
+			animation_tree.set("parameters/AttackState/conditions/stop", false)
+		elif(can_start_new_attack_combo): #starting kick
+			can_start_new_attack_combo = false
+			foot = skeleton.get_node("RightFootAttachment")
+			animation_tree.set("parameters/AttackState/conditions/combo", false)
+			animation_tree.set("parameters/AttackState/conditions/stop", true)
+			animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
+		
+		if(camera_controller.camera_locked_on): # look at locked on enemy
+			skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
+			ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
+			rotate_object_local(Vector3.UP, PI)
+			skeleton.rotation.x=0
+			skeleton.rotation.z=0
+			ragdoll_skeleton.rotation.x=0
+			ragdoll_skeleton.rotation.z=0
+	
+	if(foot!=null):
+		if(foot.get_children().size()>0):#prevent multiple hitboxes from spawning
+			for child in foot.get_children():
+				child.queue_free()
+		var kick_hitbox = hitbox.instantiate()
+		kick_hitbox.damage = attack_damage
+		kick_hitbox.knockback_strength = attack_knockback_strength
+		foot.add_child(kick_hitbox)
+		#hitbox gets deleted in animationtree signal
+
 
 func update_health():
 	if(health <= 0 and not dead):

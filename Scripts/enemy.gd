@@ -105,7 +105,10 @@ func _physics_process(delta):
 		ragdoll_skeleton.rotation.z = 0
 		
 		if(abs(global_position - player.global_position).length()<attack_range and can_attack):
-			attack()
+			if(rng.randf_range(0,1)<0.5):
+				attack()
+			else:
+				heavy_attack()
 	else:
 		velocity.x = 0
 		velocity.z = 0
@@ -174,21 +177,23 @@ func take_damage(dmg):
 func attack():
 	if(can_attack):
 		can_attack = false
-		var combo = false
-		
-		#33% chance to do combo attack
-		if(rng.randf_range(0,1)<0.33):
-			combo=true
-		if(combo):
+		#50% chance to do combo attack
+		if(rng.randf_range(0,1)<0.5):
 			attack_timer.start(0.1)
 		else:
 			attack_timer.start(rng.randf_range(attack_cooldown_min, attack_cooldown_max))
 		var hand
 		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "l1"): #right hand punch
+			
+			print(str(self)+ "did a light combo attack")
+			
 			hand = skeleton.get_node("RightHandAttachment")
 			animation_tree.set("parameters/AttackState/conditions/combo", true)
 			animation_tree.set("parameters/AttackState/conditions/stop", false)
 		else: #left hand punch
+			
+			print(str(self)+ "did a light attack")
+			
 			hand = skeleton.get_node("LeftHandAttachment")
 			animation_tree.set("parameters/AttackState/conditions/combo", false)
 			animation_tree.set("parameters/AttackState/conditions/stop", true)
@@ -202,6 +207,46 @@ func attack():
 		punch_hitbox.knockback_strength = attack_knockback_strength
 		hand.add_child(punch_hitbox)
 		#hitbox gets deleted in animationtree signal
+
+func heavy_attack():
+	if(can_attack):
+		can_attack = false
+		#50% chance to do combo attack
+		if(rng.randf_range(0,1)<0.5):
+			attack_timer.start(0.1)
+		else:
+			attack_timer.start(rng.randf_range(attack_cooldown_min, attack_cooldown_max))
+		
+		var foot
+		#the kciker animation here...
+		#remember to remove hitbox in animation_finished
+		
+		if(animation_tree.get("parameters/AttackState/playback").get_current_node() == "l1"): #follow up kick / combo
+			
+			print(str(self)+ "did a heavy combo attack")
+			
+			foot = skeleton.get_node("LeftFootAttachment")
+			animation_tree.set("parameters/AttackState/conditions/combo", true)
+			animation_tree.set("parameters/AttackState/conditions/stop", false)
+		else: #starting kick
+			
+			print(str(self)+ "did a heavy attack")
+			
+			foot = skeleton.get_node("RightFootAttachment")
+			animation_tree.set("parameters/AttackState/conditions/combo", false)
+			animation_tree.set("parameters/AttackState/conditions/stop", true)
+			animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
+		
+		#prevent multiple hitboxes from spawning
+		if(foot.get_children().size()>0):
+			for child in foot.get_children():
+				child.queue_free()
+		var punch_hitbox = hitbox.instantiate()
+		punch_hitbox.damage = attack_damage
+		punch_hitbox.knockback_strength = attack_knockback_strength
+		foot.add_child(punch_hitbox)
+
+
 
 func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
 	if area.get_groups().has("player_hitbox"):
