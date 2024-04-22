@@ -13,10 +13,25 @@ var main_enemy_switch_higher = 13.0
 var main_enemy_index = 0
 var enemy_array = []
 
+@onready var music_player = $MusicPlayer
+var music_dir = "res://Assets/Audio/Music"
+var music_files = []
+var music_index = 0
+
 func _ready():
+	Global.main_menu_music_time = 0.0
+	
 	main_enemy_switch_timer.start(0.3)
 	enemy_array = get_tree().get_nodes_in_group("enemies")
 	Global.can_pause = true
+	
+	var dir = DirAccess.open(music_dir)
+	for file in dir.get_files():
+		if file.reverse().left(4) =="3pm.":
+			music_files.append(load(music_dir+'/'+file))
+	music_files.shuffle()
+	music_player.set_stream(music_files[music_index])
+	music_player.play()
 
 func _on_enemy_pathfinding_timer_timeout():
 	#set enemy path finding target
@@ -50,3 +65,11 @@ func _on_main_enemy_switch_timer_timeout():
 			main_enemy_index = enemy_array.find(aggrod_enemies[random_aggrod_enemy_index])
 	else: #if there are no aggrod enemies, pick random enemy
 		main_enemy_index = rng.randi_range(0,enemy_array.size()-1)
+
+
+func _on_music_player_finished():
+	music_index+=1
+	if(music_index>=music_files.size()):
+		music_index=0
+	music_player.set_stream(music_files[music_index])
+	music_player.play()

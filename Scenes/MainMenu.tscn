@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b63r5t7emjdsm"]
+[gd_scene load_steps=11 format=3 uid="uid://b63r5t7emjdsm"]
 
 [ext_resource type="Script" path="res://Scripts/Menu/MainMenu.gd" id="1_fa0ui"]
 [ext_resource type="Script" path="res://Scripts/Menu/Button.gd" id="2_0qfx1"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" path="res://Scripts/WorldEnvironment.gd" id="5_fdldg"]
 [ext_resource type="PackedScene" uid="uid://ib78gj8d3n8d" path="res://Scenes/enemy_guy.tscn" id="6_urasj"]
 [ext_resource type="PackedScene" uid="uid://cvgjonbqjpxxo" path="res://Scenes/guy.tscn" id="7_qkd6i"]
+[ext_resource type="AudioStream" uid="uid://ca1jsuhlls2kl" path="res://Assets/Audio/Music/Menu/Hiding Your Reality.mp3" id="8_b3ofo"]
+[ext_resource type="Script" path="res://Scripts/MainMenuMusicPlayer.gd" id="8_u8aba"]
 
 [sub_resource type="Environment" id="Environment_md26c"]
 ambient_light_color = Color(1, 1, 1, 1)
@@ -60,8 +62,17 @@ theme_override_font_sizes/font_size = 48
 text = "Settings"
 script = ExtResource("2_0qfx1")
 
+[node name="Credits" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../SettingsButton")
+theme_override_font_sizes/font_size = 48
+text = "Credits
+"
+script = ExtResource("2_0qfx1")
+
 [node name="QuitGameButton" type="Button" parent="ButtonsContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../Credits")
 focus_neighbor_bottom = NodePath("../StartGameButton")
 theme_override_font_sizes/font_size = 48
 text = "Quit To Desktop"
@@ -103,9 +114,15 @@ transform = Transform3D(0.112705, 0, -0.487132, 0, 0.5, 0, 0.487132, 0, 0.112705
 [node name="enemy_guy3" parent="Node3D" instance=ExtResource("6_urasj")]
 transform = Transform3D(-0.431226, 0, -0.25307, 0, 0.5, 0, 0.25307, 0, -0.431226, -9.65832, 0.364394, -6.43375)
 
+[node name="MainMenuMusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_b3ofo")
+script = ExtResource("8_u8aba")
+
 [connection signal="mouse_entered" from="ButtonsContainer/StartGameButton" to="ButtonsContainer/StartGameButton" method="_on_mouse_entered"]
 [connection signal="pressed" from="ButtonsContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]
 [connection signal="mouse_entered" from="ButtonsContainer/SettingsButton" to="ButtonsContainer/SettingsButton" method="_on_mouse_entered"]
 [connection signal="pressed" from="ButtonsContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="mouse_entered" from="ButtonsContainer/Credits" to="ButtonsContainer/Credits" method="_on_mouse_entered"]
+[connection signal="pressed" from="ButtonsContainer/Credits" to="." method="_on_credits_pressed"]
 [connection signal="mouse_entered" from="ButtonsContainer/QuitGameButton" to="ButtonsContainer/QuitGameButton" method="_on_mouse_entered"]
 [connection signal="pressed" from="ButtonsContainer/QuitGameButton" to="." method="_on_quit_game_button_pressed"]

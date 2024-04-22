@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://cuyljjssidrap"]
+[gd_scene load_steps=7 format=3 uid="uid://cuyljjssidrap"]
 
 [ext_resource type="Script" path="res://Scripts/Menu/VolumeSlider.gd" id="1_6j3xx"]
 [ext_resource type="Script" path="res://Scripts/Menu/settings.gd" id="1_11n80"]
 [ext_resource type="Script" path="res://Scripts/Menu/Controls.gd" id="3_5mddw"]
 [ext_resource type="Script" path="res://Scripts/Menu/Graphics.gd" id="3_icc2x"]
+[ext_resource type="AudioStream" uid="uid://ca1jsuhlls2kl" path="res://Assets/Audio/Music/Menu/Hiding Your Reality.mp3" id="5_qayk5"]
+[ext_resource type="Script" path="res://Scripts/MainMenuMusicPlayer.gd" id="6_fk65g"]
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -253,6 +255,10 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 focus_neighbor_right = NodePath(".")
 text = "Back to menu"
+
+[node name="MainMenuMusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_qayk5")
+script = ExtResource("6_fk65g")
 
 [connection signal="value_changed" from="TabContainer/Controls/VBoxContainer/MouseSlider" to="TabContainer/Controls" method="_on_mouse_slider_value_changed"]
 [connection signal="value_changed" from="TabContainer/Controls/VBoxContainer/ControllerSlider" to="TabContainer/Controls" method="_on_controller_slider_value_changed"]

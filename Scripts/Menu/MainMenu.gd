@@ -37,7 +37,10 @@ func _ready():
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	
-	
+	#set audio levels 
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(config.get_value("Audio", "volume_master")))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(config.get_value("Audio", "volume_sfx")))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(config.get_value("Audio", "volume_music")))
 	$ButtonsContainer/StartGameButton.grab_focus()
 
 func _on_start_game_button_pressed():
@@ -46,6 +49,11 @@ func _on_start_game_button_pressed():
 func _on_settings_button_pressed():
 	get_tree().change_scene_to_file("res://Scenes/settings.tscn")
 
+func _on_credits_pressed():
+	get_tree().change_scene_to_file("res://Scenes/credits.tscn")
+
 func _on_quit_game_button_pressed():
 	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 	get_tree().quit()
+
+
