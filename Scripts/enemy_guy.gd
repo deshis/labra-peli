@@ -9,3 +9,7 @@ func _on_animation_tree_animation_finished(anim_name):
 	
 	get_parent().animation_finished(anim_name)
 	pass 
+
+
+func _on_animation_tree_animation_started(anim_name):
+	get_parent().animation_started(anim_name)
