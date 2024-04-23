@@ -286,7 +286,7 @@ func _on_attack_timer_timeout():
 func animation_finished(anim_name):
 	if "attack_" in anim_name:
 		if "_stop" in anim_name:
-			can_attack = true
+			attack_timer.start(rng.randf_range(attack_cooldown_min, attack_cooldown_max))
 			animation_tree.set("parameters/AttackState/conditions/stop", false)
 		else:
 			if !animation_tree.get("parameters/AttackState/conditions/light") and !animation_tree.get("parameters/AttackState/conditions/heavy"):
