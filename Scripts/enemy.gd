@@ -48,6 +48,19 @@ var hitbox = preload("res://Scenes/EnemyHitBox.tscn")
 var collider_offset=0.65
 
 
+@onready var footsteps_player = $FootstepsPlayer
+var footstep_sounds = []
+var footsteps_cooldown = false
+@export var footsteps_run_cooldown_time = 60.0/125.0 #guy runs at 125 bpm
+@export var footsteps_walk_cooldown_time = 60.0/192.0 #guy walks at 192 (?) bpm
+@onready var footsteps_timer = $FootstepsTimer
+
+@onready var punch_player = $PunchPlayer
+var punch_sounds = []
+@onready var hit_player = $HitPlayer
+var hit_sounds = []
+var sfx_dir = "res://Assets/Audio/SFX"
+
 func _ready():
 	update_health_bar()
 	skeleton.get_node("Guy").set_surface_override_material(0, default_material)
@@ -57,6 +70,17 @@ func _ready():
 		if node is PhysicalBone3D:
 			node.collision_layer = 0
 			node.collision_mask = 0
+			
+	#create audio arrays
+	for file in DirAccess.open(sfx_dir+"/footsteps").get_files():
+		if file.reverse().left(4) =="3pm.":
+			footstep_sounds.append(load(sfx_dir+"/footsteps/"+file))
+	for file in DirAccess.open(sfx_dir+"/swing").get_files():
+		if file.reverse().left(4) =="3pm.":
+			punch_sounds.append(load(sfx_dir+"/swing/"+file))
+	for file in DirAccess.open(sfx_dir+"/hit").get_files():
+		if file.reverse().left(4) =="3pm.":
+			hit_sounds.append(load(sfx_dir+"/hit/"+file))
 
 func _physics_process(delta):
 	#sync colliders with animation
@@ -89,11 +113,13 @@ func _physics_process(delta):
 		nav.set_velocity(new_velocity)
 		
 		if(close_to_player or new_velocity.length()<0.001): #look at player and strafe
+			play_footsteps(true)
 			skeleton.look_at(player.global_position)
 			ragdoll_skeleton.look_at(player.global_position)
 			animation_tree.set("parameters/isStrafe/blend_amount", 1.0)
 			animation_tree.set("parameters/strafe/blend_position", Vector2((next_location - current_location).normalized().rotated(Vector3.UP, skeleton.rotation.y).x, (next_location - current_location).normalized().rotated(Vector3.UP, skeleton.rotation.y).z))
 		else: #else look at navigation path direction and run
+			play_footsteps(false)
 			skeleton.look_at(to_global(new_velocity), Vector3.UP)
 			ragdoll_skeleton.look_at(to_global(new_velocity), Vector3.UP)
 			animation_tree.set("parameters/isStrafe/blend_amount", 0.0)
@@ -175,9 +201,10 @@ func die():
 	
 	enemyDied.emit(self)
 	
-	#remove everything except ragdoll
+	#remove everything except ragdoll and hitplaye
 	var children = get_children()
 	children.erase($enemy_ragdoll)
+	children.erase($HitPlayer)
 	for node in children:
 		node.queue_free()
 
@@ -240,6 +267,9 @@ func heavy_attack():
 
 func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
 	if area.get_groups().has("player_hitbox"):
+		hit_player.set_stream(hit_sounds[rng.randi_range(0, hit_sounds.size()-1)])
+		hit_player.play()
+		
 		take_damage(area.damage)
 		#set flincher
 		animation_tree.set("parameters/Flinch/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
@@ -272,10 +302,27 @@ func animation_finished(anim_name):
 			for child in skeleton.get_node("RightFootAttachment").get_children():
 				child.queue_free()
 
+
+func play_footsteps(walking:bool):
+	if(!footsteps_cooldown):
+		if(walking):
+			footsteps_timer.start(footsteps_walk_cooldown_time)
+		else:
+			footsteps_timer.start(footsteps_run_cooldown_time)
+		footsteps_player.set_stream(footstep_sounds[rng.randi_range(0, footstep_sounds.size()-1)])
+		footsteps_player.play()
+		footsteps_cooldown=true
+
 func animation_started(anim_name):
 	if "attack_" in anim_name:
 		animation_tree.set("parameters/AttackState/conditions/light", false)
 		animation_tree.set("parameters/AttackState/conditions/heavy", false)
 		if "_stop" not in anim_name:
+			punch_player.set_stream(punch_sounds[rng.randi_range(0, punch_sounds.size()-1)])
+			punch_player.play()
 			if (rng.randf_range(0,1)<0.5):
 				can_combo = true
+
+
+func _on_footsteps_timer_timeout():
+	footsteps_cooldown=false

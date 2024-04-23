@@ -40,7 +40,7 @@ var blocking = false
 @onready var footsteps_player = $FootstepsPlayer
 var footstep_sounds = []
 var footsteps_cooldown = false
-@export var footsteps_run_cooldown_time = 60.0/146.0 #guy runs at 146 bpm
+@export var footsteps_run_cooldown_time = 60.0/125.0 #guy runs at 125 bpm
 @export var footsteps_walk_cooldown_time = 60.0/192.0 #guy walks at 192 (?) bpm
 @onready var footsteps_timer = $FootstepsTimer
 

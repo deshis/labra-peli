@@ -18,4 +18,5 @@ script = ExtResource("1_yc33w")
 shape = SubResource("SphereShape3D_06eyk")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("SphereMesh_1so3y")
