@@ -228,7 +228,7 @@ func attack():
 				animation_tree.set("parameters/AttackState/conditions/light", true)
 				hand = skeleton.get_node("RightHandAttachment")
 	#prevent multiple hitboxes from spawning
-	if(!hand != null):
+	if(hand != null):
 		if(hand.get_children().size()>0):
 			for child in hand.get_children():
 				child.queue_free()
@@ -256,7 +256,7 @@ func heavy_attack():
 				foot = skeleton.get_node("LeftFootAttachment")
 	
 	#prevent multiple hitboxes from spawning
-	if(!foot != null):
+	if(foot != null):
 		if(foot.get_children().size()>0):
 			for child in foot.get_children():
 				child.queue_free()
