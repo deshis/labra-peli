@@ -1,64 +1,68 @@
-extends CharacterBody3D
-
 class_name Player
 
-@export var WALK_SPEED = 4
-@export var RUN_SPEED = 6.0
-var current_speed
+extends CharacterBody3D
 
-@export var JUMP_VELOCITY = 10
+@export var WALK_SPEED := 4.0
+@export var RUN_SPEED := 6.0
+var current_speed: float
 
-@export var max_health = 100
-var health = max_health
+@export var JUMP_VELOCITY := 10.0
+
+@export var max_health := 100.0
+var health := max_health
 
 signal healthChanged
 signal playerDied
 
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-@onready var camera_controller = $CameraController
-@onready var skeleton = $guy/DRV_Armature/Skeleton3D
-@onready var ragdoll_skeleton = $player_ragdoll/DRV_Armature/Skeleton3D
-@onready var animation_tree = $guy/AnimationTree
+@onready var camera_controller: CameraController = $CameraController
+@onready var skeleton: Skeleton3D = $guy/DRV_Armature/Skeleton3D
+@onready var ragdoll_skeleton: Skeleton3D = $player_ragdoll/DRV_Armature/Skeleton3D
+@onready var animation_tree: AnimationTree = $guy/AnimationTree
 
-var hitbox = preload("res://Scenes/PlayerHitBox.tscn")
-@export var attack_damage = 50
-@export var attack_knockback_strength = 10
+var hitbox := preload("res://Scenes/PlayerHitBox.tscn")
+@export var attack_damage := 50.0
+@export var attack_knockback_strength := 10.0
 
-var dead = false
+var dead := false
 
-var rng = RandomNumberGenerator.new()
+var rng := RandomNumberGenerator.new()
 
-var can_start_new_attack_combo = true
+var can_start_new_attack_combo := true
 
-@onready var collider = $CollisionShape3D
-@onready var hurtbox = $HurtBox/CollisionShape3D
-var collider_offset = -0.35 
+@onready var collider: CollisionShape3D = $CollisionShape3D
+@onready var hurtbox: CollisionShape3D = $HurtBox/CollisionShape3D
+var collider_offset := -0.35 
 
-var blocking = false
+var blocking := false
 
-@onready var footsteps_player = $FootstepsPlayer
-var footstep_sounds = []
-var footsteps_cooldown = false
-@export var footsteps_run_cooldown_time = 60.0/125.0 #guy runs at 125 bpm
-@export var footsteps_walk_cooldown_time = 60.0/192.0 #guy walks at 192 (?) bpm
-@onready var footsteps_timer = $FootstepsTimer
+@onready var footsteps_player: AudioStreamPlayer3D = $FootstepsPlayer
+var footstep_sounds: Array[AudioStream]= []
+var footsteps_cooldown := false
+@export var footsteps_run_cooldown_time := 60.0/125.0 #guy runs at 125 bpm
+@export var footsteps_walk_cooldown_time := 60.0/192.0 #guy walks at 192 (?) bpm
+@onready var footsteps_timer: Timer = $FootstepsTimer
 
-@onready var punch_player = $PunchPlayer
-var punch_sounds = []
-@onready var hit_player = $HitPlayer
-var hit_sounds = []
-@onready var block_player = $BlockPlayer
-var block_sounds = []
-var sfx_dir = "res://Assets/Audio/SFX"
+@onready var punch_player: AudioStreamPlayer3D = $PunchPlayer
+var punch_sounds: Array[AudioStream] = []
+@onready var hit_player: AudioStreamPlayer3D = $HitPlayer
+var hit_sounds: Array[AudioStream] = []
+@onready var block_player: AudioStreamPlayer3D = $BlockPlayer
+var block_sounds: Array[AudioStream]= []
+var sfx_dir := "res://Assets/Audio/SFX"
 
-func _ready():
-	$player_ragdoll.visible = false
+@onready var player_ragdoll: Node3D = $player_ragdoll
+@onready var player_guy:Node3D = $guy
+
+func _ready()->void:
+	player_ragdoll.visible = false
 	#disable ragdoll collision while alive
 	for node in ragdoll_skeleton.get_children():
 		if node is PhysicalBone3D:
-			node.collision_layer = 0
-			node.collision_mask = 0
+			var bone := node as PhysicalBone3D
+			bone.collision_layer = 0
+			bone.collision_mask = 0
 	
 	#create audio arrays
 	for file in DirAccess.open(sfx_dir+"/footsteps").get_files():
@@ -74,11 +78,12 @@ func _ready():
 		if file.reverse().left(4) =="3pm.":
 			block_sounds.append(load(sfx_dir+"/block/"+file))
 
-func _physics_process(delta):
+func _physics_process(delta: float)->void:
 	#keep colliders synced with animation
-	collider.global_position = skeleton.get_node("CameraAttachment").global_position
+	var attachment:BoneAttachment3D = skeleton.get_node("CameraAttachment")
+	collider.global_position = attachment.global_position
 	collider.position.y=collider_offset
-	hurtbox.global_position = skeleton.get_node("CameraAttachment").global_position
+	hurtbox.global_position = attachment.global_position
 	hurtbox.position.y=collider_offset
 	
 	#Gravity
@@ -99,7 +104,7 @@ func _physics_process(delta):
 			heavy_attack()
 		
 		if(can_start_new_attack_combo):
-			if(Input.is_action_pressed("block") && animation_tree.get("parameters/GuardState/playback").get_current_node() != "guard"):
+			if(Input.is_action_pressed("block") && (animation_tree.get("parameters/GuardState/playback") as AnimationNodeStateMachinePlayback).get_current_node() != "guard"):
 				blocking = true
 				animation_tree.set("parameters/GuardState/conditions/guard_stop", false)
 				animation_tree.set("parameters/Guard/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
@@ -111,9 +116,9 @@ func _physics_process(delta):
 			if Input.is_action_just_pressed("jump") and is_on_floor() and can_start_new_attack_combo:
 				velocity.y = JUMP_VELOCITY
 		
-		var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-		var stick_Force = input_dir.length()
-		var direction = (camera_controller.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+		var stick_Force := input_dir.length()
+		var direction := (camera_controller.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if direction:
 			velocity.x = direction.x * current_speed * stick_Force
 			velocity.z = direction.z * current_speed * stick_Force
@@ -147,8 +152,8 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("testi"):
 		take_damage(50)
 
-func attack():
-	var hand
+func attack()->void:
+	var hand: BoneAttachment3D
 	if(!blocking):
 		if can_start_new_attack_combo:
 			hand = skeleton.get_node("LeftHandAttachment")
@@ -156,7 +161,7 @@ func attack():
 			animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
 			can_start_new_attack_combo = false
 		else:
-			match animation_tree.get("parameters/AttackState/playback").get_current_node():
+			match (animation_tree.get("parameters/AttackState/playback") as AnimationNodeStateMachinePlayback).get_current_node():
 				"l1":
 					animation_tree.set("parameters/AttackState/conditions/light", true)
 					hand = skeleton.get_node("RightHandAttachment")
@@ -175,15 +180,15 @@ func attack():
 		if(hand.get_children().size()>0):#prevent multiple hitboxes from spawning
 			for child in hand.get_children():
 				child.queue_free()
-		var punch_hitbox = hitbox.instantiate()
+		var punch_hitbox: HitBox = hitbox.instantiate()
 		punch_hitbox.damage = attack_damage
 		punch_hitbox.knockback_strength = attack_knockback_strength
 		hand.add_child(punch_hitbox)
 		#hitbox gets deleted in animationtree signal
 
 
-func heavy_attack():
-	var foot
+func heavy_attack()->void:
+	var foot: BoneAttachment3D
 	if(!blocking):
 		if can_start_new_attack_combo:
 			animation_tree.set("parameters/AttackState/conditions/heavy", true)
@@ -191,7 +196,7 @@ func heavy_attack():
 			animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
 			can_start_new_attack_combo = false
 		else:
-			match animation_tree.get("parameters/AttackState/playback").get_current_node():
+			match (animation_tree.get("parameters/AttackState/playback") as AnimationNodeStateMachinePlayback).get_current_node():
 				"l1":
 					animation_tree.set("parameters/AttackState/conditions/heavy", true)
 					foot = skeleton.get_node("RightFootAttachment")
@@ -212,41 +217,42 @@ func heavy_attack():
 		if(foot.get_children().size()>0):#prevent multiple hitboxes from spawning
 			for child in foot.get_children():
 				child.queue_free()
-		var kick_hitbox = hitbox.instantiate()
+		var kick_hitbox:HitBox = hitbox.instantiate()
 		kick_hitbox.damage = attack_damage
 		kick_hitbox.knockback_strength = attack_knockback_strength
 		foot.add_child(kick_hitbox)
 		#hitbox gets deleted in animationtree signal
 
 
-func update_health():
-	if(health <= 0 and not dead):
+func update_health()->void:
+	if(health <= 0.0 and not dead):
 		die()
-	health = clamp(health, 0, max_health)
+	health = clamp(health, 0.0, max_health)
 	healthChanged.emit()
 
-func take_damage(dmg):
+func take_damage(dmg:float)->void:
 	health-=dmg
 	update_health()
 
-func die():
-	$guy.visible = false
-	$player_ragdoll.visible = true
+func die()->void:
+	player_guy.visible = false
+	player_ragdoll.visible = true
 	#re-enable ragdoll collision
 	for node in ragdoll_skeleton.get_children():
 		if node is PhysicalBone3D:
-			node.collision_layer = 128
-			node.collision_mask = 129
+			var bone := node as PhysicalBone3D
+			bone.collision_layer = 128
+			bone.collision_mask = 129
 	
 	ragdoll_skeleton.physical_bones_start_simulation()
 	
 	#add random impulse to make ragdoll more interesting
-	var random_direction = Vector3(rng.randf_range(-1,1), rng.randf_range(-1,1), rng.randf_range(-1,1)).normalized()
-	ragdoll_skeleton.get_node("Physical Bone Hip").apply_central_impulse(random_direction*20)
+	var random_direction := Vector3(rng.randf_range(-1,1), rng.randf_range(-1,1), rng.randf_range(-1,1)).normalized()
+	(ragdoll_skeleton.get_node("Physical Bone Hip") as PhysicalBone3D).apply_central_impulse(random_direction*20)
 	dead = true
 	playerDied.emit()
 
-func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
+func _on_hurt_box_area_entered(area:HitBox)->void: #only enemy hitbox should trigger this
 	if area.get_groups().has("enemy_hitbox"):
 		if(blocking):#block sound effect
 			block_player.set_stream(block_sounds[rng.randi_range(0, block_sounds.size()-1)])
@@ -257,7 +263,7 @@ func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 			cancel_attack()
 			animation_tree.set("parameters/Flinch/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 			#knockback
-			var dir = global_position - area.get_parent().get_parent().global_position
+			var dir := global_position - (area.get_parent().get_parent() as Node3D).global_position
 			dir.y=0
 			velocity = dir.normalized()*area.knockback_strength
 			move_and_slide()
@@ -267,7 +273,7 @@ func _on_hurt_box_area_entered(area): #only enemy hitbox should trigger this
 		
 		area.queue_free()
 
-func cancel_attack():
+func cancel_attack()->void:
 	animation_tree.set("parameters/AttackState/conditions/light", false)
 	animation_tree.set("parameters/AttackState/conditions/heavy", false)	
 	animation_tree.set("parameters/AttackState/conditions/stop", false)	
@@ -281,12 +287,13 @@ func cancel_attack():
 	for child in skeleton.get_node("RightFootAttachment").get_children():
 		child.queue_free()
 	
-	var offset =  $guy/DRV_Armature/Skeleton3D.get_bone_pose_position($guy/DRV_Armature/Skeleton3D.find_bone("ROOT_CTRL")).z
-	translate(Vector3(0, 0, offset).rotated(Vector3.UP, $guy/DRV_Armature/Skeleton3D.rotation.y))
+	
+	var offset := skeleton.get_bone_pose_position(skeleton.find_bone("ROOT_CTRL")).z
+	translate(Vector3(0, 0, offset).rotated(Vector3.UP, skeleton.rotation.y))
 	can_start_new_attack_combo = true
 	animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
 
-func animation_finished(anim_name):
+func animation_finished(anim_name: String)->void:
 	if "attack_" in anim_name:
 		if "_stop" in anim_name:
 			can_start_new_attack_combo = true
@@ -321,7 +328,7 @@ func animation_finished(anim_name):
 						child.queue_free()
 
 
-func animation_started(anim_name):
+func animation_started(anim_name:String)->void:
 	if "attack_" in anim_name:
 		animation_tree.set("parameters/AttackState/conditions/light", false)
 		animation_tree.set("parameters/AttackState/conditions/heavy", false)
@@ -329,7 +336,7 @@ func animation_started(anim_name):
 			punch_player.set_stream(punch_sounds[rng.randi_range(0, punch_sounds.size()-1)])
 			punch_player.play()
 
-func play_footsteps(walking:bool):
+func play_footsteps(walking:bool)->void:
 	if(!footsteps_cooldown):
 		if(walking):
 			footsteps_timer.start(footsteps_walk_cooldown_time)
@@ -339,5 +346,5 @@ func play_footsteps(walking:bool):
 		footsteps_player.play()
 		footsteps_cooldown=true
 	
-func _on_footsteps_timer_timeout():
+func _on_footsteps_timer_timeout()->void:
 	footsteps_cooldown = false

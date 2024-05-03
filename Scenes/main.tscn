@@ -105,7 +105,6 @@ transform = Transform3D(0.999939, -0.0110303, 0, 0.0110303, 0.999939, 0, 0, 0, 1
 [node name="Player" parent="." instance=ExtResource("2_d6f1p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -39.2584, 20.0543)
 RUN_SPEED = 9.0
-JUMP_VELOCITY = 5
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -212,20 +211,64 @@ script = ExtResource("10_uq3l4")
 
 [node name="Enemy3" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.64314, -39.2447, 7.00848)
+RUN_SPEED = 5.0
+max_health = 100.0
+attack_cooldown_min = 1.25
+attack_cooldown_max = 2.5
+attack_range = 2.5
+attack_damage = 10
+attack_knockback_strength = 10
+footsteps_run_cooldown_time = 0.48
+footsteps_walk_cooldown_time = 0.3125
 
 [node name="Enemy4" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -39.2447, -5.65439)
+RUN_SPEED = 5.0
+max_health = 100.0
+attack_cooldown_min = 1.25
+attack_cooldown_max = 2.5
+attack_range = 2.5
+attack_damage = 10
+attack_knockback_strength = 10
+footsteps_run_cooldown_time = 0.48
+footsteps_walk_cooldown_time = 0.3125
 
 [node name="Enemy5" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -39.2447, 7.59001)
+RUN_SPEED = 5.0
+max_health = 100.0
+attack_cooldown_min = 1.25
+attack_cooldown_max = 2.5
+attack_range = 2.5
+attack_damage = 10
+attack_knockback_strength = 10
+footsteps_run_cooldown_time = 0.48
+footsteps_walk_cooldown_time = 0.3125
 
 [node name="Enemy6" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.51166, -38.2998, 6.56334)
 WALK_SPEED = 2.0
-RUN_SPEED = 3
+RUN_SPEED = 5.0
+max_health = 100.0
+attack_cooldown_min = 1.25
+attack_cooldown_max = 2.5
+attack_range = 2.5
+attack_damage = 10
+attack_knockback_strength = 10
+footsteps_run_cooldown_time = 0.48
+footsteps_walk_cooldown_time = 0.3125
 
 [node name="Enemy7" parent="." instance=ExtResource("5_rk86j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94313, -38.2037, -11.3088)
+RUN_SPEED = 5.0
+max_health = 100.0
+attack_cooldown_min = 1.25
+attack_cooldown_max = 2.5
+attack_range = 2.5
+attack_damage = 10
+attack_knockback_strength = 10
+footsteps_run_cooldown_time = 0.48
+footsteps_walk_cooldown_time = 0.3125
 
 [connection signal="finished" from="MusicPlayer" to="." method="_on_music_player_finished"]
 [connection signal="timeout" from="EnemyPathfindingTimer" to="." method="_on_enemy_pathfinding_timer_timeout"]

@@ -1,12 +1,11 @@
 extends TextureProgressBar
 
-@export var player : CharacterBody3D
+@export var player: Player
 
-
-func _ready():
+func _ready()->void:
 	player.healthChanged.connect(update)
 	update() 
 
 
-func update():
+func update()->void:
 	value = player.health * 100 / player.max_health

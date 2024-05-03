@@ -1,75 +1,84 @@
+class_name Enemy
+
 extends CharacterBody3D
 
-@export var WALK_SPEED = 2.5
-@export var RUN_SPEED = 5
-var current_speed
+@export var WALK_SPEED := 2.5
+@export var RUN_SPEED := 5.0
+var current_speed: float
 
-@onready var player = get_node('/root/Main/Player')
-@onready var nav = $NavigationAgent3D
+@onready var player: CharacterBody3D = get_node('/root/Main/Player')
+@onready var nav: NavigationAgent3D = $NavigationAgent3D
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-var aggro = false
+var aggro := false
 
-var formation_offset = Vector3.ZERO
+var formation_offset := Vector3.ZERO
 
-@onready var ray = $PlayerDetectionRayCast
+@onready var ray: RayCast3D = $PlayerDetectionRayCast
 
-@export var max_health = 100
-var health = max_health
-@onready var health_bar = $HealthBar/SubViewport/TextureProgressBar
+@export var max_health := 100.0
+var health := max_health
+@onready var health_bar: TextureProgressBar = $HealthBar/SubViewport/TextureProgressBar
 
-var dead = false
-var close_to_player = false
+var dead := false
+var close_to_player := false
 
-@onready var skeleton = $enemy_guy/DRV_Armature/Skeleton3D
-@onready var ragdoll_skeleton = $enemy_ragdoll/DRV_Armature/Skeleton3D
-@onready var animation_tree = $enemy_guy/AnimationTree
-@onready var default_material = preload("res://Materials/default.tres")
+@onready var skeleton: Skeleton3D = $enemy_guy/DRV_Armature/Skeleton3D
+@onready var ragdoll_skeleton: Skeleton3D = $enemy_ragdoll/DRV_Armature/Skeleton3D
+@onready var animation_tree: AnimationTree = $enemy_guy/AnimationTree
+@onready var default_material := preload("res://Materials/default.tres")
 
-@onready var attack_timer = $AttackTimer
-@export var attack_cooldown_min = 1.25
-@export var attack_cooldown_max = 2.5
-@export var attack_range = 2.5
-var can_attack = true
-var can_combo = false
-var rng = RandomNumberGenerator.new()
+@onready var attack_timer: Timer = $AttackTimer
+@export var attack_cooldown_min := 1.25
+@export var attack_cooldown_max := 2.5
+@export var attack_range := 2.5
+var can_attack := true
+var can_combo := false
+var rng := RandomNumberGenerator.new()
 
-signal enemyDied(guy)
+signal enemyDied(guy: Enemy)
 
-var hitbox = preload("res://Scenes/EnemyHitBox.tscn")
-@export var attack_damage = 10
-@export var attack_knockback_strength = 10
-
-
-@onready var collider = $CollisionShape3D
-@onready var hurtbox = $HurtBox/CollisionShape3D
-var collider_offset=0.65
+var hitbox := preload("res://Scenes/EnemyHitBox.tscn")
+@export var attack_damage := 10
+@export var attack_knockback_strength := 10
 
 
-@onready var footsteps_player = $FootstepsPlayer
-var footstep_sounds = []
-var footsteps_cooldown = false
-@export var footsteps_run_cooldown_time = 60.0/125.0 #guy runs at 125 bpm
-@export var footsteps_walk_cooldown_time = 60.0/192.0 #guy walks at 192 (?) bpm
-@onready var footsteps_timer = $FootstepsTimer
+@onready var collider: CollisionShape3D = $CollisionShape3D
+@onready var hurtbox: CollisionShape3D = $HurtBox/CollisionShape3D
+var collider_offset := 0.65
 
-@onready var punch_player = $PunchPlayer
-var punch_sounds = []
-@onready var hit_player = $HitPlayer
-var hit_sounds = []
-var sfx_dir = "res://Assets/Audio/SFX"
 
-func _ready():
+@onready var footsteps_player: AudioStreamPlayer3D = $FootstepsPlayer
+var footstep_sounds: Array[AudioStream] = []
+var footsteps_cooldown := false
+@export var footsteps_run_cooldown_time := 60.0/125.0 #guy runs at 125 bpm
+@export var footsteps_walk_cooldown_time := 60.0/192.0 #guy walks at 192 (?) bpm
+@onready var footsteps_timer: Timer = $FootstepsTimer
+
+@onready var punch_player:AudioStreamPlayer3D = $PunchPlayer
+var punch_sounds: Array[AudioStream] = []
+@onready var hit_player:AudioStreamPlayer3D = $HitPlayer
+var hit_sounds: Array[AudioStream] = []
+var sfx_dir := "res://Assets/Audio/SFX"
+
+@onready var enemy_ragdoll: Node3D = $enemy_ragdoll
+@onready var enemy_guy: Node3D = $enemy_guy
+
+@onready var current_scene: Main = get_tree().current_scene
+
+func _ready() -> void:
 	update_health_bar()
-	skeleton.get_node("Guy").set_surface_override_material(0, default_material)
-	$enemy_ragdoll.visible = false
+	var skeleton_surface:MeshInstance3D = skeleton.get_node("Guy")
+	skeleton_surface.set_surface_override_material(0, default_material)
+	enemy_ragdoll.visible = false
 	#disable ragdoll collision while alive
 	for node in ragdoll_skeleton.get_children():
 		if node is PhysicalBone3D:
-			node.collision_layer = 0
-			node.collision_mask = 0
+			var bone := node as PhysicalBone3D
+			bone.collision_layer = 0
+			bone.collision_mask = 0
 			
 	#create audio arrays
 	for file in DirAccess.open(sfx_dir+"/footsteps").get_files():
@@ -82,20 +91,21 @@ func _ready():
 		if file.reverse().left(4) =="3pm.":
 			hit_sounds.append(load(sfx_dir+"/hit/"+file))
 
-func _physics_process(delta):
+func _physics_process(delta: float)->void:
 	#sync colliders with animation
 	if(collider!=null and hurtbox!=null):
-		collider.global_position = skeleton.get_node("ColliderAttachment").global_position
+		var attachment:BoneAttachment3D = skeleton.get_node("ColliderAttachment")
+		collider.global_position = attachment.global_position
 		collider.position.y=collider_offset
-		hurtbox.global_position = skeleton.get_node("ColliderAttachment").global_position
+		hurtbox.global_position = attachment.global_position
 		hurtbox.position.y=collider_offset
 	
 	
-	var next_location 
-	var current_location
-	var new_velocity
+	var next_location: Vector3
+	var current_location: Vector3
+	var new_velocity: Vector3
 	
-	if(abs(global_position - player.global_position).length()<5): #if close to player
+	if((global_position - player.global_position).abs().length()<5): #if close to player
 		close_to_player = true
 		if(!can_attack):
 			current_speed = 0
@@ -131,14 +141,14 @@ func _physics_process(delta):
 		ragdoll_skeleton.rotation.x = 0
 		ragdoll_skeleton.rotation.z = 0
 		
-		if(abs(global_position - player.global_position).length()<attack_range and can_attack):
+		if((global_position - player.global_position).abs().length()<attack_range and can_attack):
 			if(rng.randf_range(0,1)<0.5):
 				attack()
 			else:
 				heavy_attack()
-		elif(abs(global_position - player.global_position).length()<attack_range and can_combo):
+		elif((global_position - player.global_position).abs().length()<attack_range and can_combo):
 			can_combo = false
-			match animation_tree.get("parameters/AttackState/playback").get_current_node():
+			match (animation_tree.get("parameters/AttackState/playback") as AnimationNodeStateMachinePlayback).get_current_node():
 				"l1":
 					if(rng.randf_range(0,1)<0.5):
 						attack()
@@ -157,7 +167,7 @@ func _physics_process(delta):
 		velocity.y -= gravity*delta
 
 #calculating safe velocity for avoidance to prevent enemies clumping together
-func _on_navigation_agent_3d_velocity_computed(safe_velocity):
+func _on_navigation_agent_3d_velocity_computed(safe_velocity:Vector3)->void:
 	if not dead:
 		velocity.x = velocity.move_toward(safe_velocity,0.5).x
 		velocity.z = velocity.move_toward(safe_velocity,0.5).z
@@ -165,7 +175,7 @@ func _on_navigation_agent_3d_velocity_computed(safe_velocity):
 		move_and_slide()
 
 #called in main script of game scene
-func update_target_location(target_location):
+func update_target_location(target_location:Vector3)->void:
 	if aggro:
 		nav.set_target_position(target_location+formation_offset) #formation offset is set in main script
 	elif not dead: #aggro to player if have line of sight
@@ -173,49 +183,50 @@ func update_target_location(target_location):
 		ray.force_raycast_update()
 		if(ray.get_collider() == player):
 			aggro = true 
-			get_tree().current_scene._on_main_enemy_switch_timer_timeout() #force main enemy to switch when new enemy aggros
+			(get_tree().current_scene as Main)._on_main_enemy_switch_timer_timeout() #force main enemy to switch when new enemy aggros
 
-func update_health_bar(): #call this when take dmg
+func update_health_bar()->void: #call this when take dmg
 	health_bar.value = health
 
-func die():
+func die()->void:
 	aggro = false 
 	dead = true
 	remove_from_group("enemies")
-	get_tree().current_scene._on_main_enemy_switch_timer_timeout() #force main enemy to switch when enemy dies
-	$enemy_guy.visible=false
-	$enemy_ragdoll.visible = true
+	current_scene._on_main_enemy_switch_timer_timeout() #force main enemy to switch when enemy dies
+	enemy_guy.visible=false
+	enemy_ragdoll.visible = true
 	
 	#re-enabe ragdoll collision
 	for node in ragdoll_skeleton.get_children():
 		if node is PhysicalBone3D:
-			node.collision_layer = 128
-			node.collision_mask = 129
+			var bone := node as PhysicalBone3D
+			bone.collision_layer = 128
+			bone.collision_mask = 129
 	
 	ragdoll_skeleton.physical_bones_start_simulation()
 	
 	#add random impulse to make ragdoll more interesting
-	var random_direction = Vector3(rng.randf_range(-1,1), rng.randf_range(-1,1), rng.randf_range(-1,1)).normalized()
-	ragdoll_skeleton.get_node("Physical Bone Hip").apply_central_impulse(random_direction*20)
+	var random_direction := Vector3(rng.randf_range(-1,1), rng.randf_range(-1,1), rng.randf_range(-1,1)).normalized()
+	(ragdoll_skeleton.get_node("Physical Bone Hip") as PhysicalBone3D).apply_central_impulse(random_direction*20)
 	dead = true
 	
 	enemyDied.emit(self)
 	
 	#remove everything except ragdoll and hitplaye
-	var children = get_children()
+	var children := get_children()
 	children.erase($enemy_ragdoll)
 	children.erase($HitPlayer)
 	for node in children:
 		node.queue_free()
 
-func take_damage(dmg):
+func take_damage(dmg:float)->void:
 	health-=dmg
 	update_health_bar()
 	if(health <=0 and not dead):
 		die()
 
-func attack():
-	var hand
+func attack()->void:
+	var hand: BoneAttachment3D
 	can_combo = false
 	if can_attack:
 		hand = skeleton.get_node("LeftHandAttachment")
@@ -223,7 +234,7 @@ func attack():
 		animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
 		can_attack = false
 	else:
-		match animation_tree.get("parameters/AttackState/playback").get_current_node():
+		match (animation_tree.get("parameters/AttackState/playback") as AnimationNodeStateMachinePlayback).get_current_node():
 			"l1":
 				animation_tree.set("parameters/AttackState/conditions/light", true)
 				hand = skeleton.get_node("RightHandAttachment")
@@ -232,14 +243,14 @@ func attack():
 		if(hand.get_children().size()>0):
 			for child in hand.get_children():
 				child.queue_free()
-		var punch_hitbox = hitbox.instantiate()
+		var punch_hitbox: HitBox = hitbox.instantiate()
 		punch_hitbox.damage = attack_damage
 		punch_hitbox.knockback_strength = attack_knockback_strength
 		hand.add_child(punch_hitbox)
 		#hitbox gets deleted in animationtree signal
 
-func heavy_attack():
-	var foot
+func heavy_attack()->void:
+	var foot: BoneAttachment3D
 	can_combo = false	
 	if can_attack:
 		animation_tree.set("parameters/AttackState/conditions/heavy", true)
@@ -247,7 +258,7 @@ func heavy_attack():
 		animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)	
 		can_attack = false
 	else:
-		match animation_tree.get("parameters/AttackState/playback").get_current_node():
+		match (animation_tree.get("parameters/AttackState/playback") as AnimationNodeStateMachinePlayback).get_current_node():
 			"l1":
 				animation_tree.set("parameters/AttackState/conditions/heavy", true)
 				foot = skeleton.get_node("RightFootAttachment")
@@ -260,12 +271,12 @@ func heavy_attack():
 		if(foot.get_children().size()>0):
 			for child in foot.get_children():
 				child.queue_free()
-		var punch_hitbox = hitbox.instantiate()
+		var punch_hitbox:HitBox = hitbox.instantiate()
 		punch_hitbox.damage = attack_damage
 		punch_hitbox.knockback_strength = attack_knockback_strength
 		foot.add_child(punch_hitbox)
 
-func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
+func _on_hurt_box_area_entered(area:HitBox)->void: #only PlayerHitBox should trigger this
 	if area.get_groups().has("player_hitbox"):
 		hit_player.set_stream(hit_sounds[rng.randi_range(0, hit_sounds.size()-1)])
 		hit_player.play()
@@ -274,16 +285,16 @@ func _on_hurt_box_area_entered(area): #only PlayerHitBox should trigger this
 		#set flincher
 		animation_tree.set("parameters/Flinch/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 		#knockback
-		var dir = global_position - area.get_parent().get_parent().global_position
+		var dir := global_position - (area.get_parent().get_parent() as Node3D).global_position
 		dir.y=0
 		velocity = dir.normalized()*area.knockback_strength
 		move_and_slide()
 		area.queue_free()
 
-func _on_attack_timer_timeout():
+func _on_attack_timer_timeout()->void:
 	can_attack = true
 
-func animation_finished(anim_name):
+func animation_finished(anim_name:String)->void:
 	if "attack_" in anim_name:
 		if "_stop" in anim_name:
 			attack_timer.start(rng.randf_range(attack_cooldown_min, attack_cooldown_max))
@@ -303,7 +314,7 @@ func animation_finished(anim_name):
 				child.queue_free()
 
 
-func play_footsteps(walking:bool):
+func play_footsteps(walking:bool)->void:
 	if(!footsteps_cooldown):
 		if(walking):
 			footsteps_timer.start(footsteps_walk_cooldown_time)
@@ -313,7 +324,7 @@ func play_footsteps(walking:bool):
 		footsteps_player.play()
 		footsteps_cooldown=true
 
-func animation_started(anim_name):
+func animation_started(anim_name:String)->void:
 	if "attack_" in anim_name:
 		animation_tree.set("parameters/AttackState/conditions/light", false)
 		animation_tree.set("parameters/AttackState/conditions/heavy", false)
@@ -324,5 +335,5 @@ func animation_started(anim_name):
 				can_combo = true
 
 
-func _on_footsteps_timer_timeout():
+func _on_footsteps_timer_timeout()->void:
 	footsteps_cooldown=false

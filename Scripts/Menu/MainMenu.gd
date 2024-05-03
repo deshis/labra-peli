@@ -1,8 +1,11 @@
 extends CanvasLayer
 
-func _ready():
-	var config = ConfigFile.new()
-	var err = config.load("user://settings.cfg")
+@onready var main_menu_music:AudioStreamPlayer = $MainMenuMusicPlayer
+@onready var start_button: Button = $ButtonsContainer/StartGameButton
+
+func _ready() -> void:
+	var config := ConfigFile.new()
+	var err := config.load("user://settings.cfg")
 	
 	if err != OK: 
 		#if settings file does not exist, create it with default settings
@@ -38,28 +41,28 @@ func _ready():
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	
 	#set audio levels 
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(config.get_value("Audio", "volume_master")))
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(config.get_value("Audio", "volume_sfx")))
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(config.get_value("Audio", "volume_music")))
-	$ButtonsContainer/StartGameButton.grab_focus()
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(config.get_value("Audio", "volume_master") as float))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(config.get_value("Audio", "volume_sfx") as float))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(config.get_value("Audio", "volume_music") as float))
+	start_button.grab_focus()
 	
 	#start mainmenu music
 	if(Global.main_menu_music_time):
-		$MainMenuMusicPlayer.play(Global.main_menu_music_time)
+		main_menu_music.play(Global.main_menu_music_time)
 	else:
-		$MainMenuMusicPlayer.play()
+		main_menu_music.play()
 
 
-func _on_start_game_button_pressed():
+func _on_start_game_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/main.tscn")
 
-func _on_settings_button_pressed():
+func _on_settings_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/settings.tscn")
 
-func _on_credits_pressed():
+func _on_credits_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/credits.tscn")
 
-func _on_quit_game_button_pressed():
+func _on_quit_game_button_pressed() -> void:
 	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 	get_tree().quit()
 

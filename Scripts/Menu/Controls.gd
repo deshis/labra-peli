@@ -1,17 +1,21 @@
 extends MarginContainer
 
-var config = ConfigFile.new()
+var config := ConfigFile.new()
 
-func _ready():
+@onready var mouse_slider: Slider = $VBoxContainer/MouseSlider
+@onready var controller_slider: Slider = $VBoxContainer/ControllerSlider
+
+func _ready() -> void:
 	config.load("user://settings.cfg")
-	$VBoxContainer/MouseSlider.value = config.get_value("Controls", "mouse_sensitivity")
-	$VBoxContainer/ControllerSlider.value = config.get_value("Controls", "controller_sensitivity")
+	mouse_slider.value = config.get_value("Controls", "mouse_sensitivity")
+	controller_slider.value = config.get_value("Controls", "controller_sensitivity")
 
 
-func _on_mouse_slider_value_changed(value):
+func _on_mouse_slider_value_changed(value: float) -> void:
 	config.set_value("Controls", "mouse_sensitivity", value)
 	config.save("user://settings.cfg")
 
-func _on_controller_slider_value_changed(value):
+
+func _on_controller_slider_value_changed(value: float) -> void:
 	config.set_value("Controls", "controller_sensitivity", value)
 	config.save("user://settings.cfg")
