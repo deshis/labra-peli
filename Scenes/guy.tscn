@@ -263,15 +263,15 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 bones/0/position = Vector3(0.352362, 0.137795, 0.597502)
 bones/1/rotation = Quaternion(0.93715, 5.16767e-08, 0.245156, -0.248292)
 bones/3/position = Vector3(0.261696, 1.01162, 0.660616)
-bones/4/position = Vector3(0, 1.87528, 0.0886074)
+bones/4/position = Vector3(0, 1.88553, 0.0886074)
 bones/5/rotation = Quaternion(-0.698531, 0, 0, 0.715579)
 bones/5/scale = Vector3(1, 1, 1)
-bones/6/rotation = Quaternion(-0.355793, 0.189126, -0.119327, 0.907416)
+bones/6/rotation = Quaternion(-0.344598, 0.190263, -0.116607, 0.911842)
 bones/6/scale = Vector3(1, 1, 1)
-bones/7/rotation = Quaternion(0.291278, -0.0386241, 0.117626, 0.948593)
-bones/8/rotation = Quaternion(-0.0948251, -0.184991, 0.0771074, 0.975111)
+bones/7/rotation = Quaternion(0.274409, -0.0388612, 0.110813, 0.954416)
+bones/8/rotation = Quaternion(-0.0868408, -0.184985, 0.0746968, 0.976043)
 bones/8/scale = Vector3(1, 1, 1)
-bones/9/rotation = Quaternion(0.364474, 0.0374089, -0.147184, 0.918747)
+bones/9/rotation = Quaternion(0.351101, 0.0376543, -0.141784, 0.924774)
 bones/10/rotation = Quaternion(0.652258, -0.0384621, -0.0442123, 0.755729)
 bones/11/scale = Vector3(1, 1, 1)
 bones/12/rotation = Quaternion(-0.0978403, -0.00248666, -0.00247665, 0.995196)
@@ -279,8 +279,8 @@ bones/13/rotation = Quaternion(0.0306667, 0.00155753, 0.00162928, 0.999527)
 bones/14/rotation = Quaternion(0.0749292, 0.0637109, -0.00369651, 0.995145)
 bones/14/scale = Vector3(1, 1, 1)
 bones/15/rotation = Quaternion(-0.059917, 0.00044502, 0.00044502, 0.998203)
-bones/16/rotation = Quaternion(-0.51285, -0.435961, -0.517638, 0.528179)
-bones/17/rotation = Quaternion(-0.582558, -0.218732, -0.0154394, 0.782652)
+bones/16/rotation = Quaternion(-0.515519, -0.433518, -0.520032, 0.525232)
+bones/17/rotation = Quaternion(-0.584334, -0.218723, -0.0151133, 0.781336)
 bones/17/scale = Vector3(1, 1, 1)
 bones/18/rotation = Quaternion(-0.355949, -0.0184732, -0.525609, 0.77246)
 bones/18/scale = Vector3(1, 1, 1)
@@ -293,9 +293,9 @@ bones/22/rotation = Quaternion(-0.138117, -0.122473, 0.620518, 0.762156)
 bones/22/scale = Vector3(1, 1, 1)
 bones/23/rotation = Quaternion(-0.364293, -0.441053, 0.0911054, 0.815146)
 bones/24/rotation = Quaternion(-0.0244352, 0.207929, 0.671685, 0.710639)
-bones/25/rotation = Quaternion(-0.5176, 0.43449, 0.51854, 0.523855)
+bones/25/rotation = Quaternion(-0.518928, 0.432452, 0.520451, 0.522331)
 bones/25/scale = Vector3(1, 1, 1)
-bones/26/rotation = Quaternion(-0.608762, 0.11338, -0.0776046, 0.781365)
+bones/26/rotation = Quaternion(-0.611888, 0.112281, -0.0784323, 0.778996)
 bones/27/rotation = Quaternion(-0.141729, 0.177109, 0.36448, 0.903161)
 bones/27/scale = Vector3(1, 1, 1)
 bones/28/rotation = Quaternion(-0.0334057, 0.0358514, -0.00577274, 0.998782)
@@ -313,17 +313,17 @@ bones/35/rotation = Quaternion(0.93715, -5.16767e-08, -0.245156, -0.248292)
 bones/37/position = Vector3(-0.261696, 1.01162, 0.660616)
 
 [node name="CameraAttachment" type="BoneAttachment3D" parent="DRV_Armature/Skeleton3D" index="5"]
-transform = Transform3D(0.992766, 0.0132882, -0.119331, -0.00231475, 0.99579, 0.0916296, 0.120046, -0.0906905, 0.988617, -0.000356154, 2.29993, 0.085868)
+transform = Transform3D(0.992766, 0.0132882, -0.119331, -0.00231475, 0.99579, 0.0916296, 0.120046, -0.0906905, 0.988617, -0.000356154, 2.31018, 0.085868)
 bone_name = "Spine3"
 bone_idx = 12
 
 [node name="RightHandAttachment" type="BoneAttachment3D" parent="DRV_Armature/Skeleton3D" index="6"]
-transform = Transform3D(0.0501622, 0.972782, 0.226229, 0.50297, 0.171088, -0.847202, -0.862847, 0.156284, -0.480698, -0.688241, 1.59195, 0.319209)
+transform = Transform3D(0.0425062, 0.970067, 0.239088, 0.503675, 0.185864, -0.843662, -0.862847, 0.156284, -0.480698, -0.672967, 1.59619, 0.319209)
 bone_name = "Hand2.R"
 bone_idx = 30
 
 [node name="LeftHandAttachment" type="BoneAttachment3D" parent="DRV_Armature/Skeleton3D" index="7"]
-transform = Transform3D(-0.580357, -0.814133, -0.0192949, 0.150986, -0.084288, -0.984936, 0.800243, -0.574528, 0.17184, 0.361451, 2.07002, 0.777752)
+transform = Transform3D(-0.578034, -0.815303, -0.0340281, 0.159651, -0.0720985, -0.984537, 0.800243, -0.574528, 0.17184, 0.353504, 2.07848, 0.777752)
 bone_name = "Hand2.L"
 bone_idx = 21
 

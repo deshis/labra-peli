@@ -55,6 +55,8 @@ var sfx_dir := "res://Assets/Audio/SFX"
 @onready var player_ragdoll: Node3D = $player_ragdoll
 @onready var player_guy:Node3D = $guy
 
+enum Movement {WALK, RUN}
+
 func _ready()->void:
 	player_ragdoll.visible = false
 	#disable ragdoll collision while alive
@@ -79,6 +81,7 @@ func _ready()->void:
 			block_sounds.append(load(sfx_dir+"/block/"+file))
 
 func _physics_process(delta: float)->void:
+	
 	#keep colliders synced with animation
 	var attachment:BoneAttachment3D = skeleton.get_node("CameraAttachment")
 	collider.global_position = attachment.global_position
@@ -90,20 +93,20 @@ func _physics_process(delta: float)->void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	
-	if(!can_start_new_attack_combo):
+	if not can_start_new_attack_combo:
 		current_speed = 0
-	elif(camera_controller.camera_locked_on):
+	elif camera_controller.camera_locked_on:
 		current_speed = WALK_SPEED
 	else:
 		current_speed = RUN_SPEED
 	
-	if(!dead):
+	if not dead:
 		if Input.is_action_just_pressed("attack"):
 			attack()
 		if Input.is_action_just_pressed("heavy_attack"):
 			heavy_attack()
 		
-		if(can_start_new_attack_combo):
+		if can_start_new_attack_combo:
 			if(Input.is_action_pressed("block") && (animation_tree.get("parameters/GuardState/playback") as AnimationNodeStateMachinePlayback).get_current_node() != "guard"):
 				blocking = true
 				animation_tree.set("parameters/GuardState/conditions/guard_stop", false)
@@ -116,23 +119,24 @@ func _physics_process(delta: float)->void:
 			if Input.is_action_just_pressed("jump") and is_on_floor() and can_start_new_attack_combo:
 				velocity.y = JUMP_VELOCITY
 		
+		
 		var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 		var stick_Force := input_dir.length()
 		var direction := (camera_controller.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if direction:
 			velocity.x = direction.x * current_speed * stick_Force
 			velocity.z = direction.z * current_speed * stick_Force
-			if(can_start_new_attack_combo):
-				if(!camera_controller.camera_locked_on):
-					play_footsteps(false)
-					rotation = Vector3.ZERO;
-					skeleton.look_at(to_global(-direction), Vector3.UP)
-					ragdoll_skeleton.look_at(to_global(-direction), Vector3.UP)
-				else:
-					play_footsteps(true)
+			if can_start_new_attack_combo:
+				if camera_controller.camera_locked_on:
+					play_footsteps(Movement.RUN)
 					skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
 					ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
 					rotate_object_local(Vector3.UP, PI) #look_at points in the opposite direction so we have to flip 180
+				else:
+					play_footsteps(Movement.RUN)
+					rotation = Vector3.ZERO;
+					skeleton.look_at(to_global(-direction), Vector3.UP)
+					ragdoll_skeleton.look_at(to_global(-direction), Vector3.UP)
 			skeleton.rotation.x=0
 			skeleton.rotation.z=0
 			ragdoll_skeleton.rotation.x=0
@@ -140,9 +144,10 @@ func _physics_process(delta: float)->void:
 		else:
 			velocity.x = move_toward(velocity.x, 0, current_speed)
 			velocity.z = move_toward(velocity.z, 0, current_speed)
-	
+		
 		move_and_slide()
-		if(!camera_controller.camera_locked_on):
+		
+		if not camera_controller.camera_locked_on:
 			animation_tree.set("parameters/isStrafe/blend_amount", 0.0)
 			animation_tree.set("parameters/idle-run/blend_position", stick_Force)
 		else:
@@ -154,7 +159,7 @@ func _physics_process(delta: float)->void:
 
 func attack()->void:
 	var hand: BoneAttachment3D
-	if(!blocking):
+	if not blocking:
 		if can_start_new_attack_combo:
 			hand = skeleton.get_node("LeftHandAttachment")
 			animation_tree.set("parameters/AttackState/conditions/light", true)
@@ -167,7 +172,7 @@ func attack()->void:
 					hand = skeleton.get_node("RightHandAttachment")
 				
 			
-		if(camera_controller.camera_locked_on): # look at locked on enemy
+		if camera_controller.camera_locked_on: # look at locked on enemy
 			skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
 			ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
 			rotate_object_local(Vector3.UP, PI)
@@ -176,7 +181,7 @@ func attack()->void:
 			ragdoll_skeleton.rotation.x=0
 			ragdoll_skeleton.rotation.z=0
 		
-	if(hand!=null):
+	if hand!=null :
 		if(hand.get_children().size()>0):#prevent multiple hitboxes from spawning
 			for child in hand.get_children():
 				child.queue_free()
@@ -189,7 +194,7 @@ func attack()->void:
 
 func heavy_attack()->void:
 	var foot: BoneAttachment3D
-	if(!blocking):
+	if not blocking:
 		if can_start_new_attack_combo:
 			animation_tree.set("parameters/AttackState/conditions/heavy", true)
 			foot = skeleton.get_node("RightFootAttachment")
@@ -204,7 +209,7 @@ func heavy_attack()->void:
 					animation_tree.set("parameters/AttackState/conditions/heavy", true)
 					foot = skeleton.get_node("LeftFootAttachment")
 		
-		if(camera_controller.camera_locked_on): # look at locked on enemy
+		if camera_controller.camera_locked_on: # look at locked on enemy
 			skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
 			ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
 			rotate_object_local(Vector3.UP, PI)
@@ -213,8 +218,8 @@ func heavy_attack()->void:
 			ragdoll_skeleton.rotation.x=0
 			ragdoll_skeleton.rotation.z=0
 	
-	if(foot!=null):
-		if(foot.get_children().size()>0):#prevent multiple hitboxes from spawning
+	if foot!=null:
+		if foot.get_children().size()>0:#prevent multiple hitboxes from spawning
 			for child in foot.get_children():
 				child.queue_free()
 		var kick_hitbox:HitBox = hitbox.instantiate()
@@ -225,14 +230,16 @@ func heavy_attack()->void:
 
 
 func update_health()->void:
-	if(health <= 0.0 and not dead):
+	if health <= 0.0 and not dead:
 		die()
 	health = clamp(health, 0.0, max_health)
 	healthChanged.emit()
 
+
 func take_damage(dmg:float)->void:
 	health-=dmg
 	update_health()
+
 
 func die()->void:
 	player_guy.visible = false
@@ -252,9 +259,10 @@ func die()->void:
 	dead = true
 	playerDied.emit()
 
+
 func _on_hurt_box_area_entered(area:HitBox)->void: #only enemy hitbox should trigger this
 	if area.get_groups().has("enemy_hitbox"):
-		if(blocking):#block sound effect
+		if blocking:#block sound effect
 			block_player.set_stream(block_sounds[rng.randi_range(0, block_sounds.size()-1)])
 			block_player.play()
 		else:
@@ -272,6 +280,7 @@ func _on_hurt_box_area_entered(area:HitBox)->void: #only enemy hitbox should tri
 			hit_player.play()
 		
 		area.queue_free()
+
 
 func cancel_attack()->void:
 	animation_tree.set("parameters/AttackState/conditions/light", false)
@@ -292,6 +301,7 @@ func cancel_attack()->void:
 	translate(Vector3(0, 0, offset).rotated(Vector3.UP, skeleton.rotation.y))
 	can_start_new_attack_combo = true
 	animation_tree.set("parameters/Attack/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_ABORT)
+
 
 func animation_finished(anim_name: String)->void:
 	if "attack_" in anim_name:
@@ -336,15 +346,17 @@ func animation_started(anim_name:String)->void:
 			punch_player.set_stream(punch_sounds[rng.randi_range(0, punch_sounds.size()-1)])
 			punch_player.play()
 
-func play_footsteps(walking:bool)->void:
+
+func play_footsteps(movement_type:Movement)->void:
 	if(!footsteps_cooldown):
-		if(walking):
+		if movement_type == Movement.WALK:
 			footsteps_timer.start(footsteps_walk_cooldown_time)
-		else:
+		elif movement_type == Movement.RUN:
 			footsteps_timer.start(footsteps_run_cooldown_time)
 		footsteps_player.set_stream(footstep_sounds[rng.randi_range(0, footstep_sounds.size()-1)])
 		footsteps_player.play()
 		footsteps_cooldown=true
-	
+
+
 func _on_footsteps_timer_timeout()->void:
 	footsteps_cooldown = false

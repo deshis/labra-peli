@@ -14,7 +14,7 @@ var pitch_input := 0.0
 
 var camera_locked_on := false
 var lock_on_targets: Array[Enemy]
-var camera_target_index := 0
+var camera_target_index := -1
 
 var enemy: Enemy
 
@@ -28,7 +28,7 @@ var current_target: Node3D
 
 var enemy_material_node_path := "enemy_guy/DRV_Armature/Skeleton3D/Guy"
 
-
+enum Direction {LEFT, RIGHT} 
 
 func _ready()->void:
 	var config := ConfigFile.new()
@@ -49,123 +49,51 @@ func _physics_process(_delta: float)->void:
 	if Input.is_action_just_pressed("camera_lock_on"):
 		
 		#reset camera to prevent weird behaviour
-		spring_arm.rotation.x = 0
-		spring_arm.rotation.y = 0
-		spring_arm.rotation.z = 0
-		rotation.x = 0
-		rotation.z = 0
+		reset_camera_direction()
 		
-		if(!camera_locked_on):
-			lock_on_targets.assign(get_tree().get_nodes_in_group("enemies"))
+		if not camera_locked_on:
 			camera_locked_on = true
-			
-			#find closest target to camera center.
-			#1. draw a line forward from the camera
-			#2. calculate the point on the line closest to the enemys location
-			#3. use the difference vector from point to enemy to calculate angle from camera to enemy
-			#4. figure out which enemy has the smallest angle
-			#5. check if enemy is visible with raycast and lock onto it.
-			var smallest_angle_left := lock_on_change_angle_max
-			var smallest_angle_right := -lock_on_change_angle_max
-			var closest_to_right_index:int
-			var closest_to_left_index:int
-			var look_dir := -basis.z.normalized()
-			for i in range(lock_on_targets.size()):
-				enemy = lock_on_targets[i]
-				var closest_point := Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.global_position, look_dir)
-				var difference := enemy.position-closest_point
-				var angle_to_enemy := rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
-				if(!enemy.dead):
-					if(!is_wall_in_way(enemy)):
-						if(angle_to_enemy<=smallest_angle_left and angle_to_enemy>=0):
-							smallest_angle_left = angle_to_enemy
-							closest_to_left_index=i
-						elif(angle_to_enemy>=smallest_angle_right and angle_to_enemy<=0):
-							smallest_angle_right = angle_to_enemy
-							closest_to_right_index=i
-					else: #raycast does not find enemy, dont lock on
-						camera_target_index = -1
-			
-			if(abs(smallest_angle_left)<=abs(smallest_angle_right)):
-				camera_target_index = closest_to_left_index
-			elif(abs(smallest_angle_right)<=abs(smallest_angle_left)):
-				camera_target_index = closest_to_right_index
+			lock_on_targets.assign(get_tree().get_nodes_in_group("enemies"))
+			select_closest_enemy_to_camera_center()
 			
 			#highlight the locked on enemy
-			if(camera_target_index >= 0):
+			if(camera_target_index > -1):
 				highlight_enemy()
 			else: #lock on failed.
 				reset_lock_on()
-
 		else:
 			#unhighlight deselected enemy
 			unhighlight_enemy()
 			reset_lock_on()
 	
-	if(camera_locked_on and lock_on_targets):
+	if camera_locked_on and lock_on_targets.size()>0:
 		#same as finding closest to camera center, except only on one side
 		if Input.is_action_just_pressed("camera_switch_target_left"):
 			unhighlight_enemy()
-			var next_to_left_index:int
-			var smallest_angle := lock_on_change_angle_max
-			var look_dir := -basis.z.normalized()
-			for i in range(lock_on_targets.size()):
-				enemy = lock_on_targets[i]
-				var closest_point := Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.global_position, look_dir)
-				var difference := enemy.position-closest_point
-				var angle_to_enemy := rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
-				if(!enemy.dead):
-					if(!is_wall_in_way(enemy)):
-						if(angle_to_enemy>=lock_on_change_angle_threshold): #only check ones to the left. ones to right are negative
-							if(angle_to_enemy<=smallest_angle):
-								if(i!=camera_target_index):
-									smallest_angle = angle_to_enemy
-									next_to_left_index=i
-			if(next_to_left_index!=null):
-				camera_target_index = next_to_left_index
+			switch_lock_on_target(Direction.LEFT)
 			highlight_enemy()
 		
-		#same as left...
 		if Input.is_action_just_pressed("camera_switch_target_right"):
 			unhighlight_enemy()
-			var next_to_right_index:int
-			var smallest_angle := -lock_on_change_angle_max
-			var look_dir := -basis.z.normalized()
-			for i in range(lock_on_targets.size()):
-				enemy = lock_on_targets[i]
-				var closest_point := Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.global_position, look_dir)
-				var difference := enemy.position-closest_point
-				var angle_to_enemy := rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
-				if(!enemy.dead):
-					if(!is_wall_in_way(enemy)):
-						if(angle_to_enemy<=lock_on_change_angle_threshold):
-							if(angle_to_enemy>=smallest_angle):
-								if(i!=camera_target_index):
-									smallest_angle = angle_to_enemy
-									next_to_right_index=i
-			if(next_to_right_index!=null):
-				camera_target_index = next_to_right_index
+			switch_lock_on_target(Direction.RIGHT)
 			highlight_enemy()
-			
+		
 		if Input.is_action_just_pressed("camera_switch_target_closest"):
 			unhighlight_enemy()
-			#find closest to player
-			camera_target_index = 0
-			for i in range(lock_on_targets.size()):
-				if lock_on_targets[i].global_position.distance_to(global_position) < lock_on_targets[camera_target_index].global_position.distance_to(global_position):
-					camera_target_index = i
+			select_closest_enemy_to_player()
 			highlight_enemy()
 		
-		current_target = lock_on_targets[camera_target_index]
-		#lock on camera. lerping breaks the lock on system so we have to use a stiff camera...
-		look_at(current_target.position, Vector3.UP)
-		
-		rotation.x=0 #x rotation is handled by spring_arm
-		spring_arm.look_at(current_target.position)
-		spring_arm.rotation.x += deg_to_rad(-25) #aim camera a bit down so you can see the enemy better
-		spring_arm.rotation.x = clamp(spring_arm.rotation.x, deg_to_rad(-80), deg_to_rad(50)) #prevent upside down camera
+		#lock the camera onto selected enemy. 
+		if camera_target_index>-1:
+			current_target = lock_on_targets[camera_target_index]
+			look_at(current_target.position, Vector3.UP) #lerping breaks the lock on system so we have to use a stiff camera...
+			rotation.x=0 #x rotation is handled by spring_arm
+			spring_arm.look_at(current_target.position)
+			spring_arm.rotation.x += deg_to_rad(-25) #aim camera a bit down so you can see the enemy better
+			spring_arm.rotation.x = clamp(spring_arm.rotation.x, deg_to_rad(-80), deg_to_rad(50)) #prevent upside down camera
 		
 	else:
+		camera_locked_on = false
 		#moving camera with controller. mouse input is handled in _unhandled_input
 		var look_dir := Input.get_vector("look_left", "look_right", "look_up", "look_down")
 		if(look_dir):
@@ -180,6 +108,7 @@ func _physics_process(_delta: float)->void:
 		twist_input = 0.0
 		pitch_input = 0.0
 
+
 func _unhandled_input(event: InputEvent)->void:
 	#moving camera with mouse
 	if event is InputEventMouseMotion:
@@ -189,20 +118,111 @@ func _unhandled_input(event: InputEvent)->void:
 			pitch_input = - mouse_movement_event.relative.y * camera_mouse_sensitivity
 
 
+func select_closest_enemy_to_camera_center()->void:
+	#1. draw a line forward from the camera
+	#2. calculate the point on the line closest to the enemys location
+	#3. use the difference vector from point to enemy to calculate angle from camera to enemy
+	#4. figure out which enemy has the smallest angle
+	#5. check if enemy is visible with raycast and lock onto it.
+	var smallest_angle_left := lock_on_change_angle_max
+	var smallest_angle_right := -lock_on_change_angle_max
+	var closest_to_right_index:int
+	var closest_to_left_index:int
+	var look_dir := -basis.z.normalized()
+	for i in range(lock_on_targets.size()):
+		enemy = lock_on_targets[i]
+		var closest_point := Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.global_position, look_dir)
+		var difference := enemy.position-closest_point
+		var angle_to_enemy := rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
+		if(!enemy.dead):
+			if(!is_wall_in_way(enemy)):
+				if(angle_to_enemy<=smallest_angle_left and angle_to_enemy>=0):
+					smallest_angle_left = angle_to_enemy
+					closest_to_left_index=i
+				elif(angle_to_enemy>=smallest_angle_right and angle_to_enemy<=0):
+					smallest_angle_right = angle_to_enemy
+					closest_to_right_index=i
+	
+	if(abs(smallest_angle_left)<abs(smallest_angle_right)):
+		camera_target_index = closest_to_left_index
+	elif(abs(smallest_angle_right)<abs(smallest_angle_left)):
+		camera_target_index = closest_to_right_index
+	else: #lock on failed
+		camera_target_index = -1
+
+func switch_lock_on_target(dir:Direction)->void: 
+	#same logic as select_closest_enemy_to_camera_center, except only on one side
+	match dir:
+		Direction.LEFT:
+			var next_to_left_index := -1
+			var smallest_angle := lock_on_change_angle_max
+			var look_dir := -basis.z.normalized()
+			for i in range(lock_on_targets.size()):
+				enemy = lock_on_targets[i]
+				var closest_point := Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.global_position, look_dir)
+				var difference := enemy.position-closest_point
+				var angle_to_enemy := rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
+				if(!enemy.dead):
+					if(!is_wall_in_way(enemy)):
+						if(angle_to_enemy>=lock_on_change_angle_threshold): #only check ones to the left. ones to right are negative
+							if(angle_to_enemy<=smallest_angle):
+								if(i!=camera_target_index):
+									smallest_angle = angle_to_enemy
+									next_to_left_index = i
+			if(next_to_left_index > -1):
+				camera_target_index = next_to_left_index
+		
+		Direction.RIGHT:
+			var next_to_right_index := -1
+			var smallest_angle := -lock_on_change_angle_max
+			var look_dir := -basis.z.normalized()
+			for i in range(lock_on_targets.size()):
+				enemy = lock_on_targets[i]
+				var closest_point := Geometry3D.get_closest_point_to_segment_uncapped(enemy.position, player.global_position, look_dir)
+				var difference := enemy.position-closest_point
+				var angle_to_enemy := rad_to_deg(look_dir.signed_angle_to(difference, Vector3i.UP))
+				if(!enemy.dead):
+					if(!is_wall_in_way(enemy)):
+						if(angle_to_enemy<=lock_on_change_angle_threshold):
+							if(angle_to_enemy>=smallest_angle):
+								if(i!=camera_target_index):
+									smallest_angle = angle_to_enemy
+									next_to_right_index = i
+			if(next_to_right_index > -1):
+				camera_target_index = next_to_right_index
+
+func select_closest_enemy_to_player()->void:
+	camera_target_index = 0
+	for i in range(lock_on_targets.size()):
+		if lock_on_targets[i].global_position.distance_to(global_position) < lock_on_targets[camera_target_index].global_position.distance_to(global_position):
+			camera_target_index = i
+
+
 func highlight_enemy()->void:
-	if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)!=null):
-		(lock_on_targets[camera_target_index].get_node(enemy_material_node_path) as MeshInstance3D).set_surface_override_material(0, highlight_material)
+	if camera_target_index > -1:
+		if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)!=null):
+			(lock_on_targets[camera_target_index].get_node(enemy_material_node_path) as MeshInstance3D).set_surface_override_material(0, highlight_material)
 
 
 func unhighlight_enemy()->void:
-	if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)!=null):
-		(lock_on_targets[camera_target_index].get_node(enemy_material_node_path) as MeshInstance3D).set_surface_override_material(0, default_material)
+	if camera_target_index > -1:
+		if(lock_on_targets[camera_target_index].get_node(enemy_material_node_path)!=null):
+			(lock_on_targets[camera_target_index].get_node(enemy_material_node_path) as MeshInstance3D).set_surface_override_material(0, default_material)
+
+
+func reset_camera_direction() -> void:
+	spring_arm.rotation.x = 0
+	spring_arm.rotation.y = 0
+	spring_arm.rotation.z = 0
+	rotation.x = 0
+	rotation.z = 0	
 
 
 func reset_lock_on()->void:
 	lock_on_targets = []
 	camera_target_index = -1
 	camera_locked_on = false
+	current_target = null
 
 
 func _on_enemy_death(guy: CharacterBody3D)->void:
