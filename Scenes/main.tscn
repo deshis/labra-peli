@@ -14,6 +14,18 @@
 [ext_resource type="Script" path="res://Scripts/Menu/Button.gd" id="10_uq3l4"]
 [ext_resource type="Script" path="res://Scripts/DeathScreen.gd" id="12_qcvik"]
 
+[sub_resource type="NavigationMesh" id="NavigationMesh_7y7p8"]
+vertices = PackedVector3Array(-14.2886, 33.5709, -21.7532, -14.2886, 33.5709, 6.99683, 14.4614, 33.5709, 6.99683, 14.4614, 33.5709, -21.7532, 5.4614, 13.0709, -7.75317, 5.9614, 13.0709, -6.50317, 13.9614, 13.0709, -6.50317, 13.9614, 13.0709, -21.5032, -5.2886, 13.0709, -7.75317, 5.4614, 13.0709, -7.75317, 13.9614, 13.0709, -21.5032, -14.0386, 13.0709, -21.5032, -14.0386, 13.0709, -21.5032, -14.0386, 13.0709, -7.75317, -5.2886, 13.0709, -7.75317, -5.2886, 13.0709, -3.50317, -3.2886, 13.0709, -3.50317, -3.2886, 13.0709, -5.00317, -5.2886, 13.0709, -5.00317, -5.2886, 13.0709, -5.00317, -5.7886, 13.0709, -5.50317, -14.0386, 13.0709, -7.75317, -14.0386, 13.0709, -0.75317, -5.7886, 13.0709, -3.00317, -5.2886, 13.0709, -3.50317, -14.0386, 13.0709, -0.75317, -5.7886, 13.0709, -1.25317, -5.7886, 13.0709, -3.00317, -5.7886, 13.0709, -5.50317, -5.7886, 13.0709, -7.25317, -14.0386, 13.0709, -7.75317, -14.0386, 13.0709, -0.75317, -5.2886, 13.0709, -0.75317, -5.7886, 13.0709, -1.25317, -5.7886, 13.0709, -7.25317, -5.2886, 13.0709, -7.75317, -14.0386, 13.0709, -7.75317, 5.4614, 13.0709, -5.00317, 5.4614, 13.0709, -3.50317, 5.9614, 13.0709, -2.00317, 13.9614, 13.0709, -2.00317, 13.9614, 13.0709, -6.50317, 5.9614, 13.0709, -6.50317, -3.2886, 13.0709, -5.00317, -3.2886, 13.0709, -3.50317, 5.4614, 13.0709, -3.50317, 5.4614, 13.0709, -5.00317, 5.4614, 13.0709, -0.75317, 3.9614, 13.0709, -0.75317, 4.2114, 13.0709, 6.49683, 13.9614, 13.0709, -2.00317, 5.9614, 13.0709, -2.00317, 5.4614, 13.0709, -0.75317, 4.2114, 13.0709, 6.49683, 13.9614, 13.0709, 6.49683, -4.0386, 13.0709, 6.49683, -3.7886, 13.0709, -0.75317, -5.2886, 13.0709, -0.75317, -5.2886, 13.0709, -0.75317, -14.0386, 13.0709, -0.75317, -14.0386, 13.0709, 6.49683, -4.0386, 13.0709, 6.49683, -4.0386, 13.0709, 6.49683, 4.2114, 13.0709, 6.49683, 3.9614, 13.0709, -0.75317, -3.7886, 13.0709, -0.75317)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(5, 4, 6), PackedInt32Array(6, 4, 7), PackedInt32Array(9, 8, 10), PackedInt32Array(10, 8, 11), PackedInt32Array(14, 13, 12), PackedInt32Array(18, 17, 15), PackedInt32Array(15, 17, 16), PackedInt32Array(24, 23, 19), PackedInt32Array(19, 23, 20), PackedInt32Array(20, 23, 22), PackedInt32Array(20, 22, 21), PackedInt32Array(27, 26, 25), PackedInt32Array(30, 29, 28), PackedInt32Array(33, 32, 31), PackedInt32Array(36, 35, 34), PackedInt32Array(37, 42, 38), PackedInt32Array(38, 42, 39), PackedInt32Array(39, 42, 41), PackedInt32Array(39, 41, 40), PackedInt32Array(46, 45, 43), PackedInt32Array(43, 45, 44), PackedInt32Array(49, 48, 47), PackedInt32Array(52, 51, 53), PackedInt32Array(53, 51, 50), PackedInt32Array(53, 50, 54), PackedInt32Array(57, 56, 55), PackedInt32Array(59, 58, 60), PackedInt32Array(60, 58, 61), PackedInt32Array(65, 64, 62), PackedInt32Array(62, 64, 63)]
+geometry_parsed_geometry_type = 2
+agent_height = 2.3
+agent_radius = 0.56
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yw33l"]
+size = Vector3(10.0215, 4.89069, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4cslk"]
+
 [sub_resource type="Environment" id="Environment_p801p"]
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_energy = 0.05
@@ -27,47 +39,34 @@ fog_light_color = Color(0.662745, 0.47451, 0.666667, 1)
 adjustment_brightness = 0.41
 adjustment_contrast = 2.66
 
-[sub_resource type="NavigationMesh" id="NavigationMesh_7y7p8"]
-vertices = PackedVector3Array(-14.2886, 33.5709, -21.7532, -14.2886, 33.5709, 6.99683, 14.4614, 33.5709, 6.99683, 14.4614, 33.5709, -21.7532, 5.4614, 13.0709, -7.75317, 5.9614, 13.0709, -6.50317, 13.9614, 13.0709, -6.50317, 13.9614, 13.0709, -21.5032, -5.2886, 13.0709, -7.75317, 5.4614, 13.0709, -7.75317, 13.9614, 13.0709, -21.5032, -14.0386, 13.0709, -21.5032, -14.0386, 13.0709, -21.5032, -14.0386, 13.0709, -7.75317, -5.2886, 13.0709, -7.75317, -5.2886, 13.0709, -3.50317, -3.2886, 13.0709, -3.50317, -3.2886, 13.0709, -5.00317, -5.2886, 13.0709, -5.00317, -5.2886, 13.0709, -5.00317, -5.7886, 13.0709, -5.50317, -14.0386, 13.0709, -7.75317, -14.0386, 13.0709, -0.75317, -5.7886, 13.0709, -3.00317, -5.2886, 13.0709, -3.50317, -14.0386, 13.0709, -0.75317, -5.7886, 13.0709, -1.25317, -5.7886, 13.0709, -3.00317, -5.7886, 13.0709, -5.50317, -5.7886, 13.0709, -7.25317, -14.0386, 13.0709, -7.75317, -14.0386, 13.0709, -0.75317, -5.2886, 13.0709, -0.75317, -5.7886, 13.0709, -1.25317, -5.7886, 13.0709, -7.25317, -5.2886, 13.0709, -7.75317, -14.0386, 13.0709, -7.75317, 5.4614, 13.0709, -5.00317, 5.4614, 13.0709, -3.50317, 5.9614, 13.0709, -2.00317, 13.9614, 13.0709, -2.00317, 13.9614, 13.0709, -6.50317, 5.9614, 13.0709, -6.50317, -3.2886, 13.0709, -5.00317, -3.2886, 13.0709, -3.50317, 5.4614, 13.0709, -3.50317, 5.4614, 13.0709, -5.00317, 5.4614, 13.0709, -0.75317, 3.9614, 13.0709, -0.75317, 4.2114, 13.0709, 6.49683, 13.9614, 13.0709, -2.00317, 5.9614, 13.0709, -2.00317, 5.4614, 13.0709, -0.75317, 4.2114, 13.0709, 6.49683, 13.9614, 13.0709, 6.49683, -4.0386, 13.0709, 6.49683, -3.7886, 13.0709, -0.75317, -5.2886, 13.0709, -0.75317, -5.2886, 13.0709, -0.75317, -14.0386, 13.0709, -0.75317, -14.0386, 13.0709, 6.49683, -4.0386, 13.0709, 6.49683, -4.0386, 13.0709, 6.49683, 4.2114, 13.0709, 6.49683, 3.9614, 13.0709, -0.75317, -3.7886, 13.0709, -0.75317)
-polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(5, 4, 6), PackedInt32Array(6, 4, 7), PackedInt32Array(9, 8, 10), PackedInt32Array(10, 8, 11), PackedInt32Array(14, 13, 12), PackedInt32Array(18, 17, 15), PackedInt32Array(15, 17, 16), PackedInt32Array(24, 23, 19), PackedInt32Array(19, 23, 20), PackedInt32Array(20, 23, 22), PackedInt32Array(20, 22, 21), PackedInt32Array(27, 26, 25), PackedInt32Array(30, 29, 28), PackedInt32Array(33, 32, 31), PackedInt32Array(36, 35, 34), PackedInt32Array(37, 42, 38), PackedInt32Array(38, 42, 39), PackedInt32Array(39, 42, 41), PackedInt32Array(39, 41, 40), PackedInt32Array(46, 45, 43), PackedInt32Array(43, 45, 44), PackedInt32Array(49, 48, 47), PackedInt32Array(52, 51, 53), PackedInt32Array(53, 51, 50), PackedInt32Array(53, 50, 54), PackedInt32Array(57, 56, 55), PackedInt32Array(59, 58, 60), PackedInt32Array(60, 58, 61), PackedInt32Array(65, 64, 62), PackedInt32Array(62, 64, 63)]
-geometry_parsed_geometry_type = 2
-agent_height = 2.3
-agent_radius = 0.56
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_yw33l"]
-size = Vector3(10.0215, 4.89069, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_4cslk"]
-
 [node name="Main" type="Node3D"]
 script = ExtResource("1_cx8ll")
 
-[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
-process_mode = 3
-bus = &"Music"
+[node name="Player" parent="." instance=ExtResource("2_d6f1p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -39.2584, 20.0543)
+RUN_SPEED = 9.0
 
-[node name="EnemyPathfindingTimer" type="Timer" parent="."]
-wait_time = 0.25
-autostart = true
+[node name="Enemies" type="Node" parent="."]
 
-[node name="MainEnemySwitchTimer" type="Timer" parent="."]
+[node name="Enemy3" parent="Enemies" instance=ExtResource("5_rk86j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.64314, -39.2447, 7.00848)
+WALK_SPEED = 2.0
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.671615, 0.599208, 0.435756, -0.740899, 0.542107, 0.396469, 0.0013413, -0.589126, 0.80804, 0, 12.4759, 0)
-light_color = Color(1, 0.180392, 0.556863, 1)
-light_energy = 5.0
-light_indirect_energy = 10.0
-light_volumetric_fog_energy = 5.0
-light_angular_distance = 0.5
-shadow_enabled = true
-shadow_bias = 0.5
-shadow_normal_bias = 5.0
-shadow_opacity = 0.9
-script = ExtResource("2_xe4gy")
+[node name="Enemy4" parent="Enemies" instance=ExtResource("5_rk86j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -39.2447, -5.65439)
+WALK_SPEED = 2.0
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_p801p")
-script = ExtResource("2_7q2bx")
+[node name="Enemy5" parent="Enemies" instance=ExtResource("5_rk86j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -39.2447, 7.59001)
+WALK_SPEED = 2.0
+
+[node name="Enemy6" parent="Enemies" instance=ExtResource("5_rk86j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.51166, -38.2998, 6.56334)
+WALK_SPEED = 2.0
+
+[node name="Enemy7" parent="Enemies" instance=ExtResource("5_rk86j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94313, -38.2037, -11.3088)
+WALK_SPEED = 2.0
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, -73.0587, 18.6366)
@@ -99,12 +98,22 @@ transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 1, 0, 15.0748, -2.19841)
 mesh = SubResource("BoxMesh_4cslk")
 skeleton = NodePath("../..")
 
-[node name="monkey" parent="." instance=ExtResource("4_y0b6v")]
-transform = Transform3D(0.999939, -0.0110303, 0, 0.0110303, 0.999939, 0, 0, 0, 1, -1.1114, -36.9156, -2.75628)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.671615, 0.599208, 0.435756, -0.740899, 0.542107, 0.39647, 0.0013413, -0.589126, 0.80804, 0, 12.4759, 0)
+light_color = Color(1, 0.180392, 0.556863, 1)
+light_energy = 5.0
+light_indirect_energy = 10.0
+light_volumetric_fog_energy = 5.0
+light_angular_distance = 0.5
+shadow_enabled = true
+shadow_bias = 0.5
+shadow_normal_bias = 5.0
+shadow_opacity = 0.9
+script = ExtResource("2_xe4gy")
 
-[node name="Player" parent="." instance=ExtResource("2_d6f1p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -39.2584, 20.0543)
-RUN_SPEED = 9.0
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_p801p")
+script = ExtResource("2_7q2bx")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -209,25 +218,19 @@ theme_override_font_sizes/font_size = 48
 text = "Quit To Menu"
 script = ExtResource("10_uq3l4")
 
-[node name="Enemy3" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.64314, -39.2447, 7.00848)
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+bus = &"Music"
 
-[node name="Enemy4" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -39.2447, -5.65439)
+[node name="EnemyPathfindingTimer" type="Timer" parent="."]
+wait_time = 0.25
+autostart = true
 
-[node name="Enemy5" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471565, -39.2447, 7.59001)
+[node name="MainEnemySwitchTimer" type="Timer" parent="."]
 
-[node name="Enemy6" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.51166, -38.2998, 6.56334)
-WALK_SPEED = 2.0
+[node name="monkey" parent="." instance=ExtResource("4_y0b6v")]
+transform = Transform3D(0.999939, -0.0110303, 0, 0.0110303, 0.999939, 0, 0, 0, 1, -1.1114, -36.9156, -2.75628)
 
-[node name="Enemy7" parent="." instance=ExtResource("5_rk86j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94313, -38.2037, -11.3088)
-
-[connection signal="finished" from="MusicPlayer" to="." method="_on_music_player_finished"]
-[connection signal="timeout" from="EnemyPathfindingTimer" to="." method="_on_enemy_pathfinding_timer_timeout"]
-[connection signal="timeout" from="MainEnemySwitchTimer" to="." method="_on_main_enemy_switch_timer_timeout"]
 [connection signal="mouse_entered" from="PauseMenu/PauseButtonsContainer/ContinueButton" to="PauseMenu/PauseButtonsContainer/ContinueButton" method="_on_mouse_entered"]
 [connection signal="pressed" from="PauseMenu/PauseButtonsContainer/ContinueButton" to="PauseMenu" method="_on_continue_button_pressed"]
 [connection signal="mouse_entered" from="PauseMenu/PauseButtonsContainer/QuitGameButton" to="PauseMenu/PauseButtonsContainer/QuitGameButton" method="_on_mouse_entered"]
@@ -236,3 +239,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94313, -38.2037, -11.3088)
 [connection signal="pressed" from="DeathScreen/DeathButtonsContainer/RestartButton" to="DeathScreen" method="_on_restart_button_pressed"]
 [connection signal="mouse_entered" from="DeathScreen/DeathButtonsContainer/QuitGameButton" to="DeathScreen/DeathButtonsContainer/QuitGameButton" method="_on_mouse_entered"]
 [connection signal="pressed" from="DeathScreen/DeathButtonsContainer/QuitGameButton" to="DeathScreen" method="_on_quit_game_button_pressed"]
+[connection signal="finished" from="MusicPlayer" to="." method="_on_music_player_finished"]
+[connection signal="timeout" from="EnemyPathfindingTimer" to="." method="_on_enemy_pathfinding_timer_timeout"]
+[connection signal="timeout" from="MainEnemySwitchTimer" to="." method="_on_main_enemy_switch_timer_timeout"]
