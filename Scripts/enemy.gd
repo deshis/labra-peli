@@ -44,19 +44,12 @@ var hitbox := preload("res://Scenes/EnemyHitBox.tscn")
 @export var attack_damage := 10
 @export var attack_knockback_strength := 10
 
-
 @onready var collider: CollisionShape3D = $CollisionShape3D
 @onready var hurtbox: CollisionShape3D = $HurtBox/CollisionShape3D
 var collider_offset := 0.65
 
-
 @onready var footsteps_player: AudioStreamPlayer3D = $FootstepsPlayer
 var footstep_sounds: Array[AudioStream] = []
-var footsteps_cooldown := false
-@export var footsteps_run_cooldown_time := 60.0/125.0 #guy runs at 125 bpm
-@export var footsteps_walk_cooldown_time := 60.0/192.0 #guy walks at 192 (?) bpm
-@onready var footsteps_timer: Timer = $FootstepsTimer
-
 @onready var punch_player:AudioStreamPlayer3D = $PunchPlayer
 var punch_sounds: Array[AudioStream] = []
 @onready var hit_player:AudioStreamPlayer3D = $HitPlayer
@@ -123,13 +116,11 @@ func _physics_process(delta: float)->void:
 		nav.set_velocity(new_velocity)
 		
 		if(close_to_player or new_velocity.length()<0.001): #look at player and strafe
-			play_footsteps(true)
 			skeleton.look_at(player.global_position)
 			ragdoll_skeleton.look_at(player.global_position)
 			animation_tree.set("parameters/isStrafe/blend_amount", 1.0)
 			animation_tree.set("parameters/strafe/blend_position", Vector2((next_location - current_location).normalized().rotated(Vector3.UP, skeleton.rotation.y).x, (next_location - current_location).normalized().rotated(Vector3.UP, skeleton.rotation.y).z))
 		else: #else look at navigation path direction and run
-			play_footsteps(false)
 			skeleton.look_at(to_global(new_velocity), Vector3.UP)
 			ragdoll_skeleton.look_at(to_global(new_velocity), Vector3.UP)
 			animation_tree.set("parameters/isStrafe/blend_amount", 0.0)
@@ -314,15 +305,10 @@ func animation_finished(anim_name:String)->void:
 				child.queue_free()
 
 
-func play_footsteps(walking:bool)->void:
-	if(!footsteps_cooldown):
-		if(walking):
-			footsteps_timer.start(footsteps_walk_cooldown_time)
-		else:
-			footsteps_timer.start(footsteps_run_cooldown_time)
-		footsteps_player.set_stream(footstep_sounds[rng.randi_range(0, footstep_sounds.size()-1)])
-		footsteps_player.play()
-		footsteps_cooldown=true
+func play_footsteps()->void:
+	footsteps_player.set_stream(footstep_sounds[rng.randi_range(0, footstep_sounds.size()-1)])
+	footsteps_player.play()
+
 
 func animation_started(anim_name:String)->void:
 	if "attack_" in anim_name:
@@ -333,7 +319,3 @@ func animation_started(anim_name:String)->void:
 			punch_player.play()
 			if (rng.randf_range(0,1)<0.5):
 				can_combo = true
-
-
-func _on_footsteps_timer_timeout()->void:
-	footsteps_cooldown=false

@@ -39,11 +39,6 @@ var blocking := false
 
 @onready var footsteps_player: AudioStreamPlayer3D = $FootstepsPlayer
 var footstep_sounds: Array[AudioStream]= []
-var footsteps_cooldown := false
-@export var footsteps_run_cooldown_time := 60.0/125.0 #guy runs at 125 bpm
-@export var footsteps_walk_cooldown_time := 60.0/192.0 #guy walks at 192 (?) bpm
-@onready var footsteps_timer: Timer = $FootstepsTimer
-
 @onready var punch_player: AudioStreamPlayer3D = $PunchPlayer
 var punch_sounds: Array[AudioStream] = []
 @onready var hit_player: AudioStreamPlayer3D = $HitPlayer
@@ -123,20 +118,21 @@ func _physics_process(delta: float)->void:
 		var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 		var stick_Force := input_dir.length()
 		var direction := (camera_controller.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		
 		if direction:
 			velocity.x = direction.x * current_speed * stick_Force
 			velocity.z = direction.z * current_speed * stick_Force
+			
 			if can_start_new_attack_combo:
 				if camera_controller.camera_locked_on:
-					play_footsteps(Movement.RUN)
 					skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
 					ragdoll_skeleton.look_at(camera_controller.current_target.global_position, Vector3.UP)
 					rotate_object_local(Vector3.UP, PI) #look_at points in the opposite direction so we have to flip 180
 				else:
-					play_footsteps(Movement.RUN)
 					rotation = Vector3.ZERO;
 					skeleton.look_at(to_global(-direction), Vector3.UP)
 					ragdoll_skeleton.look_at(to_global(-direction), Vector3.UP)
+			
 			skeleton.rotation.x=0
 			skeleton.rotation.z=0
 			ragdoll_skeleton.rotation.x=0
@@ -347,16 +343,6 @@ func animation_started(anim_name:String)->void:
 			punch_player.play()
 
 
-func play_footsteps(movement_type:Movement)->void:
-	if(!footsteps_cooldown):
-		if movement_type == Movement.WALK:
-			footsteps_timer.start(footsteps_walk_cooldown_time)
-		elif movement_type == Movement.RUN:
-			footsteps_timer.start(footsteps_run_cooldown_time)
-		footsteps_player.set_stream(footstep_sounds[rng.randi_range(0, footstep_sounds.size()-1)])
-		footsteps_player.play()
-		footsteps_cooldown=true
-
-
-func _on_footsteps_timer_timeout()->void:
-	footsteps_cooldown = false
+func play_footsteps()->void:
+	footsteps_player.set_stream(footstep_sounds[rng.randi_range(0, footstep_sounds.size()-1)])
+	footsteps_player.play()

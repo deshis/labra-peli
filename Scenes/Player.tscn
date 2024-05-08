@@ -74,7 +74,4 @@ bus = &"SFX"
 [node name="BlockPlayer" type="AudioStreamPlayer3D" parent="."]
 bus = &"SFX"
 
-[node name="FootstepsTimer" type="Timer" parent="."]
-
 [connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]
-[connection signal="timeout" from="FootstepsTimer" to="." method="_on_footsteps_timer_timeout"]

@@ -92,9 +92,6 @@ bus = &"SFX"
 [node name="HitPlayer" type="AudioStreamPlayer3D" parent="."]
 bus = &"SFX"
 
-[node name="FootstepsTimer" type="Timer" parent="."]
-
 [connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]
 [connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
-[connection signal="timeout" from="FootstepsTimer" to="." method="_on_footsteps_timer_timeout"]

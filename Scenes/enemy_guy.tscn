@@ -1,7 +1,10 @@
-[gd_scene load_steps=55 format=3 uid="uid://ib78gj8d3n8d"]
+[gd_scene load_steps=56 format=3 uid="uid://ib78gj8d3n8d"]
 
 [ext_resource type="PackedScene" uid="uid://ctoto8fgh7vwt" path="res://Assets/Models/Enemy/enemy-guy.glb" id="1_5qiso"]
 [ext_resource type="Script" path="res://Scripts/enemy_guy.gd" id="2_y0e83"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qhnt1"]
+radius = 0.15
 
 [sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_pyxc1"]
 
@@ -262,15 +265,15 @@ transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 
 bones/0/position = Vector3(0.352362, 0.137795, 0.597502)
 bones/1/rotation = Quaternion(0.93715, 5.16767e-08, 0.245156, -0.248292)
 bones/3/position = Vector3(0.261696, 1.01162, 0.660616)
-bones/4/position = Vector3(0, 1.90034, 0.0886074)
+bones/4/position = Vector3(0, 1.90114, 0.0886074)
 bones/5/rotation = Quaternion(-0.698531, 0, 0, 0.715579)
 bones/5/scale = Vector3(1, 1, 1)
-bones/6/rotation = Quaternion(-0.327195, 0.191897, -0.112424, 0.918412)
+bones/6/rotation = Quaternion(-0.326194, 0.191986, -0.112184, 0.918778)
 bones/6/scale = Vector3(1, 1, 1)
-bones/7/rotation = Quaternion(0.247795, -0.0392039, 0.100066, 0.962833)
-bones/8/rotation = Quaternion(-0.0747867, -0.18494, 0.0711055, 0.977317)
+bones/7/rotation = Quaternion(0.246275, -0.0392224, 0.0994525, 0.963286)
+bones/8/rotation = Quaternion(-0.0740994, -0.184936, 0.0709024, 0.977385)
 bones/8/scale = Vector3(1, 1, 1)
-bones/9/rotation = Quaternion(0.330798, 0.0380066, -0.133585, 0.933426)
+bones/9/rotation = Quaternion(0.329664, 0.0380255, -0.133127, 0.933892)
 bones/10/rotation = Quaternion(0.652258, -0.0384621, -0.0442123, 0.755729)
 bones/11/scale = Vector3(1, 1, 1)
 bones/12/rotation = Quaternion(-0.0978403, -0.00248666, -0.00247665, 0.995196)
@@ -278,8 +281,8 @@ bones/13/rotation = Quaternion(0.0306667, 0.00155753, 0.00162928, 0.999527)
 bones/14/rotation = Quaternion(0.0749292, 0.0637109, -0.00369651, 0.995145)
 bones/14/scale = Vector3(1, 1, 1)
 bones/15/rotation = Quaternion(-0.059917, 0.00044502, 0.00044502, 0.998203)
-bones/16/rotation = Quaternion(-0.519351, -0.429966, -0.523468, 0.520947)
-bones/17/rotation = Quaternion(-0.586961, -0.218706, -0.0146302, 0.779378)
+bones/16/rotation = Quaternion(-0.519569, -0.429762, -0.523664, 0.520701)
+bones/17/rotation = Quaternion(-0.587109, -0.218705, -0.0146028, 0.779267)
 bones/17/scale = Vector3(1, 1, 1)
 bones/18/rotation = Quaternion(-0.355949, -0.0184732, -0.525609, 0.77246)
 bones/18/scale = Vector3(1, 1, 1)
@@ -292,9 +295,9 @@ bones/22/rotation = Quaternion(-0.138117, -0.122473, 0.620518, 0.762156)
 bones/22/scale = Vector3(1, 1, 1)
 bones/23/rotation = Quaternion(-0.364293, -0.441053, 0.0911054, 0.815146)
 bones/24/rotation = Quaternion(-0.0244352, 0.207929, 0.671685, 0.710639)
-bones/25/rotation = Quaternion(-0.520816, 0.429528, 0.523174, 0.52014)
+bones/25/rotation = Quaternion(-0.520928, 0.429354, 0.523336, 0.520009)
 bones/25/scale = Vector3(1, 1, 1)
-bones/26/rotation = Quaternion(-0.616381, 0.110691, -0.0796242, 0.775552)
+bones/26/rotation = Quaternion(-0.61661, 0.11061, -0.079685, 0.775376)
 bones/27/rotation = Quaternion(-0.141729, 0.177109, 0.36448, 0.903161)
 bones/27/scale = Vector3(1, 1, 1)
 bones/28/rotation = Quaternion(-0.0334057, 0.0358514, -0.00577274, 0.998782)
@@ -312,17 +315,17 @@ bones/35/rotation = Quaternion(0.93715, -5.16767e-08, -0.245156, -0.248292)
 bones/37/position = Vector3(-0.261696, 1.01162, 0.660616)
 
 [node name="ColliderAttachment" type="BoneAttachment3D" parent="DRV_Armature/Skeleton3D" index="5"]
-transform = Transform3D(0.992766, 0.0132882, -0.119331, -0.00231488, 0.995791, 0.0916291, 0.120046, -0.0906899, 0.988617, -0.000356126, 2.32499, 0.0858682)
+transform = Transform3D(0.992766, 0.0132882, -0.119331, -0.00231475, 0.99579, 0.0916296, 0.120046, -0.0906905, 0.988617, -0.000356154, 2.32579, 0.085868)
 bone_name = "Spine3"
 bone_idx = 12
 
 [node name="RightHandAttachment" type="BoneAttachment3D" parent="DRV_Armature/Skeleton3D" index="6"]
-transform = Transform3D(0.0314836, 0.965772, 0.257476, 0.504484, 0.207028, -0.838234, -0.862847, 0.156283, -0.480698, -0.650887, 1.60278, 0.319208)
+transform = Transform3D(0.0308793, 0.965523, 0.258481, 0.504521, 0.208186, -0.837925, -0.862847, 0.156284, -0.480698, -0.649671, 1.60313, 0.319209)
 bone_name = "Hand2.R"
 bone_idx = 30
 
 [node name="LeftHandAttachment" type="BoneAttachment3D" parent="DRV_Armature/Skeleton3D" index="7"]
-transform = Transform3D(-0.574419, -0.81668, -0.0554654, 0.172205, -0.0543225, -0.983562, 0.800243, -0.574528, 0.17184, 0.341916, 2.09093, 0.777752)
+transform = Transform3D(-0.574205, -0.816747, -0.0566861, 0.172917, -0.0533087, -0.983493, 0.800243, -0.574528, 0.17184, 0.341256, 2.0916, 0.777752)
 bone_name = "Hand2.L"
 bone_idx = 21
 
@@ -335,6 +338,28 @@ bone_idx = 35
 transform = Transform3D(0.879797, 0.121741, 0.459495, 0.459496, -0.465373, -0.756499, 0.12174, 0.876702, -0.465373, 0.352362, 0.137795, 0.597502)
 bone_name = "Ankle.L"
 bone_idx = 1
+
+[node name="FootstepsRight" type="BoneAttachment3D" parent="DRV_Armature/Skeleton3D" index="10"]
+transform = Transform3D(0.417742, -0.129774, -0.89925, -0.89925, -0.200425, -0.388818, -0.129773, 0.971076, -0.200424, -0.369119, 0.0756977, -0.281858)
+bone_name = "Foot.R"
+bone_idx = 36
+
+[node name="Area3D" type="Area3D" parent="DRV_Armature/Skeleton3D/FootstepsRight" index="0"]
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DRV_Armature/Skeleton3D/FootstepsRight/Area3D" index="0"]
+shape = SubResource("SphereShape3D_qhnt1")
+
+[node name="FootstepsLeft" type="BoneAttachment3D" parent="DRV_Armature/Skeleton3D" index="11"]
+transform = Transform3D(0.417742, 0.129774, 0.89925, 0.89925, -0.200425, -0.388818, 0.129773, 0.971076, -0.200424, 0.369117, 0.0737499, 0.718155)
+bone_name = "Foot.L"
+bone_idx = 2
+
+[node name="Area3D" type="Area3D" parent="DRV_Armature/Skeleton3D/FootstepsLeft" index="0"]
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DRV_Armature/Skeleton3D/FootstepsLeft/Area3D" index="0"]
+shape = SubResource("SphereShape3D_qhnt1")
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="2"]
 tree_root = SubResource("AnimationNodeBlendTree_ovmy8")
@@ -356,5 +381,7 @@ parameters/idle-run/blend_position = 0.0
 parameters/isStrafe/blend_amount = 0.0
 parameters/strafe/blend_position = Vector2(-0.706378, -0.707627)
 
+[connection signal="body_entered" from="DRV_Armature/Skeleton3D/FootstepsRight/Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_entered" from="DRV_Armature/Skeleton3D/FootstepsLeft/Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="animation_finished" from="AnimationTree" to="." method="_on_animation_tree_animation_finished"]
 [connection signal="animation_started" from="AnimationTree" to="." method="_on_animation_tree_animation_started"]

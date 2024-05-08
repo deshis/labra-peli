@@ -14,3 +14,7 @@ func _on_animation_tree_animation_finished(anim_name:String)->void:
 func _on_animation_tree_animation_started(anim_name:String)->void:
 	player.animation_started(anim_name)
 
+
+func _on_area_3d_body_entered(_body: Node3D) -> void:
+	if player: #?
+		player.play_footsteps()
