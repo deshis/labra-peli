@@ -3,6 +3,11 @@ extends CanvasLayer
 @onready var main_menu_music:AudioStreamPlayer = $MainMenuMusicPlayer
 @onready var start_button: Button = $ButtonsContainer/StartGameButton
 
+@onready var settings: Settings = $Settings
+@onready var credits: Credits = $Credits
+@onready var buttons_container: VBoxContainer = $ButtonsContainer
+
+
 func _ready() -> void:
 	var config := ConfigFile.new()
 	var err := config.load("user://settings.cfg")
@@ -47,23 +52,27 @@ func _ready() -> void:
 	start_button.grab_focus()
 	
 	#start mainmenu music
-	if(Global.main_menu_music_time):
-		main_menu_music.play(Global.main_menu_music_time)
-	else:
-		main_menu_music.play()
+	main_menu_music.play()
+	
+	settings.visible = false
+	credits.visible = false
 
 
 func _on_start_game_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/main.tscn")
 
+
 func _on_settings_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/settings.tscn")
+	buttons_container.visible = false
+	settings.open()
+
 
 func _on_credits_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/credits.tscn")
+	buttons_container.visible = false
+	credits.open()
+
 
 func _on_quit_game_button_pressed() -> void:
 	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 	get_tree().quit()
-
 

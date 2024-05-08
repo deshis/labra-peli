@@ -1,8 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://8bbkmf7cik0f"]
+[gd_scene load_steps=2 format=3 uid="uid://8bbkmf7cik0f"]
 
 [ext_resource type="Script" path="res://Scripts/Menu/credits.gd" id="1_f5h8y"]
-[ext_resource type="AudioStream" uid="uid://ca1jsuhlls2kl" path="res://Assets/Audio/Music/Menu/Hiding Your Reality.mp3" id="2_v3mst"]
-[ext_resource type="Script" path="res://Scripts/MainMenuMusicPlayer.gd" id="3_1e27s"]
 
 [node name="Credits" type="Control"]
 layout_mode = 3
@@ -12,6 +10,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_f5h8y")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 layout_mode = 1
@@ -49,10 +55,5 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 focus_neighbor_right = NodePath(".")
 text = "Back to menu"
-
-[node name="MainMenuMusicPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("2_v3mst")
-bus = &"Music"
-script = ExtResource("3_1e27s")
 
 [connection signal="pressed" from="BackButtonMargin/BackButton" to="." method="_on_back_button_pressed"]
